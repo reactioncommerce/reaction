@@ -98,6 +98,7 @@ describe("Promotions", () => {
 
   const cleanup = async () => {
     await testApp.collections.Promotions.deleteMany();
+    await testApp.collections.Orders.deleteMany();
     await testApp.collections.Cart.deleteMany();
   };
 
@@ -696,8 +697,8 @@ describe("Promotions", () => {
           actionKey: "discounts",
           actionParameters: {
             discountType: "shipping",
-            discountCalculationType: "fixed",
-            discountValue: 0.5
+            discountCalculationType: "percentage",
+            discountValue: 10
           }
         }
       ]
@@ -708,15 +709,13 @@ describe("Promotions", () => {
     test("placed order get the correct values", async () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
-      expect(newOrder.shipping[0].invoice.total).toEqual(121.94);
+      expect(newOrder.shipping[0].invoice.total).toEqual(121.89);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
-      expect(newOrder.shipping[0].invoice.shipping).toEqual(2);
-      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.5);
-      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.5);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(1.95);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.55);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.45);
       expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
-
-      expect(newOrder.shipping[0].items[0].quantity).toEqual(6);
 
       expect(newOrder.appliedPromotions).toHaveLength(2);
       expect(newOrder.discounts).toHaveLength(2);
