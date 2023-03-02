@@ -26,7 +26,7 @@ test("should return true when the cart don't have promotion already applied", as
 
   // when appliedPromotions is empty
   cart.appliedPromotions = [];
-  expect(canBeApplied(cart.appliedPromotions, promotion));
+  expect(canBeApplied(context, cart, { appliedPromotions: [], promotion }));
 });
 
 test("should return false when cart has first promotion applied with stackability is none", async () => {
