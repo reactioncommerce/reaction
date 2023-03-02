@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { createRequire } from "module";
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
@@ -7,6 +6,7 @@ import formatMoney from "../../utils/formatMoney.js";
 import getEligibleShipping from "../../utils/getEligibleIShipping.js";
 import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
 import recalculateQuoteDiscount from "../../utils/recalculateQuoteDiscount.js";
+import checkShippingStackable from "./checkShippingStackable.js";
 
 const require = createRequire(import.meta.url);
 
@@ -137,8 +137,14 @@ export async function estimateShipmentQuoteDiscount(context, cart, params) {
     const canBeDiscounted = canBeApplyDiscountToShipping(shipmentQuote, promotion);
     if (!canBeDiscounted) continue;
 
+    const shippingDiscount = createDiscountRecord(params, item);
+
     if (!shipmentQuote.discounts) shipmentQuote.discounts = [];
-    shipmentQuote.discounts.push(createDiscountRecord(params, item));
+    // eslint-disable-next-line no-await-in-loop
+    const canStackable = await checkShippingStackable(context, shipmentQuote, shippingDiscount);
+    if (!canStackable) continue;
+
+    shipmentQuote.discounts.push(shippingDiscount);
 
     affectedItemsLength += 1;
     recalculateQuoteDiscount(context, shipmentQuote, actionParameters);

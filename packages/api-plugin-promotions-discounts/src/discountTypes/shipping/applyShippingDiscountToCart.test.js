@@ -1,5 +1,8 @@
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import * as applyShippingDiscountToCart from "./applyShippingDiscountToCart.js";
+import checkShippingStackable from "./checkShippingStackable.js";
+
+jest.mock("./checkShippingStackable.js", () => jest.fn());
 
 test("createDiscountRecord should create discount record", () => {
   const parameters = {
@@ -79,6 +82,7 @@ test("should apply shipping discount to cart", async () => {
   mockContext.discountCalculationMethods = {
     fixed: jest.fn().mockReturnValue(2)
   };
+  checkShippingStackable.mockReturnValue(true);
 
   const { cart: updatedCart, affected } = await applyShippingDiscountToCart.default(mockContext, parameters, cart);
 
