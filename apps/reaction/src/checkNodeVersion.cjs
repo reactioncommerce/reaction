@@ -5,7 +5,7 @@
 // do not support ES modules.
 
 const semver = require("semver");
-const packageJson = require("../package.json");
+import * as packageJson from "./package.json" assert { type: "json" };
 
 const requiredNodeVersion = packageJson.engines.node;
 if (!semver.satisfies(process.version, requiredNodeVersion)) {

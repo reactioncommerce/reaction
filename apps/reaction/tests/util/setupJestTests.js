@@ -2,7 +2,7 @@
 import { createRequire } from "module";
 
 const require = createRequire(import.meta.url);
-const jestProcessEnv = require("./jestProcessEnv.json");
+import * as jestProcessEnv from "./jestProcessEnv.json" assert { type: "json" };
 
 process.env = Object.assign(process.env, {
   ...jestProcessEnv
