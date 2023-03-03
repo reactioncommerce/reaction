@@ -55,6 +55,11 @@ export const discountActionParameters = new SimpleSchema({
     type: Boolean,
     optional: true,
     defaultValue: false
+  },
+  neverStackWithOtherShippingDiscounts: {
+    type: Boolean,
+    optional: true,
+    defaultValue: false
   }
 });
 
@@ -76,8 +81,28 @@ export async function discountActionCleanup(context, cart) {
     return item;
   });
 
-  // todo: add reset logic for the shipping
-  // cart.shipping = cart.shipping.map((shipping) => ({ ...shipping, discounts: [] }));
+  // eslint-disable-next-line require-jsdoc
+  function resetMethod(method) {
+    method.rate = method.undiscountedRate || method.rate;
+    method.discount = 0;
+    method.shippingPrice = method.rate + (method.handlingPrice || method.handling);
+    method.undiscountedRate = 0;
+  }
+
+  for (const shipping of cart.shipping) {
+    shipping.discounts = [];
+
+    if (!shipping.shipmentQuotes) shipping.shipmentQuotes = [];
+    shipping.shipmentQuotes.forEach((quote) => {
+      resetMethod(quote.method);
+      resetMethod(quote);
+      quote.discounts = [];
+    });
+
+    if (shipping.shipmentMethod) {
+      resetMethod(shipping.shipmentMethod);
+    }
+  }
 
   return cart;
 }
@@ -94,10 +119,10 @@ export async function discountActionHandler(context, cart, params) {
 
   Logger.info({ params, cartId: cart._id, ...logCtx }, "applying discount to cart");
 
-  const { cart: updatedCart, affected, reason } = await functionMap[discountType](context, params, cart);
+  const { cart: updatedCart, affected, reason, temporaryAffected } = await functionMap[discountType](context, params, cart);
 
   Logger.info({ ...logCtx, ...params.actionParameters, cartId: cart._id, cartDiscount: cart.discount }, "Completed applying Discount to Cart");
-  return { updatedCart, affected, reason };
+  return { updatedCart, affected, reason, temporaryAffected };
 }
 
 export default {

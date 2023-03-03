@@ -2,7 +2,7 @@ import { createRequire } from "module";
 import { promotions, registerPluginHandlerForPromotions } from "./registration.js";
 import mutations from "./mutations/index.js";
 import preStartupPromotions from "./preStartup.js";
-import { Promotion, CartPromotionItem } from "./simpleSchemas.js";
+import { Promotion, CartPromotionItem, Stackability as PromotionStackability } from "./simpleSchemas.js";
 import actions from "./actions/index.js";
 import promotionTypes from "./promotionTypes/index.js";
 import schemas from "./schemas/index.js";
@@ -46,7 +46,8 @@ export default async function register(app) {
     },
     simpleSchemas: {
       Promotion,
-      CartPromotionItem
+      CartPromotionItem,
+      PromotionStackability
     },
     functionsByType: {
       registerPluginHandler: [registerPluginHandlerForPromotions],

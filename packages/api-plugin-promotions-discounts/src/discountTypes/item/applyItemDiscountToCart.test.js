@@ -41,9 +41,18 @@ test("should return cart with applied discount when parameters do not include ru
     discounts: []
   };
 
+  const shipping = {
+    _id: "shipping1",
+    shipmentMethod: {
+      shippingPrice: 10,
+      discount: 2
+    }
+  };
+
   const cart = {
     _id: "cart1",
-    items: [item]
+    items: [item],
+    shipping: [shipping]
   };
 
   const discountParameters = {
@@ -88,9 +97,18 @@ test("should return cart with applied discount when parameters include rule", as
     discounts: []
   };
 
+  const shipping = {
+    _id: "shipping1",
+    shipmentMethod: {
+      shippingPrice: 10,
+      discount: 2
+    }
+  };
+
   const cart = {
     _id: "cart1",
-    items: [item]
+    items: [item],
+    shipping: [shipping]
   };
 
   const parameters = {
@@ -150,9 +168,18 @@ test("should return affected is false with reason when have no items are discoun
     discounts: []
   };
 
+  const shipping = {
+    _id: "shipping1",
+    shipmentMethod: {
+      shippingPrice: 11,
+      discount: 2
+    }
+  };
+
   const cart = {
     _id: "cart1",
-    items: [item]
+    items: [item],
+    shipping: [shipping]
   };
 
   const parameters = {

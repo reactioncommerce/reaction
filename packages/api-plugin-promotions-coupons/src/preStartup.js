@@ -1,4 +1,3 @@
-import _ from "lodash";
 import SimpleSchema from "simpl-schema";
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
@@ -12,7 +11,7 @@ const expectedVersion = 2;
  * @returns {undefined}
  */
 export default async function preStartupPromotionCoupon(context) {
-  const { simpleSchemas: { Cart, Promotion, RuleExpression }, promotions: pluginPromotions } = context;
+  const { simpleSchemas: { RuleExpression, CartPromotionItem }, promotions: pluginPromotions } = context;
 
   CouponTriggerCondition.extend({
     conditions: RuleExpression
@@ -26,22 +25,16 @@ export default async function preStartupPromotionCoupon(context) {
   const offerTrigger = pluginPromotions.triggers.find((trigger) => trigger.key === "offers");
   if (!offerTrigger) throw new Error("No offer trigger found. Need to register offers trigger first.");
 
-  const copiedPromotion = _.cloneDeep(Promotion);
-
   const relatedCoupon = new SimpleSchema({
     couponCode: String,
     couponId: String
   });
 
-  copiedPromotion.extend({
+  CartPromotionItem.extend({
     relatedCoupon: {
       type: relatedCoupon,
       optional: true
     }
-  });
-
-  Cart.extend({
-    "appliedPromotions.$": copiedPromotion
   });
 
   const setToExpectedIfMissing = async () => {

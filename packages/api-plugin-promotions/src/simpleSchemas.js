@@ -143,5 +143,9 @@ export const CartPromotionItem = new SimpleSchema({
   triggerType: {
     type: String,
     allowedValues: ["implicit", "explicit"]
+  },
+  isTemporary: {
+    type: Boolean,
+    defaultValue: false
   }
 });

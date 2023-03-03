@@ -148,6 +148,8 @@ export default async function placeOrder(context, input) {
     if (!allCartMessageAreAcknowledged) {
       throw new ReactionError("invalid-cart", "Cart messages should be acknowledged before placing order");
     }
+
+    await context.mutations.transformAndValidateCart(context, cart, { skipTemporaryPromotions: true });
   }
 
 

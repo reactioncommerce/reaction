@@ -4,6 +4,7 @@ import getEligibleItems from "../../utils/getEligibleItems.js";
 import getTotalEligibleItemsAmount from "../../utils/getTotalEligibleItemsAmount.js";
 import getTotalDiscountOnCart from "../../utils/getTotalDiscountOnCart.js";
 import recalculateCartItemSubtotal from "../../utils/recalculateCartItemSubtotal.js";
+import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
 
 /**
  * @summary Map discount record to cart discount
@@ -38,8 +39,8 @@ export function createDiscountRecord(params, discountedItems, discountedAmount) 
  */
 export function getCartDiscountAmount(context, items, discount) {
   const totalEligibleItemsAmount = getTotalEligibleItemsAmount(items);
-  const { discountCalculationType, discountValue, discountMaxValue } = discount;
-  const cartDiscountedAmount = context.discountCalculationMethods[discountCalculationType](discountValue, totalEligibleItemsAmount);
+  const { discountMaxValue } = discount;
+  const cartDiscountedAmount = calculateDiscountAmount(context, totalEligibleItemsAmount, discount);
   const discountAmount = formatMoney(totalEligibleItemsAmount - cartDiscountedAmount);
   if (typeof discountMaxValue === "number" && discountMaxValue > 0) {
     return Math.min(discount.discountMaxValue, discountAmount);

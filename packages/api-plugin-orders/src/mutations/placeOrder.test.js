@@ -153,7 +153,8 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
           group: undefined,
           currencyCode: orderInput.currencyCode,
           handling: 0,
-          rate: 0
+          rate: 0,
+          discount: 0
         },
         shopId: orderInput.shopId,
         totalItemQuantity: 1,

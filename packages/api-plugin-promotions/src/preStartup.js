@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Action, Trigger, Promotion as PromotionSchema, Stackability } from "./simpleSchemas.js";
+import { Action, Trigger, Promotion as PromotionSchema, Stackability, CartPromotionItem } from "./simpleSchemas.js";
 
 /**
  * @summary apply all schema extensions to the Promotions schema
@@ -19,7 +19,7 @@ function extendSchemas(context) {
  * @returns {Object} the extended schema
  */
 function extendCartSchema(context) {
-  const { simpleSchemas: { Cart, CartPromotionItem } } = context; // we get this here rather then importing it to get the extended version
+  const { simpleSchemas: { Cart } } = context; // we get this here rather then importing it to get the extended version
 
   Cart.extend({
     "version": {
