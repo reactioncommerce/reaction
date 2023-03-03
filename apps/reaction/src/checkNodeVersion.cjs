@@ -5,6 +5,7 @@
 // do not support ES modules.
 
 import * as packageJson from "./package.json" assert { type: "json" };
+
 const semver = require("semver");
 
 const requiredNodeVersion = packageJson.engines.node;
