@@ -16,7 +16,7 @@ The `generateFilterQuery` function expects the input GraphQL conditions object t
 
 Please go through a general introduction of how to use this function which can be found in the [api-utils README](https://github.com/reactioncommerce/reaction/tree/trunk/packages/api-utils/docs) before going through the examples below on how to use this function in the context of the `products` plugin.
 
-In the query endpoint, we pass the `FilterConditionsInput` input type object as the `conditions` argument. This object is passed to the `generateFilterQuery` function along with other parameters like `context`, `collectionName` and `shopId` to generate the MongoDB filter query. The `generateFilterQuery` function is generic and can be used to generate filter queries for any collection. Since the parametes like `context`, `collectionName` and `shopId` are pretty self-explanatory, we shall focus on explaining the various ways in which the `conditions` object can be used.
+In the query endpoint, we pass the `FilterConditionsInput` input type object as the `conditions` argument. This object is passed to the `generateFilterQuery` function along with other parameters like `context`, `collectionName` and `shopId` to generate the MongoDB filter query. The `generateFilterQuery` function is generic and can be used to generate filter queries for any collection. Since the parameters like `context`, `collectionName` and `shopId` are pretty self-explanatory, we shall focus on explaining the various ways in which the `conditions` object can be used.
 
 1. Single condition.
 Here we are querying products collection for entries with the handle as 'mens-waterproof-outdoor-rain-jacket'. Since it is single condition, using either `all` or `any` will not make difference. 
