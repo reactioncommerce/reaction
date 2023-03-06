@@ -1,6 +1,6 @@
 ---
-"@reactioncommerce/api-plugin-sample-data": patch
-"@reactioncommerce/file-collections": patch
+"@reactioncommerce/api-plugin-sample-data": minor
+"@reactioncommerce/file-collections": minor
 ---
 
 fix: sample image data not showing

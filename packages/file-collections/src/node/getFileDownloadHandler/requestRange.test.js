@@ -73,7 +73,17 @@ test('should return error when range header is present but unit is not a "bytes"
 });
 
 test("should return error when range header is present but start is greater than end", () => {
-  const headers = { range: "bytes=10-0" };
+  const headers = { range: "bytes=10-9" };
+  const fileSize = 100;
+  const result = requestRange(headers, fileSize);
+  expect(result).toEqual({
+    errorCode: 416,
+    errorMessage: "Requested Range Not Satisfiable"
+  });
+});
+
+test("should return error when range header is present but end is greater than file size", () => {
+  const headers = { range: "bytes=0-1000" };
   const fileSize = 100;
   const result = requestRange(headers, fileSize);
   expect(result).toEqual({

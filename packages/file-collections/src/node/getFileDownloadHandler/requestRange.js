@@ -59,7 +59,7 @@ export default function requestRange(headers, fileSize) {
   if (String(startByte) !== start) startByte = 0;
   if ((String(endByte) !== end) || endByte === 0) endByte = fileSize - 1;
 
-  if (start >= end) {
+  if (startByte >= endByte || endByte >= fileSize) {
     return {
       errorCode: 416,
       errorMessage: "Requested Range Not Satisfiable"
