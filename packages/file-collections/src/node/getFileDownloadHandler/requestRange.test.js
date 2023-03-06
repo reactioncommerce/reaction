@@ -19,11 +19,11 @@ test("should return correct range when range header is present", () => {
   const fileSize = 1000;
   const result = requestRange(headers, fileSize);
   expect(result).toEqual({
-    end: "999",
-    len: 999,
-    partial: true,
+    end: 999,
+    len: 1000,
+    partial: false,
     size: 1000,
-    start: "0",
+    start: 0,
     unit: "bytes"
   });
 });
@@ -33,11 +33,11 @@ test("should return the correct range when the range header request first half p
   const fileSize = 1000;
   const result = requestRange(headers, fileSize);
   expect(result).toEqual({
-    end: "499",
-    len: 499,
+    end: 499,
+    len: 500,
     partial: true,
     size: 1000,
-    start: "0",
+    start: 0,
     unit: "bytes"
   });
 });
