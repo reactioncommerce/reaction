@@ -68,11 +68,11 @@ export default function requestRange(headers, fileSize) {
 
   const partSize = (endByte - startByte) + 1;
   return {
-    end,
+    end: endByte,
     len: partSize,
     partial: (partSize < fileSize),
     size: fileSize,
-    start,
+    start: startByte,
     unit
   };
 }

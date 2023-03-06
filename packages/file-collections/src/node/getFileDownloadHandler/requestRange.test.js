@@ -5,7 +5,7 @@ test("should return default setting when range header is not present", () => {
   const fileSize = 100;
   const result = requestRange(headers, fileSize);
   expect(result).toEqual({
-    end: fileSize,
+    end: fileSize - 1,
     len: fileSize,
     partial: false,
     size: fileSize,
