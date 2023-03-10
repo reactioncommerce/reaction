@@ -1,5 +1,22 @@
 # reaction
 
+## 4.2.7
+
+### Patch Changes
+
+- Updated dependencies [[`ef310ac1e`](https://github.com/reactioncommerce/reaction/commit/ef310ac1e18d1a698646e9babe2f5b4dc18946af)]:
+  - @reactioncommerce/api-plugin-files@1.1.0
+
+## 4.2.6
+
+### Patch Changes
+
+- [#6699](https://github.com/reactioncommerce/reaction/pull/6699) [`4ee568438`](https://github.com/reactioncommerce/reaction/commit/4ee568438093aaacc753c13387807213591859e7) Thanks [@vanpho93](https://github.com/vanpho93)! - Upgrade sharp 0.29 to 0.30
+
+- Updated dependencies [[`8392ba163`](https://github.com/reactioncommerce/reaction/commit/8392ba163a402ba0528f5658bd2f206cb9433eee), [`1dd0c0468`](https://github.com/reactioncommerce/reaction/commit/1dd0c04687e473489e7225dda8b2b880df1b94b2)]:
+  - @reactioncommerce/api-utils@1.17.1
+  - @reactioncommerce/api-plugin-tags@1.2.1
+
 ## 4.2.5
 
 ### Patch Changes

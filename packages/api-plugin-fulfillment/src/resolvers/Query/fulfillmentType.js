@@ -1,7 +1,5 @@
-import { decodeFulfillmentGroupOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
-
 /**
- * @name Query/getFulfillmentType
+ * @name Query/fulfillmentType
  * @method
  * @memberof Fulfillment/Query
  * @summary Query for a single fulfillment type
@@ -12,16 +10,10 @@ import { decodeFulfillmentGroupOpaqueId, decodeShopOpaqueId } from "../../xforms
  * @param {Object} context - an object containing the per-request state
  * @returns {Promise<Object>} Fulfillment type
  */
-export default async function getFulfillmentType(_, args, context) {
-  const {
-    fulfillmentTypeId: opaqueTypeId,
-    shopId: opaqueShopId
-  } = args;
+export default async function fulfillmentType(_, args, context) {
+  const { fulfillmentTypeId, shopId } = args;
 
-  const fulfillmentTypeId = decodeFulfillmentGroupOpaqueId(opaqueTypeId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-
-  return context.queries.getFulfillmentType(context, {
+  return context.queries.fulfillmentType(context, {
     fulfillmentTypeId,
     shopId
   });

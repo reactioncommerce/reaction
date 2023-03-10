@@ -59,6 +59,45 @@ export const FulfillmentMethodSchema = new SimpleSchema({
 });
 
 /**
+ * @name UserEditableFulfillmentMethodSchema
+ * @memberof Schemas
+ * @type {SimpleSchema}
+ * @summary Defines Schema for User editable fields of Fulfillment Method
+ * @property {Number} cost - optional cost
+ * @property {Number} handling - handling charges
+ * @property {Boolean} enabled - status of fulfillment method
+ * @property {String} label - displayed on the UI
+ * @property {String} displayMessageMethod - used to display additional message on UI specific to ff-method
+ * @property {Number} rate - rate for the method
+ */
+export const UserEditableFulfillmentMethodSchema = new SimpleSchema({
+  cost: {
+    type: Number,
+    optional: true
+  },
+  handling: {
+    type: Number,
+    optional: true
+  },
+  enabled: {
+    type: Boolean,
+    optional: true
+  },
+  label: {
+    type: String,
+    optional: true
+  },
+  displayMessageMethod: {
+    type: String,
+    optional: true
+  },
+  rate: {
+    type: Number,
+    optional: true
+  }
+});
+
+/**
  * @name ProviderSchema
  * @memberof Schemas
  * @type {SimpleSchema}
@@ -84,6 +123,8 @@ const ProviderSchema = new SimpleSchema({
  * @property {String} fulfillmentType - fulfillmentType, not user editable
  * @property {String} displayMessageType - used to display additional message on UI specific to ff-type
  * @property {FulfillmentMethodSchema[]} methods - array of ff-methods under this ff-type
+ * @property {Date} createdAt required
+ * @property {Date} updatedAt required
  */
 export const FulfillmentTypeSchema = new SimpleSchema({
   "name": String,
@@ -102,6 +143,12 @@ export const FulfillmentTypeSchema = new SimpleSchema({
   },
   "methods.$": {
     type: FulfillmentMethodSchema
+  },
+  "createdAt": {
+    type: Date
+  },
+  "updatedAt": {
+    type: Date
   }
 });
 

@@ -1,9 +1,9 @@
-import getFulfillmentType from "./getFulfillmentType.js";
-import getFulfillmentTypes from "./getFulfillmentTypes.js";
-import getFulfillmentMethods from "./getFulfillmentMethods.js";
+import fulfillmentType from "./fulfillmentType.js";
+import fulfillmentTypes from "./fulfillmentTypes.js";
+import fulfillmentMethods from "./fulfillmentMethods.js";
 
 export default {
-  getFulfillmentType,
-  getFulfillmentTypes,
-  getFulfillmentMethods
+  fulfillmentType,
+  fulfillmentTypes,
+  fulfillmentMethods
 };

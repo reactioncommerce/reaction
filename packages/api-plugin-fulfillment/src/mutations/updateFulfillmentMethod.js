@@ -1,9 +1,10 @@
 import SimpleSchema from "simpl-schema";
 import ReactionError from "@reactioncommerce/reaction-error";
-import { FulfillmentMethodSchema } from "../simpleSchemas.js";
+import { UserEditableFulfillmentMethodSchema } from "../simpleSchemas.js";
+
 
 const inputSchema = new SimpleSchema({
-  method: FulfillmentMethodSchema,
+  method: UserEditableFulfillmentMethodSchema,
   fulfillmentTypeId: String,
   methodId: String,
   shopId: String
@@ -14,7 +15,7 @@ const inputSchema = new SimpleSchema({
  * @summary updates Fulfillment method
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - Input object
- * @param {FulfillmentMethodSchema} input.method - fulfillment method object
+ * @param {UserEditableFulfillmentMethodSchema} input.method - fulfillment method object with only user editable fields
  * @param {String} input.fulfillmentTypeId - id of fulfillment type
  * @param {String} input.methodId - ff-method Id
  * @param {String} input.shopId - Shop Id
@@ -28,30 +29,18 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   const { collections: { Fulfillment } } = context;
   const method = { ...inputMethod };
 
-  if (!fulfillmentTypeId) throw new ReactionError("invalid-parameter", "Fulfillment Type ID to be updated not provided");
-  if (!methodId) throw new ReactionError("invalid-parameter", "Method ID to be updated not provided");
+  await context.validatePermissions("reaction:legacy:fulfillmentMethods", "update", { shopId });
 
-  await context.validatePermissions(`reaction:legacy:fulfillmentMethods:${methodId}`, "update", { shopId });
-
-  const ffTypeMethodRecord = await Fulfillment.findOne({
+  const fulfillmentType = await Fulfillment.findOne({
     "_id": fulfillmentTypeId,
     shopId,
     "methods._id": methodId
   });
-  if (!ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method does not exist");
+  if (!fulfillmentType) throw new ReactionError("server-error", "Fulfillment Type / Method does not exist");
 
-  // Do not update the fulfillmentType, fulfillmentMethod, group, name & _id fields
-  // Find the matching fulfillmentMethod object and use those values to over-write
-  const currentFulfillmentMethod = (ffTypeMethodRecord.methods || []).find((meth) => meth._id === methodId);
+  const currentFulfillmentMethod = (fulfillmentType.methods || []).find((meth) => meth._id === methodId);
   if (!currentFulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method does not exist");
-  const updatedMethod = {
-    ...method,
-    _id: methodId,
-    name: currentFulfillmentMethod.name,
-    group: currentFulfillmentMethod.group,
-    fulfillmentMethod: currentFulfillmentMethod.fulfillmentMethod,
-    fulfillmentType: [ffTypeMethodRecord.fulfillmentType]
-  };
+  const updatedMethod = { ...currentFulfillmentMethod, ...method }; // update only provided user editable fields
 
   const { matchedCount } = await Fulfillment.updateOne({
     "_id": fulfillmentTypeId,
@@ -64,5 +53,5 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   });
   if (matchedCount === 0) throw new ReactionError("not-found", "Fulfillment type to be updated not found");
 
-  return { group: updatedMethod };
+  return { method: updatedMethod };
 }
