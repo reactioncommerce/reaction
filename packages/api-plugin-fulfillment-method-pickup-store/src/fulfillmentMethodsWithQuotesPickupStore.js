@@ -30,34 +30,33 @@ export default async function fulfillmentMethodsWithQuotesPickupStore(context, c
     }
   }
 
-  const pickupDocs = await Fulfillment.find({
+  const pickupFulfillmentType = await Fulfillment.findOne({
     "shopId": commonOrder.shopId,
     "fulfillmentType": fulfillmentTypeName,
     "provider.enabled": true
-  }).toArray();
-  if (!pickupDocs || !pickupDocs.length) {
+  });
+  if (!pickupFulfillmentType) {
     return [rates, retrialTargets];
   }
 
   const initialNumOfRates = rates.length;
 
-  pickupDocs.map(async (doc) => {
-    const carrier = doc.provider.label;
-    const currentPluginMethods = doc.methods.filter((method) => ((method.name === fulfillmentMethodName) && (method.enabled)));
 
-    for (const method of currentPluginMethods) {
-      const updatedMethod = collectStoreDetails(method, commonOrder);
+  const carrier = pickupFulfillmentType.provider?.label || "";
+  const currentPluginMethods = pickupFulfillmentType.methods ?
+    pickupFulfillmentType.methods.filter((method) => ((method.name === fulfillmentMethodName) && (method.enabled))) : [];
 
-      rates.push({
-        carrier,
-        handlingPrice: updatedMethod.handling,
-        method: updatedMethod,
-        rate: updatedMethod.rate,
-        shippingPrice: updatedMethod.rate + updatedMethod.handling,
-        shopId: doc.shopId
-      });
-    }
-  });
+  for (const method of currentPluginMethods) {
+    const updatedMethod = collectStoreDetails(method, commonOrder);
+    rates.push({
+      carrier,
+      handlingPrice: updatedMethod.handling,
+      method: updatedMethod,
+      rate: updatedMethod.rate,
+      shippingPrice: updatedMethod.rate + updatedMethod.handling,
+      shopId: pickupFulfillmentType.shopId
+    });
+  }
 
   if (rates.length === initialNumOfRates) {
     const errorDetails = {

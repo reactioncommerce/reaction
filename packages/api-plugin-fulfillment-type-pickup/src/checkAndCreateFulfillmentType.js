@@ -7,19 +7,18 @@
 export default async function checkAndCreateFulfillmentType(context, shopId) {
   const { collections: { Fulfillment } } = context;
 
-  const pickupRecord = await Fulfillment.findOne({ fulfillmentType: "pickup", shopId });
-  if (!pickupRecord) {
-    const groupInfo = {
-      name: "Pickup Provider",
-      shopId,
-      provider: {
-        enabled: true,
-        label: "Pickup",
-        name: "pickup"
-      },
-      fulfillmentType: "pickup"
-    };
-    await context.mutations.createFulfillmentType(context.getInternalContext(), groupInfo);
-  }
+  const pickupFulfillmentType = await Fulfillment.findOne({ fulfillmentType: "pickup", shopId });
+  if (pickupFulfillmentType) return true;
+  const newPickupFulfillmentType = {
+    name: "Pickup Provider",
+    shopId,
+    provider: {
+      enabled: true,
+      label: "Pickup",
+      name: "pickup"
+    },
+    fulfillmentType: "pickup"
+  };
+  await context.mutations.createFulfillmentType(context.getInternalContext(), newPickupFulfillmentType);
   return true;
 }

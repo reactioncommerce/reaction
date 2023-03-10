@@ -11,9 +11,6 @@ export default async function fulfillmentTypePickupStartup(context) {
     const { shop } = payload;
     const shopId = shop._id;
 
-    // We do not have validatePermissions in context during this startup stage, hence commenting below
-    // await context.validatePermissions("reaction:legacy:fulfillmentTypes", "read", { shopId });
-
     const insertSuccess = await checkAndCreateFulfillmentType(context, shopId);
     if (!insertSuccess) {
       throw new ReactionError("server-error", "Error in creating fulfillment type");
