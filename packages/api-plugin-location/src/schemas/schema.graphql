@@ -1,0 +1,284 @@
+type LocationAddress {
+    " The first line of the address."
+    address1: String!
+
+    " The second line of the address."
+    address2: String
+
+    " The city of the address."
+    city: String!
+
+    " The State/Province/Region of the address."
+    region: String!
+
+    " The ZIP/Postal Code of the address."
+    postal: String!
+
+    " The ISO 3166-1 alpha-2 country code of the address."
+    country: String!
+}
+
+type Location {
+    " The ID of the location."
+    _id: ID!
+
+    " The name of the location."
+    name: String!
+
+    " The type of the location [warehouse, region, dropship, marketplace]."
+    type: String!
+
+    " The address of the location."
+    address: LocationAddress!
+
+    " The phone number of the location."
+    phoneNumber: String!
+    
+    " The fulfillment method of the location [shipping, pickup, ship-to-store, local-delivery]."
+    fulfillmentMethod: String!
+
+    " The location use local fulfillment only."
+    localFulfillmentOnly: Boolean
+
+    " The open hours of the type store location."
+    storeHours: Int
+
+    " The pickup hours of the type store location."
+    storePickupHours: Int
+
+    " The pickup instructions of the type store location."
+    storePickupInstructions: String
+
+    " Whether the location is current active"
+    enabled: Boolean
+
+    " The date the location was created"
+    createdAt: Date!
+
+    " The date the location was last updated"
+    updatedAt: Date!
+}
+
+"A connection edge in which each node is a `Location` object"
+type LocationEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The location node"
+  node: Location
+}
+
+type LocationConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [LocationEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Location]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+" The input for the location query"
+input LocationQueryInput {
+    "The location ID"
+    _id: ID!
+
+    "The shop ID"
+    shopId: ID!
+}
+
+" The filter input for the locations query"
+input LocationFilter {
+    " The name of the location."
+    name: String
+
+    " The type of the location [warehouse, region, dropship, marketplace]."
+    type: String
+
+    " The phone of the location."
+    phone: String
+
+    " The fulfillment method of the location [shipping, pickup, ship-to-store, local-delivery]."
+    fulfillmentMethod: String
+
+    " The location use local fulfillment only."
+    localFulfillmentOnly: Boolean
+
+    " The location is active or not."
+    enabled: Boolean
+
+    " The location is available for or not."
+    isArchived: Boolean
+}
+
+input LocationAddressInput {
+    " The first line of the address."
+    address1: String!
+
+    " The second line of the address."
+    address2: String
+
+    " The city of the address."
+    city: String!
+
+    " The State/Province/Region of the address."
+    region: String!
+
+    " The ZIP/Postal Code of the address."
+    postal: String!
+
+    " The ISO 3166-1 alpha-2 country code of the address."
+    country: String!
+}
+
+" The input for the location create mutation"
+input LocationCreateInput {
+    " The shop ID"
+    shopId: ID!
+
+    " The name of the location."
+    name: String!
+
+    " The type of the location [warehouse, region, dropship, marketplace]."
+    type: String!
+
+    " The address of the location."
+    address: LocationAddressInput!
+
+    " The phone number of the location."
+    phoneNumber: String!
+
+    " The fulfillment method of the location [shipping, pickup, ship-to-store, local-delivery]."
+    fulfillmentMethod: String!
+
+    " The location use local fulfillment only."
+    localFulfillmentOnly: Boolean
+
+    " The open hours of the type store location."
+    storeHours: Int
+
+    " The pickup hours of the type store location."
+    storePickupHours: Int
+
+    " The pickup instructions of the type store location."
+    storePickupInstructions: String
+
+    " Whether the location is current active"
+    enabled: Boolean
+}
+
+input LocationUpdateInput {
+    " The location ID"
+    _id: ID!
+
+    " The shop ID"
+    shopId: ID!
+    
+    " The shop ID"
+    name: String
+
+    " The type of the location [warehouse, region, dropship, marketplace]."
+    type: String
+
+    " The address of the location."
+    address: LocationAddressInput
+
+    " The phone number of the location."
+    phoneNumber: String
+
+    " The fulfillment method of the location [shipping, pickup, ship-to-store, local-delivery]."
+    fulfillmentMethod: String
+
+    " The location use local fulfillment only."
+    localFulfillmentOnly: Boolean
+
+    " The open hours of the type store location."
+    storeHours: Int
+
+    " The pickup hours of the type store location."
+    storePickupHours: Int
+
+    " The pickup instructions of the type store location."
+    storePickupInstructions: String
+
+    " Whether the location is current active"
+    enabled: Boolean
+}
+
+"The input for the archive location mutation"
+input ArchiveLocationInput {
+  "The location ID"
+  locationId: ID!
+
+  "The shop ID"
+  shopId: ID!
+}
+
+type UpdatedLocationPayload {
+  "The location object"
+  location: Location
+
+  "Whether the update was successful"
+  success: Boolean
+}
+
+extend type Query {
+  "Get a location"
+  location(
+    input: LocationQueryInput
+  ): Location
+
+  "Get list of locations"
+  locations(
+    "The coupon ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    filter: LocationFilter
+
+    sortBy: String
+
+    sortOrder: String
+  ): LocationConnection
+
+}
+
+extend type Mutation {
+  "Create a new location"
+  createLocation(
+    input: LocationCreateInput
+  ): UpdatedLocationPayload
+
+  " Update a location."
+  updateLocation(
+    input: LocationUpdateInput
+  ): UpdatedLocationPayload
+
+  "Archive location mutation"
+  archiveLocation(
+    "The archive Location mutation input"
+    input: ArchiveLocationInput
+  ): UpdatedLocationPayload
+
+}

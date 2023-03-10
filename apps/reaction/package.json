@@ -40,6 +40,7 @@
     "@reactioncommerce/api-plugin-inventory": "1.0.5",
     "@reactioncommerce/api-plugin-inventory-simple": "1.0.6",
     "@reactioncommerce/api-plugin-job-queue": "1.0.7",
+    "@reactioncommerce/api-plugin-location": "1.0.0",
     "@reactioncommerce/api-plugin-navigation": "1.1.2",
     "@reactioncommerce/api-plugin-notifications": "1.1.4",
     "@reactioncommerce/api-plugin-orders": "1.4.5",
