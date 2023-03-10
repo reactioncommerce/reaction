@@ -3,7 +3,6 @@ import Random from "@reactioncommerce/random";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import { Order as OrderSchema, orderInputSchema, paymentInputSchema } from "../../simpleSchemas.js";
 import validateInitialOrderData from "./validateInitialOrderData.js";
-import getDiscounts from "./getDiscounts.js";
 import getFinalFulfillmentGroups from "./getFinalFulfillmentGroups.js";
 import createPayments from "./createPayments.js";
 import getReferenceId from "./getReferenceId.js";
@@ -16,6 +15,13 @@ const inputSchema = new SimpleSchema({
     optional: true
   },
   "payments.$": paymentInputSchema
+});
+
+const orderModeSchema = new SimpleSchema({
+  mode: {
+    type: String,
+    allowedValues: ["createOrderObject", "validateOrder"]
+  }
 });
 
 /**
@@ -62,39 +68,36 @@ function formatErrors(err) {
  * @summary Validates if the input order details is valid and ready for order processing
  * @param {Object} context - an object containing the per-request state
  * @param {Object} input - order details, refer inputSchema
- * @param {String} flag - flag which define if the call is from placeOrder or validateOrder
+ * @param {String} mode - mode which define if the call is from placeOrder or validateOrder
  * @returns {Promise<Object>} output - order, token and validation results
  */
-export default async function prepareOrder(context, input, flag) {
+export default async function prepareOrder(context, input, mode) {
   const cleanedInput = inputSchema.clean(input);
+  orderModeSchema.validate({ mode });
+  const createOrderMode = mode === "createOrderObject";
   const validationResults = [];
 
   // Step01: Input data validation against input schema
-  if (flag === "createOrderObject") {
+  try {
     inputSchema.validate(cleanedInput);
-  } else {
-    try {
-      inputSchema.validate(cleanedInput);
-    } catch (err) {
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
-      return { errors: validationResults, success: false };
-    }
+  } catch (err) {
+    if (createOrderMode) throw err;
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
+    return { errors: validationResults, success: false };
   }
 
   // Step02: Initial validation for shop/cart/user-id
   let initialValidationResult;
-  if (flag === "createOrderObject") {
+  try {
     initialValidationResult = await validateInitialOrderData(context, cleanedInput);
-  } else {
-    try {
-      initialValidationResult = await validateInitialOrderData(context, cleanedInput);
-    } catch (err) {
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
-      return { errors: validationResults, success: false };
-    }
+  } catch (err) {
+    if (createOrderMode) throw err;
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
+    return { errors: validationResults, success: false };
   }
+  
   const { shop, cart } = initialValidationResult;
 
   // Step03: Extract the rest of the required variables
@@ -115,12 +118,12 @@ export default async function prepareOrder(context, input, flag) {
   // Step04: Getting discount details. If no data, we get back empty values
   let getDiscountsResult;
   try {
-    getDiscountsResult = await getDiscounts(context, cart);
+    getDiscountsResult = await context.queries.getDiscountsTotalForCart(context, cart);
   } catch (err) {
     const validationErrors = formatErrors(err);
     validationResults.push(...validationErrors);
   }
-  const { discounts, discountTotal } = getDiscountsResult;
+  const { discounts, total: discountTotal } = getDiscountsResult;
 
   // Create array for surcharges to apply to order, if applicable
   // Array is populated inside `fulfillmentGroups.map()`
@@ -136,8 +139,7 @@ export default async function prepareOrder(context, input, flag) {
 
   // Step
   let finalFulfillmentGroups = [];
-
-  if (flag === "createOrderObject") {
+  try {
     ({
       orderSurcharges,
       orderTotal,
@@ -153,33 +155,16 @@ export default async function prepareOrder(context, input, flag) {
       fulfillmentGroups,
       cart
     }));
-  } else {
-    try {
-      ({
-        orderSurcharges,
-        orderTotal,
-        shippingAddressForPayments,
-        finalFulfillmentGroups
-      } = await getFinalFulfillmentGroups(context, {
-        orderId,
-        accountId,
-        billingAddress,
-        cartId,
-        currencyCode,
-        discountTotal,
-        fulfillmentGroups,
-        cart
-      }));
-    } catch (err) {
-      if (!err.eventData) {
-        err.eventData = {
-          field: "Fulfillment Group",
-          value: "Invalid"
-        };
-      }
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
+  } catch (err) {
+    if (createOrderMode) throw err;
+    if (!err.eventData) {
+      err.eventData = {
+        field: "Fulfillment Group",
+        value: "Invalid"
+      };
     }
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
   }
 
   const allValidateFuncs = context.getFunctionsOfType("validateOrderMethods");
@@ -197,7 +182,7 @@ export default async function prepareOrder(context, input, flag) {
   }
 
   let payments;
-  if (flag === "createOrderObject") {
+  try {
     payments = await createPayments({
       accountId,
       billingAddress,
@@ -208,26 +193,12 @@ export default async function prepareOrder(context, input, flag) {
       paymentsInput,
       shippingAddress: shippingAddressForPayments,
       shop,
-      flag // Pass on the same flag we received for prepareOrder
+      mode // Pass on the same mode we received for prepareOrder
     });
-  } else {
-    try {
-      payments = await createPayments({
-        accountId,
-        billingAddress,
-        context,
-        currencyCode,
-        email,
-        orderTotal,
-        paymentsInput,
-        shippingAddress: shippingAddressForPayments,
-        shop,
-        flag // Pass on the same flag we received for prepareOrder
-      });
-    } catch (err) {
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
-    }
+  } catch (err) {
+    if (createOrderMode) throw err;
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
   }
 
   // Create anonymousAccessToken if no account ID
@@ -256,7 +227,7 @@ export default async function prepareOrder(context, input, flag) {
     }
   };
 
-  if (flag === "createOrderObject") {
+  if (createOrderMode) {
     order.payments = payments;
   }
 
@@ -269,28 +240,22 @@ export default async function prepareOrder(context, input, flag) {
 
 
   let referenceId;
-  if (flag === "createOrderObject") {
+  try {
     referenceId = await getReferenceId(context, cart, order);
-  } else {
-    try {
-      referenceId = await getReferenceId(context, cart, order);
-    } catch (err) {
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
-    }
+  } catch (err) {
+    if (createOrderMode) throw err;
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
   }
   order.referenceId = referenceId;
 
   let customFields;
-  if (flag === "createOrderObject") {
+  try {
     customFields = await getCustomFields(context, customFieldsFromClient, order);
-  } else {
-    try {
-      customFields = await getCustomFields(context, customFieldsFromClient, order);
-    } catch (err) {
-      const validationErrors = formatErrors(err);
-      validationResults.push(...validationErrors);
-    }
+  } catch (err) {
+    if (createOrderMode) throw err;
+    const validationErrors = formatErrors(err);
+    validationResults.push(...validationErrors);
   }
   order.customFields = customFields;
 
@@ -298,10 +263,10 @@ export default async function prepareOrder(context, input, flag) {
   let success = !(validationResults && validationResults.length > 0);
 
   let output;
-  if (flag === "createOrderObject") {
+  if (createOrderMode) {
     OrderSchema.validate(order);
     output = { order, fullToken, errors: validationResults, success };
-  } else { // flag expected to be "validateOrder"
+  } else { // mode expected to be "validateOrder"
     const OrderWithoutPaymentsSchema = OrderSchema.omit("payments");
     try {
       OrderWithoutPaymentsSchema.validate(order);

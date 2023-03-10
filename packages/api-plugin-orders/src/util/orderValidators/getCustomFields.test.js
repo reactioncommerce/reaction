@@ -13,11 +13,11 @@ test("should return original fields if there are NO functions defined", async ()
 
 test("should return transformed fields if there are functions defined", async () => {
   mockContext.getFunctionsOfType = jest.fn().mockReturnValueOnce([
-    jest.fn().mockName("transformCustomOrderFields").mockReturnValueOnce(Promise.resolve({ customField2: "customValue2" }))
+    jest.fn().mockName("transformCustomOrderFields").mockReturnValueOnce(Promise.resolve({ customField1: "customValue1", customField2: "customValue2" }))
   ]);
 
   const orderInput = { orderId: "order123" };
   const customFieldsFromClient = { customField1: "customValue1" };
   const result = await getCustomFields(mockContext, customFieldsFromClient, orderInput);
-  expect(result).toEqual({ customField2: "customValue2" });
+  expect(result).toEqual({ customField1: "customValue1", customField2: "customValue2" });
 });

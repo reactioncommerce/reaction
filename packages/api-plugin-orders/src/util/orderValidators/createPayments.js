@@ -26,10 +26,11 @@ export default async function createPayments({
   paymentsInput,
   shippingAddress,
   shop,
-  flag
+  mode
 }) {
   // Determining which payment methods are enabled for the shop
   const availablePaymentMethods = shop.availablePaymentMethods || [];
+  const createOrderMode = mode === "createOrderObject";
 
   // Verify that total of payment inputs equals total due. We need to be sure
   // to do this before creating any payment authorizations
@@ -61,7 +62,7 @@ export default async function createPayments({
 
     // Authorize this payment - skip if validateOrder
     let payment = {};
-    if (flag === "createOrderObject") {
+    if (createOrderMode) {
       try {
         payment = await paymentMethodConfig.functions.createAuthorizedPayment(context, {
           accountId, // optional
@@ -87,8 +88,8 @@ export default async function createPayments({
       currencyCode
     };
 
-    // If flag === validateOrder, we are not authorizing payment and we do not have payment object to validate
-    if (flag === "createOrderObject") {
+    // If mode === validateOrder, we are not authorizing payment and we do not have payment object to validate
+    if (createOrderMode) {
       PaymentSchema.validate(paymentWithCurrency);
     }
 
@@ -96,7 +97,7 @@ export default async function createPayments({
   });
 
   let payments = {};
-  if (flag === "createOrderObject") {
+  if (createOrderMode) {
     try {
       payments = await Promise.all(paymentPromises);
       payments = payments.filter((payment) => !!payment); // remove nulls

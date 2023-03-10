@@ -116,8 +116,8 @@ extend type Query {
   "Validate the order for correctness & completeness before placing the order"
   validateOrder(
     "input with order and payment objects similar to the one used for placeOrder"
-    input: validateOrderInput!
-  ): validateOrderPayload!
+    input: ValidateOrderInput!
+  ): ValidateOrderPayload!
 }
 
 extend type Mutation {
@@ -961,7 +961,7 @@ type MoveOrderItemsPayload {
 }
 
 "Input for the validateOrder query"
-input validateOrderInput {
+input ValidateOrderInput {
   "The order to be validated and created, if payment is accepted"
   order: OrderInput!
 
@@ -983,7 +983,7 @@ type ValidationErrors {
 }
 
 "Response payload for the validateOrder query"
-type validateOrderPayload {
+type ValidateOrderPayload {
   "Orders that were created"
   errors: [ValidationErrors]
 
