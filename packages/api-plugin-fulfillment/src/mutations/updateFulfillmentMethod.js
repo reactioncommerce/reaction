@@ -39,6 +39,7 @@ export default async function updateFulfillmentMethodMutation(context, input) {
   if (!fulfillmentType) throw new ReactionError("server-error", "Fulfillment Type / Method does not exist");
 
   const currentFulfillmentMethod = (fulfillmentType.methods || []).find((meth) => meth._id === methodId);
+  if (!currentFulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method does not exist");
   const updatedMethod = { ...currentFulfillmentMethod, ...method }; // update only provided user editable fields
 
   const { matchedCount } = await Fulfillment.updateOne({

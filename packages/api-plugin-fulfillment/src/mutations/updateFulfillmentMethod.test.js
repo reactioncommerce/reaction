@@ -43,7 +43,7 @@ test("throws if the fulfillmentType does not exists", async () => {
       rate: 99
     }
   };
-  const expectedError = new ReactionError("server-error", "Fulfillment Method does not exist");
+  const expectedError = new ReactionError("server-error", "Fulfillment Type / Method does not exist");
   await expect(updateFulfillmentMethodMutation(mockContext, fulfillmentMethodInput)).rejects.toThrow(expectedError);
 });
 
