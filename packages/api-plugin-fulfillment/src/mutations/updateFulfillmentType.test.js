@@ -8,12 +8,12 @@ mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 test("throws if required fields are not supplied", async () => {
   const fulfillmentTypeInput = {
-    fulfillmentGroupId: "fulfillmentGroup01",
     shopId: "SHOP_ID",
     label: "Shipping"
   };
 
-  await expect(updateFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrowErrorMatchingSnapshot();
+  const expectedError = "Fulfillment type ID is required";
+  await expect(updateFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrow(expectedError);
 });
 
 
@@ -21,7 +21,7 @@ test("should update an existing fulfillment type", async () => {
   mockContext.collections.Fulfillment.updateOne.mockReturnValueOnce(Promise.resolve({ result: { matchedCount: 1 } }));
 
   const fulfillmentTypeInput = {
-    fulfillmentGroupId: "fulfillmentGroup01",
+    fulfillmentTypeId: "fulfillmentGroup01",
     shopId: "SHOP_ID",
     name: "fulfillmentType123",
     enabled: false,
@@ -29,7 +29,7 @@ test("should update an existing fulfillment type", async () => {
   };
 
   const expectedOutput = {
-    fulfillmentGroupId: "fulfillmentGroup01",
+    fulfillmentTypeId: "fulfillmentGroup01",
     shopId: "SHOP_ID",
     name: "fulfillmentType123",
     enabled: false,
@@ -39,6 +39,6 @@ test("should update an existing fulfillment type", async () => {
   const result = await updateFulfillmentTypeMutation(mockContext, fulfillmentTypeInput);
 
   expect(result).toEqual({
-    group: expectedOutput
+    fulfillmentType: expectedOutput
   });
 });

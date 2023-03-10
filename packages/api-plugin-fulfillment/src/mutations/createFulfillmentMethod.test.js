@@ -18,7 +18,8 @@ test("throws if required fields are not supplied", async () => {
     shopId: "SHOP_ID"
   };
 
-  await expect(createFulfillmentMethodMutation(mockContext, fulfillmentMethodInput)).rejects.toThrowErrorMatchingSnapshot();
+  const expectedError = "Fulfillment types is required";
+  await expect(createFulfillmentMethodMutation(mockContext, fulfillmentMethodInput)).rejects.toThrow(expectedError);
 });
 
 test("add a new fulfillment method", async () => {
@@ -55,7 +56,7 @@ test("add a new fulfillment method", async () => {
   });
 
   expect(result).toEqual({
-    group: {
+    method: {
       _id: expect.any(String),
       cost: 99,
       handling: 99,

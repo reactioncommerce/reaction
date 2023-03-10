@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`throws if there is no fulfillment group with the given ID 1`] = `"Fulfillment group with ID group2 not found in cart with ID cartId"`;
