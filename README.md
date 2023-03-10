@@ -6,7 +6,8 @@
   <a href="https://mailchimp.com/developer/open-commerce/">Open Commerce Website</a> |
   <a href="https://twitter.com/getreaction">Twitter</a> |
   <a href="https://mailchimp.com/developer/open-commerce/">Documentation</a> |
-  <a href="https://discord.gg/Bwm63tBcQY">Discord</a>
+  <a href="https://discord.gg/Bwm63tBcQY">Discord</a> |
+  <a href="https://github.com/reactioncommerce/reaction/discussions">Discussions</a>
 </h4>
 
 [Mailchimp Open Commerce](https://mailchimp.com/developer/open-commerce/) is an API-first, headless commerce platform built using Node.js, MongoDB, and GraphQL. It plays nicely with npm, Docker and Kubernetes.
@@ -169,6 +170,12 @@ pnpm run start:dev
 
 1. Run `release` action to create `Version PR`. This PR will remove all changeset files, bump up packages versions, update CHANGELOG files.
 2. Merge `Version PR` into trunk, CircleCI will publish all the packages into npm.
+
+## Prerelease flows
+1. All PRs will be merged into `prerelease` branch before triggering `PRERELEASE` action.
+2. Before merging PRs into `prerelease` branch, please make sure that all the changesets are added.
+3. Manually trigger `PRERELEASE` action to create `Version Packages (next)` PR. After merged, the changeset/action will bump up packages versions as `{next-version}-next.{number}`, update CHANGELOG files.
+4. Merge `Version Packages (next)` PR into `prerelease` branch, action will publish all the packages into npm.
 
 # Get involved
 ## Contribute

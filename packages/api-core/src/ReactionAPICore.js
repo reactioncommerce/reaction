@@ -1,9 +1,9 @@
-import { createServer } from "http";
+/* eslint-disable no-extra-bind */
 import { createRequire } from "module";
 import diehard from "diehard";
 import express from "express";
 import _ from "lodash";
-import mongodb from "mongodb";
+import * as mongodb from "mongodb";
 import SimpleSchema from "simpl-schema";
 import collectionIndex from "@reactioncommerce/api-utils/collectionIndex.js";
 import getAbsoluteUrl from "@reactioncommerce/api-utils/getAbsoluteUrl.js";
@@ -19,7 +19,8 @@ import importPluginsJSONFile from "./importPluginsJSONFile.js";
 import coreResolvers from "./graphql/resolvers/index.js";
 
 const require = createRequire(import.meta.url); // eslint-disable-line
-const { PubSub } = require("apollo-server");
+const { PubSub } = require("graphql-subscriptions");
+const { RedisPubSub } = require("graphql-redis-subscriptions");
 
 const coreGraphQLSchema = importAsString("./graphql/schema.graphql");
 const coreGraphQLSubscriptionSchema = importAsString("./graphql/subscription.graphql");
@@ -107,6 +108,36 @@ const startOptionsSchema = new SimpleSchema({
 
 const listenForDeath = _.once(diehard.listen.bind(diehard));
 
+const getPubSub = () => {
+  const {
+    REDIS_PUB_SUB_URL,
+    REDIS_PUB_SUB_HOST,
+    REDIS_PUB_SUB_PORT,
+    REDIS_PUB_SUB_USERNAME,
+    REDIS_PUB_SUB_PASSWORD,
+    REDIS_PUB_SUB_DB
+  } = config;
+
+  if (REDIS_PUB_SUB_URL) {
+    Logger.info("Using Redis url as PubSub", { REDIS_PUB_SUB_URL });
+    return new RedisPubSub({ connection: REDIS_PUB_SUB_URL });
+  }
+  if (REDIS_PUB_SUB_HOST) {
+    Logger.info("Using Redis host as PubSub", { REDIS_PUB_SUB_HOST, REDIS_PUB_SUB_PORT, REDIS_PUB_SUB_DB });
+    return new RedisPubSub({
+      connection: {
+        host: REDIS_PUB_SUB_HOST,
+        port: REDIS_PUB_SUB_PORT,
+        db: REDIS_PUB_SUB_DB,
+        username: REDIS_PUB_SUB_USERNAME,
+        password: REDIS_PUB_SUB_PASSWORD
+      }
+    });
+  }
+  Logger.info("Using built-in memory PubSub");
+  return new PubSub();
+};
+
 export default class ReactionAPICore {
   constructor(options = {}) {
     optionsSchema.validate(options);
@@ -152,7 +183,7 @@ export default class ReactionAPICore {
       // In a large production app, you may want to use an external pub-sub system.
       // See https://www.apollographql.com/docs/apollo-server/features/subscriptions.html#PubSub-Implementations
       // We may eventually bind this directly to Kafka.
-      pubSub: new PubSub()
+      pubSub: getPubSub()
     };
 
     const schemas = [coreGraphQLSchema];
@@ -276,43 +307,9 @@ export default class ReactionAPICore {
               // Add the collection instance to `context.collections`.
               // If the collection already exists, we need to modify it instead of calling
               // `createCollection`, in order to add validation options.
-              const getCollectionPromise = new Promise((resolve, reject) => {
-                this.db.collection(
-                  collectionConfig.name,
-                  { strict: true },
-                  (error, collection) => {
-                    if (error) {
-                      // Collection with this name doesn't yet exist
-                      this.db
-                        .createCollection(
-                          collectionConfig.name,
-                          collectionOptions
-                        )
-                        .then((newCollection) => {
-                          resolve(newCollection);
-                          return null;
-                        })
-                        .catch(reject);
-                    } else {
-                      // Collection with this name exists, so modify before resolving
-                      this.db
-                        .command({
-                          collMod: collectionConfig.name,
-                          ...collectionOptions
-                        })
-                        .then(() => {
-                          resolve(collection);
-                          return null;
-                        })
-                        .catch(reject);
-                    }
-                  }
-                );
-              });
-
-              /* eslint-enable promise/no-promise-in-callback */
-
-              this.collections[collectionKey] = await getCollectionPromise; // eslint-disable-line no-await-in-loop
+              // eslint-disable-next-line no-await-in-loop
+              this.collections[collectionKey] = await this.getCollection(collectionConfig, collectionOptions);
+              this.applyMongoV3BackwardCompatible(this.collections[collectionKey]);
 
               // If the collection config has `indexes` key, define all requested indexes
               if (Array.isArray(collectionConfig.indexes)) {
@@ -328,6 +325,112 @@ export default class ReactionAPICore {
         }
       }
     }
+  }
+
+  /**
+   * @summary Get legacy collection object
+   * @param {Object} collectionConfig - The collection config
+   * @param {Object} collectionOptions - The collection options
+   * @returns {Object} - legacy collection
+   */
+  async getCollection(collectionConfig, collectionOptions) {
+    try {
+      return this.db.collection(collectionConfig.name, collectionOptions);
+    } catch {
+      return this.db
+        .command({ collMod: collectionConfig.name, ...collectionOptions });
+    }
+  }
+
+  /**
+   * @summary Apply MongoV3 backward compatible
+   * @param {Object} collection - The legacy collection object
+   * @returns {undefined} Nothing
+   */
+  applyMongoV3BackwardCompatible(collection) {
+    const prevFind = collection.find.bind(collection);
+    collection.find = ((...args) => {
+      const result = prevFind(...args);
+      result.cmd = { query: result[Reflect.ownKeys(result).find((symbol) => String(symbol) === "Symbol(filter)")] };
+      result.options = { db: collection.s.db };
+      result.ns = `${collection.s.namespace.db}.${collection.s.namespace.collection}`;
+      return result;
+    }).bind(collection);
+
+    const acknowledgedToOk = (acknowledged) => (acknowledged ? 1 : 0);
+
+    const prevDeleteOne = collection.deleteOne.bind(collection);
+    collection.deleteOne = (async (...args) => {
+      const response = await prevDeleteOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.deletedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    collection.removeOne = collection.deleteOne.bind(collection);
+
+    const prevUpdateMany = collection.updateMany.bind(collection);
+    collection.updateMany = (async (...args) => {
+      const response = await prevUpdateMany(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevInsertOne = collection.insertOne.bind(collection);
+    collection.insertOne = (async (...args) => {
+      const response = await prevInsertOne(...args);
+      const insertedCount = response.acknowledged ? 1 : 0;
+      // eslint-disable-next-line id-length
+      return { ...response, insertedCount, result: { n: insertedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevFindOneAndUpdate = collection.findOneAndUpdate.bind(collection);
+    collection.findOneAndUpdate = (async (...args) => {
+      const options = args[2];
+      if (options && typeof options.returnOriginal !== "undefined") {
+        args[2].returnDocument = options.returnOriginal ? mongodb.ReturnDocument.BEFORE : mongodb.ReturnDocument.AFTER;
+      }
+      const response = await prevFindOneAndUpdate(...args);
+      return { ...response, modifiedCount: response.lastErrorObject.n };
+    }).bind(collection);
+
+    const prevReplaceOne = collection.replaceOne.bind(collection);
+    collection.replaceOne = (async (...args) => {
+      const response = await prevReplaceOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevUpdateOne = collection.updateOne.bind(collection);
+    collection.updateOne = (async (...args) => {
+      const response = await prevUpdateOne(...args);
+      // eslint-disable-next-line id-length
+      return { ...response, result: { n: response.modifiedCount, ok: acknowledgedToOk(response.acknowledged) } };
+    }).bind(collection);
+
+    const prevBulkWrite = collection.bulkWrite.bind(collection);
+    collection.bulkWrite = (async (...args) => {
+      const response = await prevBulkWrite(...args);
+      const {
+        nInserted,
+        nUpserted,
+        nMatched,
+        nModified,
+        nRemoved
+      } = response.result;
+      return {
+        ...response,
+        nInserted,
+        nUpserted,
+        nMatched,
+        nModified,
+        nRemoved,
+        insertedCount: nInserted,
+        matchedCount: nMatched,
+        modifiedCount: nModified,
+        deletedCount: nRemoved,
+        upsertedCount: nUpserted
+      };
+    }).bind(collection);
   }
 
   /**
@@ -421,15 +524,15 @@ export default class ReactionAPICore {
    * @summary Creates the Apollo server and the Express app
    * @returns {undefined}
    */
-  initServer() {
-    const { httpServer, serveStaticPaths = [] } = this.options;
-
-    const { apolloServer, expressApp, path } = createApolloServer({
+  async initServer() {
+    const { httpServer: defaultHttpService, serveStaticPaths = [] } = this.options;
+    const { apolloServer, expressApp, path, httpServer } = await createApolloServer({
       context: this.context,
       debug: debugLevels.includes(REACTION_LOG_LEVEL),
       expressMiddleware: this.expressMiddleware,
       ...this.graphQL,
-      functionsByType: this.functionsByType
+      functionsByType: this.functionsByType,
+      defaultHttpService
     });
 
     this.apolloServer = apolloServer;
@@ -439,7 +542,7 @@ export default class ReactionAPICore {
     this.graphQLServerUrl = getAbsoluteUrl(this.rootUrl, path);
 
     // HTTP server for GraphQL subscription websocket handlers
-    this.httpServer = httpServer || createServer(this.expressApp);
+    this.httpServer = httpServer;
 
     if (
       REACTION_APOLLO_FEDERATION_ENABLED &&
@@ -449,10 +552,9 @@ export default class ReactionAPICore {
     }
 
     if (REACTION_GRAPHQL_SUBSCRIPTIONS_ENABLED) {
-      apolloServer.installSubscriptionHandlers(this.httpServer);
       this.graphQLServerSubscriptionUrl = getAbsoluteUrl(
         this.rootUrl.replace("http", "ws"),
-        apolloServer.subscriptionsPath
+        "/graphql"
       );
     }
 
@@ -476,7 +578,7 @@ export default class ReactionAPICore {
 
     const { port, silent } = options;
 
-    if (!this.httpServer) this.initServer();
+    if (!this.httpServer) await this.initServer();
 
     return new Promise((resolve, reject) => {
       if (!port) {
@@ -662,10 +764,22 @@ export default class ReactionAPICore {
 
     if (plugin.graphQL) {
       if (plugin.graphQL.resolvers) {
+        if (!this.hasSubscriptionsEnabled && plugin.graphQL.resolvers.Subscription) {
+          Logger.info(`Plugin "${plugin.name}" registered a GraphQL Subscription resolver, but subscriptions are disabled. Skipping.`);
+          delete plugin.graphQL.resolvers.Subscription;
+        }
         _.merge(this.graphQL.resolvers, plugin.graphQL.resolvers);
       }
       if (plugin.graphQL.schemas) {
-        this.graphQL.schemas.push(...plugin.graphQL.schemas);
+        if (this.hasSubscriptionsEnabled) {
+          this.graphQL.schemas.push(...plugin.graphQL.schemas);
+        } else {
+          const filteredSchemas = plugin.graphQL.schemas.filter((schema) => !schema.includes("type Subscription"));
+          if (filteredSchemas.length !== plugin.graphQL.schemas.length) {
+            Logger.info("Plugin registered GraphQL schemas with Subscription types, but subscriptions are disabled. Skipping.");
+          }
+          this.graphQL.schemas.push(...filteredSchemas);
+        }
       }
       if (plugin.graphQL.typeDefsObj) {
         this.graphQL.typeDefsObj.push(...plugin.graphQL.typeDefsObj);

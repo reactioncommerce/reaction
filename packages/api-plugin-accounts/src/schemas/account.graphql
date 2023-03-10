@@ -496,6 +496,66 @@ extend type Query {
     id: ID!
   ): Account
 
+  "Query to get a filtered list of Accounts"
+  filterAccounts(
+    "Shop ID"
+    shopId: ID!,
+
+    "Input Conditions for fliter (use either 'any' or 'all' not both)"
+    conditions: FilterConditionsInput,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, accounts are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: AccountSortByField = createdAt
+  ): AccountConnection
+
+  "Query to get a filtered list of Customers"
+  filterCustomers(
+    "Shop ID"
+    shopId: ID!,
+
+    "Input Conditions for fliter (use either 'any' or 'all' not both)"
+    conditions: FilterConditionsInput,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, customers are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: AccountSortByField = createdAt
+  ): AccountConnection
+
   "Returns accounts optionally filtered by account groups"
   accounts(
     "Return only accounts in any of these groups"

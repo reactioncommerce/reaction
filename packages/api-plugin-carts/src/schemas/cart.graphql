@@ -449,6 +449,17 @@ input SetEmailOnAnonymousCartInput {
   email: String!
 }
 
+input CartUpdatedInput {
+  "The cart ID"
+  cartId: ID!,
+
+  "The cart account ID"
+  accountId: ID
+
+  "The cart anonymous token"
+  cartToken: String
+}
+
 ####################
 # Payloads
 # These types are used as return values for mutation calls
@@ -641,4 +652,14 @@ extend type Mutation {
     "Mutation input"
     input: UpdateCartItemsQuantityInput!
   ): UpdateCartItemsQuantityPayload!
+}
+
+####################
+ # Subscriptions
+ ####################
+extend type Subscription {
+  "Subscribe to changes to cart"
+  cartUpdated(
+    input: CartUpdatedInput!
+  ): Cart!
 }

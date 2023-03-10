@@ -3,6 +3,7 @@ import CartItem from "./CartItem/index.js";
 import FulfillmentGroup from "./FulfillmentGroup/index.js";
 import Mutation from "./Mutation/index.js";
 import Query from "./Query/index.js";
+import Subscription from "./Subscription/index.js";
 
 /**
  * Cart related GraphQL resolvers
@@ -14,6 +15,7 @@ export default {
   CartItem,
   FulfillmentGroup,
   Mutation,
+  Subscription,
   PaymentMethodData: {
     __resolveType(obj) {
       return obj.gqlType;
