@@ -66,7 +66,7 @@ export default async function createHandle(context, productHandle, productId, sh
   });
 
   if (existingProductWithSameSlug) {
-    handle = createHandle(context, handle, productId, shopId);
+    handle = await createHandle(context, handle, productId, shopId);
   }
 
   return handle;

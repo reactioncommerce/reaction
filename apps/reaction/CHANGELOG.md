@@ -1,186 +1,190 @@
-# [4.2.0](https://github.com/reactioncommerce/reaction/compare/v4.1.8...v4.2.0) (2022-03-26)
+# reaction
 
+## 4.2.5
 
-### Features
+### Patch Changes
 
-* updated CircleCI config to also tag image with latest. ([ec745c7](https://github.com/reactioncommerce/reaction/commit/ec745c709d00856b822239dbfdf494c2c7d1b872))
+- Updated dependencies [[`8c5645764`](https://github.com/reactioncommerce/reaction/commit/8c5645764a746ce4171747072eacfe87bf62abe3), [`bb93339fb`](https://github.com/reactioncommerce/reaction/commit/bb93339fb4da5b1cb131a9e0bf50e502433d519d)]:
+  - @reactioncommerce/api-utils@1.17.0
+  - @reactioncommerce/api-plugin-surcharges@1.1.8
 
-## [4.1.8](https://github.com/reactioncommerce/reaction/compare/v4.1.7...v4.1.8) (2022-03-02)
+## 4.2.4
 
+### Patch Changes
+
+- Updated dependencies [[`b48825c43`](https://github.com/reactioncommerce/reaction/commit/b48825c43f1d72347e2173cf09c1a363638ae173), [`769c2185b`](https://github.com/reactioncommerce/reaction/commit/769c2185b8bb39bc0a3682b37ac8efd16aa77712)]:
+  - @reactioncommerce/api-plugin-products@1.3.1
+  - @reactioncommerce/api-plugin-shipments-flat-rate@1.0.10
+
+## 4.2.3
+
+### Patch Changes
+
+- [#6556](https://github.com/reactioncommerce/reaction/pull/6556) [`48c610511`](https://github.com/reactioncommerce/reaction/commit/48c610511f359ff144c99aac53751d00bc8d69a3) Thanks [@shwetha263](https://github.com/shwetha263)! - Updated surcharge resolver to handle the amount value being 0
+
+- Updated dependencies [[`48c610511`](https://github.com/reactioncommerce/reaction/commit/48c610511f359ff144c99aac53751d00bc8d69a3)]:
+  - @reactioncommerce/api-plugin-surcharges@1.1.7
+
+## 4.2.0
+
+### Minor Changes
+
+- updated CircleCI config to also tag image with latest. ([ec745c7](https://github.com/reactioncommerce/reaction/commit/ec745c709d00856b822239dbfdf494c2c7d1b872))
+
+## 4.1.8
 
 ### Bug Fixes
 
-* update sharp to match files ([f4ad49e](https://github.com/reactioncommerce/reaction/commit/f4ad49e9a07a49e1805013b3ec2f503361a80242))
+- update sharp to match files ([f4ad49e](https://github.com/reactioncommerce/reaction/commit/f4ad49e9a07a49e1805013b3ec2f503361a80242))
 
 ## [4.1.7](https://github.com/reactioncommerce/reaction/compare/v4.1.6...v4.1.7) (2022-02-14)
 
-
 ### Bug Fixes
 
-* package.json & package-lock.json to reduce vulnerabilities ([2bac773](https://github.com/reactioncommerce/reaction/commit/2bac773c4f93a501e2356e1df50903afa865a2a5))
+- package.json & package-lock.json to reduce vulnerabilities ([2bac773](https://github.com/reactioncommerce/reaction/commit/2bac773c4f93a501e2356e1df50903afa865a2a5))
 
 ## [4.1.6](https://github.com/reactioncommerce/reaction/compare/v4.1.5...v4.1.6) (2022-02-14)
 
-
 ### Bug Fixes
 
-* upgrade @reactioncommerce/api-plugin-catalogs from 1.1.0 to 1.1.2 ([c379426](https://github.com/reactioncommerce/reaction/commit/c37942647f39459d5082973af75c26a4e42abfb4))
+- upgrade @reactioncommerce/api-plugin-catalogs from 1.1.0 to 1.1.2 ([c379426](https://github.com/reactioncommerce/reaction/commit/c37942647f39459d5082973af75c26a4e42abfb4))
 
 ## [4.1.5](https://github.com/reactioncommerce/reaction/compare/v4.1.4...v4.1.5) (2021-11-22)
 
-
 ### Bug Fixes
 
-* upgrade @reactioncommerce/api-plugin-address-validation-test from 1.0.1 to 1.0.3 ([f4208a3](https://github.com/reactioncommerce/reaction/commit/f4208a32e9795d756c5b1bc077e2b05a80472025))
+- upgrade @reactioncommerce/api-plugin-address-validation-test from 1.0.1 to 1.0.3 ([f4208a3](https://github.com/reactioncommerce/reaction/commit/f4208a32e9795d756c5b1bc077e2b05a80472025))
 
 ## [4.1.4](https://github.com/reactioncommerce/reaction/compare/v4.1.3...v4.1.4) (2021-10-26)
 
-
 ### Bug Fixes
 
-* validate org name only ([e37a7c0](https://github.com/reactioncommerce/reaction/commit/e37a7c03ed0ba02221552389193d9edc826c9363))
+- validate org name only ([e37a7c0](https://github.com/reactioncommerce/reaction/commit/e37a7c03ed0ba02221552389193d9edc826c9363))
 
 ## [4.1.3](https://github.com/reactioncommerce/reaction/compare/v4.1.2...v4.1.3) (2021-10-20)
 
-
 ### Bug Fixes
 
-* package.json, package-lock.json & .snyk to reduce vulnerabilities ([55ebb20](https://github.com/reactioncommerce/reaction/commit/55ebb206c4af3a757f4b54027983af2795be6081))
+- package.json, package-lock.json & .snyk to reduce vulnerabilities ([55ebb20](https://github.com/reactioncommerce/reaction/commit/55ebb206c4af3a757f4b54027983af2795be6081))
 
 ## [4.1.2](https://github.com/reactioncommerce/reaction/compare/v4.1.1...v4.1.2) (2021-10-16)
 
-
 ### Bug Fixes
 
-* remove stripe, remain SCA ([53dd2bb](https://github.com/reactioncommerce/reaction/commit/53dd2bb2974d7c71a3fb6dbed4dd6c2b25b9c3c8))
+- remove stripe, remain SCA ([53dd2bb](https://github.com/reactioncommerce/reaction/commit/53dd2bb2974d7c71a3fb6dbed4dd6c2b25b9c3c8))
 
 ## [4.1.1](https://github.com/reactioncommerce/reaction/compare/v4.1.0...v4.1.1) (2021-10-15)
 
-
 ### Bug Fixes
 
-* add check for org name/package name format ([ee176d3](https://github.com/reactioncommerce/reaction/commit/ee176d301dc51a5918fd71df4376ae718fc7dd99))
-* validating arguments ([05bc9c3](https://github.com/reactioncommerce/reaction/commit/05bc9c3860ba3e872fa5ea98ae90e79297013cc5))
+- add check for org name/package name format ([ee176d3](https://github.com/reactioncommerce/reaction/commit/ee176d301dc51a5918fd71df4376ae718fc7dd99))
+- validating arguments ([05bc9c3](https://github.com/reactioncommerce/reaction/commit/05bc9c3860ba3e872fa5ea98ae90e79297013cc5))
 
 # [4.1.0](https://github.com/reactioncommerce/reaction/compare/v4.0.4...v4.1.0) (2021-10-12)
 
-
 ### Bug Fixes
 
-* test name ([b98ae0a](https://github.com/reactioncommerce/reaction/commit/b98ae0a41d173c8c3dad8c4d971ee9c02422e00b))
-
+- test name ([b98ae0a](https://github.com/reactioncommerce/reaction/commit/b98ae0a41d173c8c3dad8c4d971ee9c02422e00b))
 
 ### Features
 
-* stripe sca plugin ([a321e03](https://github.com/reactioncommerce/reaction/commit/a321e03b92c696cb09ed163fa652bcb81b82e3de))
+- stripe sca plugin ([a321e03](https://github.com/reactioncommerce/reaction/commit/a321e03b92c696cb09ed163fa652bcb81b82e3de))
 
 ## [4.0.4](https://github.com/reactioncommerce/reaction/compare/v4.0.3...v4.0.4) (2021-09-28)
 
-
 ### Bug Fixes
 
-* upgrade @reactioncommerce/api-plugin-carts from 1.2.2 to 1.2.4 ([e0a0ea7](https://github.com/reactioncommerce/reaction/commit/e0a0ea76f334d71ad16f9dcaaaea50f576dbea3e))
+- upgrade @reactioncommerce/api-plugin-carts from 1.2.2 to 1.2.4 ([e0a0ea7](https://github.com/reactioncommerce/reaction/commit/e0a0ea76f334d71ad16f9dcaaaea50f576dbea3e))
 
 ## [4.0.3](https://github.com/reactioncommerce/reaction/compare/v4.0.2...v4.0.3) (2021-09-23)
 
-
 ### Bug Fixes
 
-* remove old documentation references ([c50f0ac](https://github.com/reactioncommerce/reaction/commit/c50f0acd5f5c68af7bb36d4dd56bf7d6b4698988))
+- remove old documentation references ([c50f0ac](https://github.com/reactioncommerce/reaction/commit/c50f0acd5f5c68af7bb36d4dd56bf7d6b4698988))
 
 ## [4.0.2](https://github.com/reactioncommerce/reaction/compare/v4.0.1...v4.0.2) (2021-09-21)
 
-
 ### Bug Fixes
 
-* package.json & package-lock.json to reduce vulnerabilities ([046a847](https://github.com/reactioncommerce/reaction/commit/046a847f841a605bd90e6374585e282b5700495e))
+- package.json & package-lock.json to reduce vulnerabilities ([046a847](https://github.com/reactioncommerce/reaction/commit/046a847f841a605bd90e6374585e282b5700495e))
 
 ## [4.0.1](https://github.com/reactioncommerce/reaction/compare/v4.0.0...v4.0.1) (2021-09-17)
 
-
 ### Bug Fixes
 
-* upgrade @reactioncommerce/api-plugin-orders from 1.4.0 to 1.4.2 ([b3a8fca](https://github.com/reactioncommerce/reaction/commit/b3a8fcab89f581a3fb7e71d74c425f72349931b3))
+- upgrade @reactioncommerce/api-plugin-orders from 1.4.0 to 1.4.2 ([b3a8fca](https://github.com/reactioncommerce/reaction/commit/b3a8fcab89f581a3fb7e71d74c425f72349931b3))
 
 # [4.0.0](https://github.com/reactioncommerce/reaction/compare/v3.13.4...v4.0.0) (2021-08-25)
 
-
 ### Bug Fixes
 
-* config file has new version ([d0b4bec](https://github.com/reactioncommerce/reaction/commit/d0b4becd6d74e031bd4172a699b686c8d15e12b1))
-* updating plugin versions ([a51e782](https://github.com/reactioncommerce/reaction/commit/a51e782a055a632857890ee67eaa733f06a4303b))
-
+- config file has new version ([d0b4bec](https://github.com/reactioncommerce/reaction/commit/d0b4becd6d74e031bd4172a699b686c8d15e12b1))
+- updating plugin versions ([a51e782](https://github.com/reactioncommerce/reaction/commit/a51e782a055a632857890ee67eaa733f06a4303b))
 
 ### Features
 
-* using account-js for auth ([5163324](https://github.com/reactioncommerce/reaction/commit/51633240ead9206aa955845ca7093271dc7c2aee))
-
+- using account-js for auth ([5163324](https://github.com/reactioncommerce/reaction/commit/51633240ead9206aa955845ca7093271dc7c2aee))
 
 ### BREAKING CHANGES
 
-* hydra and idenity are no longer shipped by default
+- hydra and idenity are no longer shipped by default
 
 Signed-off-by: Akarshit Wal <akarshitwal@gmail.com>
 
 ## [3.13.4](https://github.com/reactioncommerce/reaction/compare/v3.13.3...v3.13.4) (2021-08-23)
 
-
 ### Bug Fixes
 
-* upgrade @reactioncommerce/api-plugin-i18n from 1.0.3 to 1.0.4 ([3d5a0e0](https://github.com/reactioncommerce/reaction/commit/3d5a0e09c9d7c4ae36199196f63040b06f19aa0c))
+- upgrade @reactioncommerce/api-plugin-i18n from 1.0.3 to 1.0.4 ([3d5a0e0](https://github.com/reactioncommerce/reaction/commit/3d5a0e09c9d7c4ae36199196f63040b06f19aa0c))
 
 ## [3.13.3](https://github.com/reactioncommerce/reaction/compare/v3.13.2...v3.13.3) (2021-08-19)
 
-
 ### Bug Fixes
 
-* upgrade graphql from 14.6.0 to 14.7.0 ([a9732d9](https://github.com/reactioncommerce/reaction/commit/a9732d91c42bca3db6d72c8c020e57d7ed0fa7f8))
+- upgrade graphql from 14.6.0 to 14.7.0 ([a9732d9](https://github.com/reactioncommerce/reaction/commit/a9732d91c42bca3db6d72c8c020e57d7ed0fa7f8))
 
 ## [3.13.2](https://github.com/reactioncommerce/reaction/compare/v3.13.1...v3.13.2) (2021-08-04)
 
-
 ### Bug Fixes
 
-* update api-plugin-files plugin ([fc90dff](https://github.com/reactioncommerce/reaction/commit/fc90dff09713e790e8a92af3aa4bfe471860b76d))
+- update api-plugin-files plugin ([fc90dff](https://github.com/reactioncommerce/reaction/commit/fc90dff09713e790e8a92af3aa4bfe471860b76d))
 
 ## [3.13.1](https://github.com/reactioncommerce/reaction/compare/v3.13.0...v3.13.1) (2021-06-24)
 
-
 ### Bug Fixes
 
-* sharp is a direct dependency to resolve version issues ([717e6b5](https://github.com/reactioncommerce/reaction/commit/717e6b574aeb784757c3dea11eb020861197cf27))
+- sharp is a direct dependency to resolve version issues ([717e6b5](https://github.com/reactioncommerce/reaction/commit/717e6b574aeb784757c3dea11eb020861197cf27))
 
 # [3.13.0](https://github.com/reactioncommerce/reaction/compare/v3.12.2...v3.13.0) (2021-06-23)
 
-
 ### Features
 
-* updating package-lock with latest version ([5a86480](https://github.com/reactioncommerce/reaction/commit/5a8648001c651aca13fa9bb60e5797856c123599))
+- updating package-lock with latest version ([5a86480](https://github.com/reactioncommerce/reaction/commit/5a8648001c651aca13fa9bb60e5797856c123599))
 
 ## [3.12.2](https://github.com/reactioncommerce/reaction/compare/v3.12.1...v3.12.2) (2021-06-11)
 
-
 ### Bug Fixes
 
-* push to docker hub without v, get latest tag across all branches ([79a0ece](https://github.com/reactioncommerce/reaction/commit/79a0ece13bec9d713c630cdbd527278bd0ce3348))
+- push to docker hub without v, get latest tag across all branches ([79a0ece](https://github.com/reactioncommerce/reaction/commit/79a0ece13bec9d713c630cdbd527278bd0ce3348))
 
 ## [3.12.1](https://github.com/reactioncommerce/reaction/compare/v3.12.0...v3.12.1) (2021-06-11)
 
-
 ### Bug Fixes
 
-* update docker-compose on release ([2e88105](https://github.com/reactioncommerce/reaction/commit/2e881055f558e6bcf174ff041de3ba5fcf8aad33))
+- update docker-compose on release ([2e88105](https://github.com/reactioncommerce/reaction/commit/2e881055f558e6bcf174ff041de3ba5fcf8aad33))
 
 # v3.11.1
 
 Reaction v3.11.1 adds minor bug fixes and contains no breaking changes since v3.11.0.
 
 ## Fixes
- - fix: write integration test for create shop ([#6318](https://github.com/reactioncommerce/reaction/pull/6318))
- - Run rs.initiate() to start replication on clean mongo boot ([#6317](https://github.com/reactioncommerce/reaction/pull/6317))
+
+- fix: write integration test for create shop ([#6318](https://github.com/reactioncommerce/reaction/pull/6318))
+- Run rs.initiate() to start replication on clean mongo boot ([#6317](https://github.com/reactioncommerce/reaction/pull/6317))
 
 ## Chores
- - chore: adding git hooks for commit-msg ([#6321](https://github.com/reactioncommerce/reaction/pull/6321))
+
+- chore: adding git hooks for commit-msg ([#6321](https://github.com/reactioncommerce/reaction/pull/6321))
 
 # v3.11.0
 
@@ -198,7 +202,7 @@ Fixed issues causing image upload to fail.
 
 ## Refactors
 
-- refactor:  preserve symlinks in docker debug npm scripts ([#6302](https://github.com/reactioncommerce/reaction/pull/6302))
+- refactor: preserve symlinks in docker debug npm scripts ([#6302](https://github.com/reactioncommerce/reaction/pull/6302))
 
 ## Chores
 
@@ -502,7 +506,7 @@ Moves our `simple-authorization` plugin (formerly `legacy-permission`) into it's
 
 ## Fixes
 
-- fix: Add variant tax fields to schema  ([#6098](https://github.com/reactioncommerce/reaction/pull/6098))
+- fix: Add variant tax fields to schema ([#6098](https://github.com/reactioncommerce/reaction/pull/6098))
 
 # v3.0.0
 
@@ -532,7 +536,7 @@ We've written many integration tests for our Reaction API. See this [GitHub tick
 
 ### Removed Meteor from the Reaction API
 
-Improving developer experience has been high on the list of priorities for quite a while.  We've made significant improvements to startup, restart, and build times for the `reaction` project by removing Meteor. In doing this we've also updated to [version 12 of Node.js, which is in *Active LTS* status](https://nodejs.org/en/about/releases/).
+Improving developer experience has been high on the list of priorities for quite a while. We've made significant improvements to startup, restart, and build times for the `reaction` project by removing Meteor. In doing this we've also updated to [version 12 of Node.js, which is in _Active LTS_ status](https://nodejs.org/en/about/releases/).
 
 ### Reaction Admin has a new home
 
@@ -544,7 +548,7 @@ The Reaction Admin project will be in beta beyond the v3.0.0 release of Reaction
 
 ### New identity provider service: Reaction Identity
 
-This release moves the identity provider for Reaction into a separate service  - [reactioncommerce/reaction-identity](https://github.com/reactioncommerce/reaction-identity). Reaction Identity is the user interface and server for identity management, including user registration, login, logout, and password change. It works together with [reaction-hydra](https://github.com/reactioncommerce/reaction-hydra) to enable OAuth2 flows.
+This release moves the identity provider for Reaction into a separate service - [reactioncommerce/reaction-identity](https://github.com/reactioncommerce/reaction-identity). Reaction Identity is the user interface and server for identity management, including user registration, login, logout, and password change. It works together with [reaction-hydra](https://github.com/reactioncommerce/reaction-hydra) to enable OAuth2 flows.
 
 ### Independent Releases
 
@@ -556,7 +560,7 @@ Mongo version 4.0+ is now required. [Mongo 4 introduces multi-document transacti
 
 ### Default to running public docker images
 
-The docker-compose.yml file in each project now uses public images rather than building an image. This drastically speeds up the initial startup time in development, and makes the application run smoother in development. When you're ready to start developing, you'll need to switch over to using the docker-compose.dev.yml file in the project you're wanting to develop - see for example:  [reaction/docker-compose.dev.yml](https://github.com/reactioncommerce/reaction/blob/v3.0.0/docker-compose.dev.yml)).
+The docker-compose.yml file in each project now uses public images rather than building an image. This drastically speeds up the initial startup time in development, and makes the application run smoother in development. When you're ready to start developing, you'll need to switch over to using the docker-compose.dev.yml file in the project you're wanting to develop - see for example: [reaction/docker-compose.dev.yml](https://github.com/reactioncommerce/reaction/blob/v3.0.0/docker-compose.dev.yml)).
 
 ### Migrations
 
@@ -687,7 +691,7 @@ If you're experienced with Reaction already check-out our [Upgrade Guide](https:
 - test: add create/update/delete navigation item integration tests ([#5890](https://github.com/reactioncommerce/reaction/pull/5890))
 - test: add integration tes for recalculateReservedSimpleInventory mutation ([#6010](https://github.com/reactioncommerce/reaction/pull/6010))
 - test: add integration test available payment methods ([#5864](https://github.com/reactioncommerce/reaction/pull/5864))
-- test: add integration test for  addressValidationServices query ([#5930](https://github.com/reactioncommerce/reaction/pull/5930))
+- test: add integration test for addressValidationServices query ([#5930](https://github.com/reactioncommerce/reaction/pull/5930))
 - test: add integration test for accountCartByAccountId query ([#5857](https://github.com/reactioncommerce/reaction/pull/5857))
 - test: add integration test for create, update & delete FlatRateFulfillmentMethod ([#5964](https://github.com/reactioncommerce/reaction/pull/5964))
 - test: add integration test for create, update & delete FlatRateFulfillmentRestriction mutations ([#5981](https://github.com/reactioncommerce/reaction/pull/5981))
@@ -800,7 +804,7 @@ We couldn't have done this without the incredible people contributing to Reactio
 
 ## Notes
 
-*These changes were originally tested and released in our alpha and beta releases*
+_These changes were originally tested and released in our alpha and beta releases_
 
 - [v3.0.0-beta.3](https://github.com/reactioncommerce/reactionreleases/tag/v3.0.0-beta.3)
 - [v3.0.0-beta.2](https://github.com/reactioncommerce/reactionreleases/tag/v3.0.0-beta.2)
@@ -809,7 +813,7 @@ We couldn't have done this without the incredible people contributing to Reactio
 - [v3.0.0-alpha.2](https://github.com/reactioncommerce/reactionreleases/tag/v3.0.0-alpha.2)
 - [v3.0.0-alpha](https://github.com/reactioncommerce/reactio/releases/tag/v3.0.0-alpha)
 
-*The following Reaction projects are being released one time in coordination as v3.0.0*
+_The following Reaction projects are being released one time in coordination as v3.0.0_
 
 - [Reaction API](https://github.com/reactioncommerce/reaction)
 - [Reaction Hydra](https://github.com/reactioncommerce/reaction-hydra)
@@ -818,7 +822,7 @@ We couldn't have done this without the incredible people contributing to Reactio
 - [Example Storefront](https://github.com/reactioncommerce/example-storefront)
 - [Reaction Development Platform](https://github.com/reactioncommerce/reaction-development-platform)
 
-*After this release, Reaction releases will no longer be coordinated across all projects - we'll release each project independently, as needed. Version numbers will no longer be kept in sync. The newest versions of each project will work together.*
+_After this release, Reaction releases will no longer be coordinated across all projects - we'll release each project independently, as needed. Version numbers will no longer be kept in sync. The newest versions of each project will work together._
 
 # v2.9.0
 
@@ -840,8 +844,8 @@ Refactors the `updateOrderFulfillmentGroup` GraphQL mutation to update only the 
 
 Bumps [@reactioncommerce/data-factory](https://github.com/reactioncommerce/data-factory/) to version 1.0.1 and [@reactioncommerce/job-queue](https://github.com/reactioncommerce/reaction-job-queue) to version 1.0.5.
 
-
 ## Tests
+
 - Add integration tests for shopBySlug GraphQL query [#5701](https://github.com/reactioncommerce/reaction/pull/5701)
 - Add integration tests for orderByReferenceId GraphQL query [#5697](https://github.com/reactioncommerce/reaction/pull/5697)
 - Add integration tests for ordersByAccountId GraphQL query [#5696](https://github.com/reactioncommerce/reaction/pull/5696)
@@ -849,15 +853,19 @@ Bumps [@reactioncommerce/data-factory](https://github.com/reactioncommerce/data-
 - Add integration tests for removeTag GraphQL query [#5687](https://github.com/reactioncommerce/reaction/pull/5687)
 
 ## Security
+
 - Upgrade insecure package versions [#5745](https://github.com/reactioncommerce/reaction/pull/5745)
 
 ## Refactors & Fixes
+
 - Only update fulfillment group for which id is provided [#5723](https://github.com/reactioncommerce/reaction/pull/5723)
 
 ## Contributors
+
 Thanks to [@YuuwakU](https://github.com/YuuwakU) for contributing to this release! 🎉
 
 # v2.8.1
+
 Reaction v2.8.1 adds a bug fix and contains no breaking changes since v2.8.0
 
 This release is being coordinated with `reaction-platform` and is designed to work with `v2.8.1` of `example-storefront` and `reaction-hydra`.
@@ -1091,7 +1099,7 @@ This feature uses several new components from the [**Catalyst Design System**](h
 
 ### Remove `context.callMeteorMethod`
 
-All GraphQL mutations which still used Meteor methods via the `context.callMeteorMethod` function - `inviteShopMember`, `addressBookRemove`, `removeAccountFromGroup`, `setAccountProfileCurrency`, `updateAccountAddressBookEntry` -  have been updated to fully use GraphQL. In turn `context.callMeteorMethod` is no longer used, and has been removed from the codebase.
+All GraphQL mutations which still used Meteor methods via the `context.callMeteorMethod` function - `inviteShopMember`, `addressBookRemove`, `removeAccountFromGroup`, `setAccountProfileCurrency`, `updateAccountAddressBookEntry` - have been updated to fully use GraphQL. In turn `context.callMeteorMethod` is no longer used, and has been removed from the codebase.
 
 ## Feature
 
@@ -1123,13 +1131,14 @@ All GraphQL mutations which still used Meteor methods via the `context.callMeteo
 Thanks to @trojanh for contributing to this release! 🎉
 
 # v2.2.1
+
 Reaction v2.2.1 adds a bug fix and contains no breaking changes since v2.2.0
 
 This release is being coordinated with `reaction-platform` and is designed to work with `v2.2.1` of `example-storefront` and `reaction-hydra`.
 
 ## Fixes
 
-* fix: Checkout hangs on shipping methods step (#5516) and adds a migration to avoid breaking previous installations. The issue was caused by attempting to add a fulfillment method to a cart that included the prop `fulfillmentTypes`, which was not part of the `ShippingMethod` schema, which caused a validation error. This issue was resolved by adding the `fulfillmentTypes` prop to the `ShippingMethod` schema.
+- fix: Checkout hangs on shipping methods step (#5516) and adds a migration to avoid breaking previous installations. The issue was caused by attempting to add a fulfillment method to a cart that included the prop `fulfillmentTypes`, which was not part of the `ShippingMethod` schema, which caused a validation error. This issue was resolved by adding the `fulfillmentTypes` prop to the `ShippingMethod` schema.
 
 ## Contributors
 
@@ -1354,9 +1363,8 @@ This release is coordinated with [Reaction Platform](https://github.com/reaction
 
 Reaction v2.0.0 is built as a truly headless commerce platform that decouples the Reaction backend services from the frontend. We’ve decoupled the storefront application from the API. Reaction platform now consists of the `reaction` project, which is now primarily our GraphQL API, and for the time being also our operator UI and our identity provider, along with our new to 2.0 [Example Storefront](https://github.com/reactioncommerce/example-storefront), built on Next.js, which connects with the Reaction application via GraphQL API to provide a customer-facing storefront. The legacy integrated Meteor storefront is no longer part of the Reaction project.
 
-
-
 ### Notable changes
+
 Check out [previous release notes](https://github.com/reactioncommerce/reaction/releases) for details and associated issues and PRs.
 
 **Operator experience and UI**
@@ -1364,9 +1372,7 @@ The store operator experience has been substantially enhanced from v1.x. We’ve
 
 ![Reaction-product](https://user-images.githubusercontent.com/42009003/60613775-6d802480-9d80-11e9-86b5-a1683732ee3f.png)
 
-
 ![Reaction-product-variant](https://user-images.githubusercontent.com/42009003/60613799-72dd6f00-9d80-11e9-9012-ca59f509e5e3.png)
-
 
 We’ve also added lots of new functionality around tags (tag dashboard and new tag management features), site [navigation](https://github.com/reactioncommerce/reaction/pull/4683) (including sitemaps and navigation tree editor), and fulfillment options (ability to add restrictions or surcharges based on product tags and/or customer location).
 
@@ -1375,6 +1381,7 @@ Most Meteor methods are removed in favor of the new GraphQL API. GraphQL is the 
 
 **Developer experience and performance**
 For developers, we’ve made a number of enhancements to improve the overall developer experience, especially debugging, logging, and [updated documentation](https://github.com/reactioncommerce/reaction-docs/releases/tag/v2.0.0).
+
 - Examples for how to [debug Node.js in Docker](https://docs.reactioncommerce.com/docs/next/testing-debugging-server-code#launch-the-application-in-inspect-mode)
 - Better logging of packages and plugins loading
 - `bin/setup` improvements
@@ -1382,10 +1389,12 @@ For developers, we’ve made a number of enhancements to improve the overall dev
 - [Added](https://github.com/reactioncommerce/reaction/pull/4943) `envalid` for validation of environment variables
 
 We’ve made some tweaks to increase performance and improve initial boot time:
+
 - Removed `reaction-cli` ([v2.0.0-rc.10](https://github.com/reactioncommerce/reaction/blob/master/CHANGELOG.md#v200-rc10))
 - Added and removed a number of indexes since 1.x, see [#4819](https://github.com/reactioncommerce/reaction/pull/4819), [#5106](https://github.com/reactioncommerce/reaction/pull/5106), [#5090](https://github.com/reactioncommerce/reaction/pull/5090), etc. for examples
 
 We’ve also improved Reaction’s extensibility in a number of ways, such as:
+
 - Reaction now supports remote graphql schemas in plugins ([#4870](https://github.com/reactioncommerce/reaction/pull/4870))
 - Plugins can now directly register React components ([#4875](https://github.com/reactioncommerce/reaction/pull/4875))
 - Plugins can register functions to handle GraphQL transformation of catalog product media items ([#4988](https://github.com/reactioncommerce/reaction/pull/4988))
@@ -1397,6 +1406,7 @@ And finally, we’ve updated all Reaction dependencies (such as React and Apollo
 For the 2.0 release we’ve done a full security audit of the application, including cart, order methods, payment processing methods, and more, and fixed potential vulnerabilities.
 
 **Other updates**
+
 - Authentication is now handled via [Hydra](https://github.com/reactioncommerce/reaction/issues/4618)
 - Taxes have been completely re-worked in a new plugin ([v2.0.0-rc.10](https://github.com/reactioncommerce/reaction/blob/master/CHANGELOG.md#v200-rc10))
 - Inventory has been moved into its own `simple-inventory` plugin, and is no longer directly tied to the `Products` collection
@@ -1404,17 +1414,18 @@ For the 2.0 release we’ve done a full security audit of the application, inclu
 - Search plugins have been removed ([#5053](https://github.com/reactioncommerce/reaction/pull/5053))
 - A plugin can now be used to override the default `orderId` and `cartId` and create IDs of a different type or in a specific order ([#5054](https://github.com/reactioncommerce/reaction/pull/5054))
 
-
 ### New documentation
+
 See [this page](https://github.com/reactioncommerce/reaction-docs/releases/tag/v2.0.0) for a non-comprehensive list of new and updated docs.
 
 Some highlights:
+
 - A [Storefront UI Development guide](https://docs.reactioncommerce.com/docs/next/storefront-intro) answering "How do I build a storefront for Reaction or adapt my storefront to get its data from Reaction, without starting from an example app"
 - Helpful info about [GraphQL Resolvers](https://docs.reactioncommerce.com/docs/graphql-resolvers-file-structure) and [extending GraphQL to add a field](https://docs.reactioncommerce.com/docs/how-to-extend-graphql-to-add-field)
 - A guide for [“How To Extend the Product Schema”](https://docs.reactioncommerce.com/docs/how-to-extend-product)
 
-
 ### OS notes
+
 **Support for Windows.**
 `[reaction-platform](https://github.com/reactioncommerce/reaction-platform)` is not compatible with Windows and has not been fully tested on Windows at this time.
 
@@ -1422,7 +1433,9 @@ Some highlights:
 Reaction will support development in a dockerized environment and will focus on tooling and documentation for installation and configuration on the macOS and Linux OSes.
 
 ### We've adopted the DCO
+
 We've adopted the [Developer Certificate of Origin (DCO)](https://developercertificate.org/) in lieu of a Contributor License Agreement for all contributions to Reaction Commerce open source projects. We request that contributors agree to the terms of the DCO and indicate that agreement by signing all commits made to Reaction Commerce projects by adding a line with your name and email address to every Git commit message contributed:
+
 ```
 Signed-off-by: Jane Doe <jane.doe@example.com>
 ```
@@ -1435,18 +1448,17 @@ We use the [Probot DCO GitHub app](https://github.com/apps/dco) to check for DCO
 
 We're following in the footsteps of several other open source projects in adopting the DCO such as [Chef](https://blog.chef.io/2016/09/19/introducing-developer-certificate-of-origin/), [Docker](https://blog.docker.com/2014/01/docker-code-contributions-require-developer-certificate-of-origin/), and [GitLab](https://about.gitlab.com/2017/11/01/gitlab-switches-to-dco-license/)
 
-
 ### Contributors
+
 Our sincere thanks to @rattrayalex-stripe, @willmoss1000, @pmn4, @loan-laux, @lcampanis and the @artlimes folks, and everyone on our Community Council for contributing to this release.
 
-
 ### Share your feedback
+
 We want to hear from you! Here are some good ways to get in touch.
+
 - Want to request a new feature for Reaction? There’s now a Reaction repo just for [new feature requests](https://github.com/reactioncommerce/reaction-feature-requests).
 - Reaction engineers and community engineers and developers are always collaborating in our [Gitter chat channel](https://gitter.im/reactioncommerce/reaction)
 - Ask Us Anything! Watch this space for details about an upcoming Community Q&A session with the Reaction team.
-
-
 
 # v2.0.0-rc.12
 
@@ -3331,7 +3343,7 @@ socialMetadata: [
   { service: "twitter", message: product.twitterMsg },
   { service: "facebook", message: product.facebookMsg },
   { service: "googleplus", message: product.googleplusMsg },
-  { service: "pinterest", message: product.pinterestMsg }
+  { service: "pinterest", message: product.pinterestMsg },
 ];
 ```
 

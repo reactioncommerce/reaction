@@ -9,27 +9,8 @@ mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 const createdAt = new Date();
 
-const surcharge = {
-  type: "surcharge",
-  attributes: [
-    { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
-    { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
-  ],
-  createdAt,
-  destination: { region: ["CO", "NY"] },
-  amount: 5.99,
-  messagesByLanguage: [
-    {
-      content: "Original Message English",
-      language: "en"
-    }, {
-      content: "Original Message Spanish",
-      language: "es"
-    }
-  ]
-};
-
 const updatedSurcharge = {
+  updatedAt: jasmine.any(Date),
   type: "surcharge",
   attributes: [
     { property: "vendor", value: "john", propertyType: "string", operator: "eq" },
@@ -37,10 +18,27 @@ const updatedSurcharge = {
   ],
   createdAt,
   destination: { region: ["NJ", "WY"] },
-  amount: {
-    amount: 17.99,
-    currencyCode: "USD"
-  },
+  amount: 17.99,
+  messagesByLanguage: [
+    {
+      content: "Updated Message English",
+      language: "en"
+    }, {
+      content: "Updated Message Spanish",
+      language: "es"
+    }
+  ]
+};
+
+const newSurcharge = {
+  type: "surcharge",
+  attributes: [
+    { property: "vendor", value: "john", propertyType: "string", operator: "eq" },
+    { property: "productType", value: "gun", propertyType: "string", operator: "eq" }
+  ],
+  createdAt,
+  destination: { region: ["NJ", "WY"] },
+  amount: 17.99,
   messagesByLanguage: [
     {
       content: "Updated Message English",
@@ -53,38 +51,16 @@ const updatedSurcharge = {
 };
 
 test("update a surcharge", async () => {
-  mockContext.collections.Surcharges.updateOne.mockReturnValueOnce(Promise.resolve({
-    ok: 1,
-    updatedSurcharge
+  mockContext.collections.Surcharges.findOneAndUpdate.mockReturnValueOnce(Promise.resolve({
+    matchedCount: 1,
+    value: updatedSurcharge
   }));
 
   const result = await updateSurchargeMutation(mockContext, {
-    surcharge,
     surchargeId: "surcharge123",
+    surcharge: newSurcharge,
     shopId: "shop123"
   });
 
-  expect(result).toEqual({
-    surcharge: {
-      _id: "surcharge123",
-      shopId: "shop123",
-      type: "surcharge",
-      attributes: [
-        { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },
-        { property: "productType", value: "knife", propertyType: "string", operator: "eq" }
-      ],
-      createdAt,
-      destination: { region: ["CO", "NY"] },
-      amount: 5.99,
-      messagesByLanguage: [
-        {
-          content: "Original Message English",
-          language: "en"
-        }, {
-          content: "Original Message Spanish",
-          language: "es"
-        }
-      ]
-    }
-  });
+  expect(result.surcharge).toEqual(updatedSurcharge);
 });
