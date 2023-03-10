@@ -35,17 +35,14 @@ export default async function createFulfillmentMethodMutation(context, input) {
 
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "create", { shopId });
 
-  const ffTypeRecord = await Fulfillment.findOne({ _id: fulfillmentTypeId, shopId });
-  if (!ffTypeRecord) throw new ReactionError("server-error", "Unable to create fulfillment method without defined type");
+  const fulfillmentType = await Fulfillment.findOne({ _id: fulfillmentTypeId, shopId });
+  if (!fulfillmentType) throw new ReactionError("server-error", "Unable to create fulfillment method without defined type");
 
-  let ffTypeMethodRecord;
-  if (ffTypeRecord.methods && Array.isArray(ffTypeRecord.methods)) {
-    ffTypeMethodRecord = ffTypeRecord.methods.find((currMethod) => currMethod.fulfillmentMethod === method.fulfillmentMethod);
-  }
-  if (ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method already exists");
+  const fulfillmentMethod = fulfillmentType.methods?.find((currMethod) => currMethod.fulfillmentMethod === method.fulfillmentMethod);
+  if (fulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method already exists");
 
   method._id = Random.id();
-  method.fulfillmentTypes = [ffTypeRecord.fulfillmentType];
+  method.fulfillmentTypes = [fulfillmentType.fulfillmentType];
 
   const { matchedCount } = await Fulfillment.updateOne({
     shopId,

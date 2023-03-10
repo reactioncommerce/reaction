@@ -31,15 +31,14 @@ export default async function updateFulfillmentMethodMutation(context, input) {
 
   await context.validatePermissions("reaction:legacy:fulfillmentMethods", "update", { shopId });
 
-  const ffTypeMethodRecord = await Fulfillment.findOne({
+  const fulfillmentType = await Fulfillment.findOne({
     "_id": fulfillmentTypeId,
     shopId,
     "methods._id": methodId
   });
-  if (!ffTypeMethodRecord) throw new ReactionError("server-error", "Fulfillment Method does not exist");
+  if (!fulfillmentType) throw new ReactionError("server-error", "Fulfillment Type / Method does not exist");
 
-  const currentFulfillmentMethod = (ffTypeMethodRecord.methods || []).find((meth) => meth._id === methodId);
-  if (!currentFulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method does not exist");
+  const currentFulfillmentMethod = (fulfillmentType.methods || []).find((meth) => meth._id === methodId);
   const updatedMethod = { ...currentFulfillmentMethod, ...method }; // update only provided user editable fields
 
   const { matchedCount } = await Fulfillment.updateOne({
