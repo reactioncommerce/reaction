@@ -34,7 +34,7 @@ test("should return previousResults if not fulfillment records enabled", async (
   };
 
   mockContext.collections.Fulfillment = {
-    find: jest.fn(() => ({ toArray: () => [] }))
+    findOne: jest.fn(() => ({}))
   };
   const result = await fulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
   expect(result).toEqual(previousResults);
@@ -121,7 +121,7 @@ test("should return rates witout error", async () => {
   const expectedResult = [[...previousResults[0], expectedNewRate], []];
 
   mockContext.collections.Fulfillment = {
-    find: jest.fn(() => ({ toArray: () => [pickupDoc] }))
+    findOne: jest.fn(() => (pickupDoc))
   };
   const result = await fulfillmentMethodsWithQuotesPickupStore(mockContext, commonOrder, previousResults);
   expect(result).toEqual(expectedResult);
