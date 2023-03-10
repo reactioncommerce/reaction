@@ -48,7 +48,7 @@ test("throws if cart to be updated not found", async () => {
     cartId: "cartId",
     cartToken,
     fulfillmentType: "shipping",
-    items: ["cartItemId"]
+    itemIds: ["cartItemId"]
   })).rejects.toThrow(expectedError);
 });
 
@@ -59,7 +59,7 @@ test("throws if invalid fulfillment type provided", async () => {
     cartId: "cartId",
     cartToken,
     fulfillmentType: "undecided",
-    items: ["cartItemId"]
+    itemIds: ["cartItemId"]
   })).rejects.toThrow(expectedError);
 });
 
@@ -70,7 +70,7 @@ test("throws if invalid fulfillment type provided", async () => {
     cartId: "cartId",
     cartToken,
     fulfillmentType: "shipping",
-    items: []
+    itemIds: []
   })).rejects.toThrow(expectedError);
 });
 
@@ -81,7 +81,7 @@ test("sets the selected fulfillment type for each input group in the cart", asyn
     cartId: "cartId",
     cartToken,
     fulfillmentType: "shipping",
-    items: ["cartItemId2"]
+    itemIds: ["cartItemId2"]
   });
 
   const expected = {

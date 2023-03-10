@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 
@@ -10,14 +11,12 @@ import ReactionError from "@reactioncommerce/reaction-error";
  */
 function determineRemoveFromGroups(currentGroups, itemId, shopId) {
   let removeFromGroups = currentGroups.map((group) => {
-    if (group.itemIds && group.itemIds.includes(itemId) && shopId === group.shopId) {
+    if (group.itemIds?.includes?.(itemId) && shopId === group.shopId) {
       return group;
     }
     return null;
   });
-  removeFromGroups = removeFromGroups.filter((group) => !!group); // remove nulls
-  // If the item is present in more that one Fulfillment group, we remove it from all(for backward compatibility)
-  return removeFromGroups || null;
+  return _.compact(removeFromGroups);
 }
 
 /**
@@ -41,13 +40,10 @@ function determineAddToGroup(currentGroups, selectedFulfillmentType, shopId) {
  * @returns {undefined}
  */
 function checkAndAddToGroup(currentGroups, fulfillmentType, item) {
-  let removeFromGroups = determineRemoveFromGroups(currentGroups, item._id, item.shopId);
-  if (removeFromGroups && removeFromGroups.length > 0) {
-    removeFromGroups = (removeFromGroups || []).map((group) => {
-      group.itemIds = (group.itemIds || []).filter((itemId) => item._id !== itemId);
-      return group;
-    });
-  }
+  const removeFromGroups = determineRemoveFromGroups(currentGroups, item._id, item.shopId);
+  removeFromGroups.forEach((group) => {
+    group.itemIds = _.pull(group.itemIds, item._id);
+  });
 
   const addToGroup = determineAddToGroup(currentGroups, fulfillmentType, item.shopId);
   if (!addToGroup) {
@@ -58,12 +54,9 @@ function checkAndAddToGroup(currentGroups, fulfillmentType, item) {
       shopId: item.shopId,
       type: fulfillmentType
     });
-  } else if (!addToGroup.itemIds) {
-    // If there is a compatible group but it has no items array, add one with just this item in it
-    addToGroup.itemIds = [item._id];
-  } else if (!addToGroup.itemIds.includes(item._id)) {
-    // If there is a compatible group with an items array but it is missing this item, add this item ID to the array
-    addToGroup.itemIds.push(item._id);
+  } else {
+    // If compatible group, add this item to itemIds array of that group if not already present
+    addToGroup.itemIds = _.uniq([...addToGroup.itemIds || [], item._id]);
   }
 }
 
@@ -95,26 +88,27 @@ export default async function updateCartFulfillmentGroups(context, cart) {
       }
     }
 
-    if (selectedFulfillmentType && !supportedFulfillmentTypes.includes(selectedFulfillmentType)) {
-      throw new ReactionError("not-found", "Selected fulfillmentType is not supported by the Product");
-    }
-
-    // When selectedFulfillmentType is not available, if the product only supports ONE fulfillment type, use that
-    // If more than one fulfillment type is available, then add item to undecided group
-    if (!selectedFulfillmentType) {
-      if (supportedFulfillmentTypes.length === 1) {
-        ([selectedFulfillmentType] = supportedFulfillmentTypes);
-      } else {
-        selectedFulfillmentType = "undecided";
+    const normalizeSelectedFulfillmentType = (selectedFulfillmentType) => {
+      // When selectedFulfillmentType is not available, if the product only supports ONE fulfillment type, use that
+      // If more than one fulfillment type is available, then add item to undecided group
+      if (_.isNil(selectedFulfillmentType)) {
+        const hasOnlyOneSupportedFulfillmentType = supportedFulfillmentTypes.length === 1;
+        if (hasOnlyOneSupportedFulfillmentType) return _.first(supportedFulfillmentTypes);
+        return "undecided";
       }
-    }
+      if(!supportedFulfillmentTypes.includes(selectedFulfillmentType)) {
+        throw new ReactionError("not-found", "Selected fulfillmentType is not supported by the Product");
+      }
+      return selectedFulfillmentType;
+    };
+
+    selectedFulfillmentType = normalizeSelectedFulfillmentType(selectedFulfillmentType);
+
     // check if the selectedFulfillmentType is an 'enabled' fulfillmentType, if not set is 'undecided'
     /* eslint-disable no-await-in-loop */
-    const enabledFulfillmentTypeObjs = await Fulfillment.find({ "shopId": item.shopId, "provider.enabled": true }).toArray();
+    const enabledFulfillmentType = await Fulfillment.findOne({ "shopId": item.shopId, "provider.enabled": true, "fulfillmentType": selectedFulfillmentType });
     /* eslint-enable no-await-in-loop */
-    let enabledFulfillmentTypes = (enabledFulfillmentTypeObjs || []).map((ffType) => ffType.fulfillmentType);
-    enabledFulfillmentTypes = (enabledFulfillmentTypes || []).filter((val) => !!val); // Remove nulls
-    if (!enabledFulfillmentTypes.includes(selectedFulfillmentType)) selectedFulfillmentType = "undecided";
+    if (!enabledFulfillmentType) selectedFulfillmentType = "undecided";
 
     checkAndAddToGroup(currentGroups, selectedFulfillmentType, item);
   }

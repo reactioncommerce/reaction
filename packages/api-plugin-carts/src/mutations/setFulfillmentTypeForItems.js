@@ -6,10 +6,10 @@ const inputSchema = new SimpleSchema({
   "cartId": String,
   "cartToken": String,
   "fulfillmentType": String,
-  "items": {
+  "itemIds": {
     type: Array
   },
-  "items.$": String
+  "itemIds.$": String
 });
 
 /**
@@ -27,7 +27,7 @@ export default async function setFulfillmentTypeForItems(context, input) {
   inputSchema.validate(input || {});
 
   const { collections: { Cart } } = context;
-  const { cartId, cartToken, fulfillmentType, items: itemsInput } = input;
+  const { cartId, cartToken, fulfillmentType, itemIds: itemsInput } = input;
 
   const cart = await Cart.findOne({
     _id: cartId,
@@ -38,7 +38,7 @@ export default async function setFulfillmentTypeForItems(context, input) {
 
   if (!fulfillmentType || fulfillmentType === "undecided") throw new ReactionError("invalid-param", "Invalid Fulfillment Type received");
 
-  if (!itemsInput || itemsInput.length === 0) throw new ReactionError("invalid-param", "Items not provided");
+  if (!itemsInput || itemsInput.length === 0) throw new ReactionError("invalid-param", "Item Ids not provided");
 
   cart.items = (cart.items || []).map((item) => {
     if (itemsInput.includes(item._id)) {

@@ -367,7 +367,7 @@ input SetFulfillmentTypeForItemsInput {
   fulfillmentType: String!
 
   "Array of item IDs for which selectedFulfillmentType has to be updated"
-  items: [String]!
+  itemIds: [String]!
 }
 
 "Input for the `removeCartItems` mutation"
