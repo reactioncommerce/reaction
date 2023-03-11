@@ -65,7 +65,7 @@ test("throws if invalid fulfillment type provided", async () => {
 
 test("throws if invalid fulfillment type provided", async () => {
   mockContext.collections.Cart.findOne.mockReturnValueOnce(Promise.resolve(dbCart));
-  const expectedError = new ReactionError("invalid-param", "Items not provided");
+  const expectedError = new ReactionError("invalid-param", "Item Ids not provided");
   await expect(setFulfillmentTypeForItems(mockContext, {
     cartId: "cartId",
     cartToken,
