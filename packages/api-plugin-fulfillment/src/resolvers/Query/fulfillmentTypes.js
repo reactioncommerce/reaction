@@ -1,6 +1,5 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
  * @name Query/FulfillmenTypes
@@ -14,12 +13,10 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Fulfillment types under the Shop
  */
-export default async function getFulfillmentTypes(_, args, context, info) {
-  const { shopId: opaqueShopId, ...connectionArgs } = args;
+export default async function fulfillmentTypes(_, args, context, info) {
+  const { shopId, ...connectionArgs } = args;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-
-  const cursor = await context.queries.getFulfillmentTypes(context, {
+  const cursor = await context.queries.fulfillmentTypes(context, {
     shopId
   });
 

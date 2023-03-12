@@ -12,25 +12,28 @@ import { FulfillmentTypeSchema } from "../simpleSchemas.js";
  * @param {ProviderSchema} input.provider - Provider details
  * @param {String} input.fulfillmentType - fulfillment type
  * @param {String} input.displayMessageType - displayMessage for fulfillment type
- * @param {FulfillmentMethodSchema[]} input.methods - ff-method array
  * @returns {Promise<Object>} An object with the updated type
  */
 export default async function createFulfillmentType(context, input) {
   const cleanedInput = FulfillmentTypeSchema.clean(input);
-  if (!cleanedInput.provider) cleanedInput.provider = {};
-  cleanedInput.provider.name = cleanedInput.name;
+  if (cleanedInput.provider) cleanedInput.provider.name = cleanedInput.name;
 
-  if (cleanedInput.method) {
-    cleanedInput.method._id = Random.id();
-    cleanedInput.method.fulfillmentTypes = [cleanedInput.fulfillmentType];
+  // Although allowed by schema, we do not add the ff-method while creating a new ff-type
+  // FulfillmentMethods are expected to be added using the mutation createFulfillmentMethod
+  // (as it makes sense to add a new ff-method only by a new plugin implementation).
+  if (cleanedInput.methods) {
+    delete cleanedInput.methods;
   }
+  const createdAt = new Date();
+  cleanedInput.createdAt = createdAt;
+  cleanedInput.updatedAt = createdAt;
   FulfillmentTypeSchema.validate(cleanedInput);
 
   const { collections: { Fulfillment } } = context;
   const { shopId, fulfillmentType } = cleanedInput;
 
-  const ffTypeRecord = await Fulfillment.findOne({ shopId, fulfillmentType });
-  if (ffTypeRecord) throw new ReactionError("invalid-parameter", "Fulfillment Type already exists");
+  const existingFulfillmentType = await Fulfillment.findOne({ shopId, fulfillmentType });
+  if (existingFulfillmentType) throw new ReactionError("invalid-parameter", "Fulfillment Type already exists");
 
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "create", { shopId });
 
@@ -40,5 +43,5 @@ export default async function createFulfillmentType(context, input) {
   });
   if (insertedCount === 0) throw new ReactionError("server-error", "Unable to create fulfillment type");
 
-  return { group: { name: cleanedInput.name, fulfillmentType: cleanedInput.fulfillmentType } };
+  return { fulfillmentType: { name: cleanedInput.name, fulfillmentType: cleanedInput.fulfillmentType } };
 }
