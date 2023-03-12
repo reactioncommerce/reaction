@@ -10,7 +10,7 @@ import ReactionError from "@reactioncommerce/reaction-error";
  * @returns {Object[]|null} The groups array or null if no viable group
  */
 function determineRemoveFromGroups(currentGroups, itemId, shopId) {
-  let removeFromGroups = currentGroups.map((group) => {
+  const removeFromGroups = currentGroups.map((group) => {
     if (group.itemIds?.includes?.(itemId) && shopId === group.shopId) {
       return group;
     }
@@ -88,18 +88,18 @@ export default async function updateCartFulfillmentGroups(context, cart) {
       }
     }
 
-    const normalizeSelectedFulfillmentType = (selectedFulfillmentType) => {
-      // When selectedFulfillmentType is not available, if the product only supports ONE fulfillment type, use that
+    const normalizeSelectedFulfillmentType = (selectedFulfillmentTypeInp) => {
+      // When selectedFulfillmentTypeInp is not available, if the product only supports ONE fulfillment type, use that
       // If more than one fulfillment type is available, then add item to undecided group
-      if (_.isNil(selectedFulfillmentType)) {
+      if (_.isNil(selectedFulfillmentTypeInp)) {
         const hasOnlyOneSupportedFulfillmentType = supportedFulfillmentTypes.length === 1;
         if (hasOnlyOneSupportedFulfillmentType) return _.first(supportedFulfillmentTypes);
         return "undecided";
       }
-      if(!supportedFulfillmentTypes.includes(selectedFulfillmentType)) {
+      if (!supportedFulfillmentTypes.includes(selectedFulfillmentTypeInp)) {
         throw new ReactionError("not-found", "Selected fulfillmentType is not supported by the Product");
       }
-      return selectedFulfillmentType;
+      return selectedFulfillmentTypeInp;
     };
 
     selectedFulfillmentType = normalizeSelectedFulfillmentType(selectedFulfillmentType);
