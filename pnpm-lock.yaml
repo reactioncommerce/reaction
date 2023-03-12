@@ -747,6 +747,28 @@ importers:
       lodash: 4.17.21
       simpl-schema: 1.12.3
 
+  packages/api-plugin-fulfillment-method-pickup-store:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.4
+      '@reactioncommerce/reaction-error': ^1.0.1
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-fulfillment-type-pickup:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/random': ~1.0.2
+      '@reactioncommerce/reaction-error': 1.0.1
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+
   packages/api-plugin-i18n:
     specifiers:
       '@reactioncommerce/api-utils': ^1.16.5
