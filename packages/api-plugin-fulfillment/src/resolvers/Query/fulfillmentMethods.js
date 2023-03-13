@@ -1,9 +1,8 @@
 import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
-import { decodeShopOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../xforms/id.js";
 
 /**
- * @name Query/getFulfillmentMethods
+ * @name Query/fulfillmentMethods
  * @method
  * @memberof Fulfillment/Query
  * @summary Query for a list of fulfillment methods
@@ -14,13 +13,10 @@ import { decodeShopOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../xforms
  * @param {Object} info Info about the GraphQL request
  * @returns {Promise<Object>} Fulfillment methods
  */
-export default async function getFulfillmentMethods(_, args, context, info) {
-  const { shopId: opaqueShopId, fulfillmentTypeId: opaqueFulfillmentId, ...connectionArgs } = args;
+export default async function fulfillmentMethods(_, args, context, info) {
+  const { shopId, fulfillmentTypeId, ...connectionArgs } = args;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const fulfillmentTypeId = decodeFulfillmentGroupOpaqueId(opaqueFulfillmentId);
-
-  const { collection, pipeline } = await context.queries.getFulfillmentMethods(context, {
+  const { collection, pipeline } = await context.queries.fulfillmentMethods(context, {
     shopId, fulfillmentTypeId
   });
 

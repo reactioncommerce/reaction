@@ -1,5 +1,5 @@
 /**
- * @name getFulfillmentType
+ * @name fulfillmentType
  * @method
  * @memberof Fulfillment/Queries
  * @summary Query the Fulfillment collection for a single fulfillment type
@@ -9,7 +9,7 @@
  * @param {String} input.shopId - The shop id of the fulfillment type
  * @returns {Promise<Object>} Object
  */
-export default async function getFulfillmentType(context, input) {
+export default async function fulfillmentType(context, input) {
   const { collections: { Fulfillment } } = context;
   const { fulfillmentTypeId, shopId } = input;
 
