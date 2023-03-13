@@ -44,7 +44,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:shippingMethods/update"],
+  permissions: ["reaction:legacy:fulfillmentMethods/update"],
   slug: "admin",
   shopId: internalShopId
 });
@@ -87,7 +87,7 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Groups.insertOne(customerGroup);
 
-  await testApp.collections.Shipping.insertOne({
+  await testApp.collections.Fulfillment.insertOne({
     methods: [mockFulfillmentMethod],
     shopId: internalShopId
   });
