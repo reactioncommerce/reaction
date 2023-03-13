@@ -79,9 +79,10 @@ import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
-import FulfillmentMethod from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/methodSchema.js";
-
-import Restriction from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/restrictionSchema.js";
+import {
+  methodSchema as FulfillmentMethod,
+  restrictionSchema as Restriction
+} from "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate/src/simpleSchemas.js";
 
 import {
   Sitemap
@@ -108,7 +109,7 @@ import {
   FulfillmentMethodSchema,
   fulfillmentTypeSchema,
   extendFulfillmentSchemas
-} from "../../../../packages/api-plugin-fulfillment/src/simpleSchemas.js";
+} from "@reactioncommerce/api-plugin-fulfillment/src/simpleSchemas.js";
 
 const schemasToAddToFactory = {
   MethodEmptyData,
