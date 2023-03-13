@@ -54,15 +54,8 @@ export default async function getFinalFulfillmentGroups(context, inputData) {
 
     // Build the final order item objects. As part of this, we look up the variant in the system and make sure that
     // the price is what the caller expects it to be.
-    if (items) {
-      group.items = await Promise.all(items.map((inputItem) => buildOrderItem(context, { currencyCode, inputItem, cart })));
-    } else {
-      group.items = [];
-    }
-
-    if (Array.isArray(additionalItems) && additionalItems.length) {
-      group.items.push(...additionalItems);
-    }
+    group.items = await Promise.all((items || []).map((inputItem) => buildOrderItem(context, { currencyCode, inputItem, cart })));
+    group.items.push(...(additionalItems || []));
 
     // Add some more properties for convenience
     group.itemIds = group.items.map((item) => item._id);
