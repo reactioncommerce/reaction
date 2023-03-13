@@ -97,7 +97,7 @@ export default async function prepareOrder(context, input, mode) {
     validationResults.push(...validationErrors);
     return { errors: validationResults, success: false };
   }
-  
+
   const { shop, cart } = initialValidationResult;
 
   // Step03: Extract the rest of the required variables
