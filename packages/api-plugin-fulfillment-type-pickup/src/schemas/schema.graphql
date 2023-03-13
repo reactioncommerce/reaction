@@ -1,0 +1,5 @@
+"Allowed fulfillment types, extended by fulfillment-type plugins"
+enum FulfillmentType {
+  "An order will be fulfilled by the customer picking it up"
+  pickup
+}
