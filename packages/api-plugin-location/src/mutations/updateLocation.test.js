@@ -28,6 +28,8 @@ test("update location and returns the result", async () => {
 
   expect(updatedLocation).toEqual({
     success: true,
-    location
+    location: {
+      _id: "123"
+    }
   });
 });

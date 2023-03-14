@@ -52,6 +52,9 @@ type Location {
     " Whether the location is current active"
     enabled: Boolean
 
+    " The location is available for or not."
+    isArchived: Boolean
+
     " The date the location was created"
     createdAt: Date!
 

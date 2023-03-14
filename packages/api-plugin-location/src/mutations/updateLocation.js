@@ -18,6 +18,6 @@ export default async function updateLocation(context, { location, shopId }) {
 
   const { _id } = location;
   const results = await Locations.findOneAndUpdate({ _id, shopId }, modifier, { returnDocument: "after" });
-  const { modifiedCount } = results;
-  return { success: modifiedCount === 1, location };
+  const { modifiedCount, value } = results;
+  return { success: modifiedCount === 1, location: value };
 }
