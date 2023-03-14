@@ -38,7 +38,11 @@ export default async function locations(context, shopId, filter) {
     }
 
     if (typeof isArchived === "boolean") {
-      selector.isArchived = isArchived;
+      if (isArchived) {
+        selector.isArchived = true;
+      } else {
+        selector.isArchived = { $ne: true };
+      }
     }
   }
 
