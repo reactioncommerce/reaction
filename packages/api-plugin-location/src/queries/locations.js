@@ -11,10 +11,14 @@ export default async function locations(context, shopId, filter) {
   const selector = { shopId };
 
   if (filter) {
-    const { name, type, phone, fulfillmentMethod, localFulfillmentOnly, enabled, isArchived } = filter;
+    const { name, identifier, type, phone, fulfillmentMethod, localFulfillmentOnly, enabled, isArchived } = filter;
 
     if (name) {
       selector.name = name;
+    }
+
+    if (identifier) {
+      selector.identifier = identifier;
     }
 
     if (type) {

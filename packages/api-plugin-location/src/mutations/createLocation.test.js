@@ -19,6 +19,7 @@ test("throws if shop not found", async () => {
 test("create location and returns the result", async () => {
   const location = {
     shopId: "123",
+    identifier: "test-location",
     name: "Test location",
     type: "marketplace",
     address: {
