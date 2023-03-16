@@ -53,7 +53,7 @@ export const Location = new SimpleSchema({
   name: String,
   type: {
     type: String,
-    allowedValues: ["warehouse", "region", "dropship", "marketplace"]
+    allowedValues: ["warehouse", "store", "dropship", "marketplace"]
   },
   address: LocationAddress,
   phoneNumber: {

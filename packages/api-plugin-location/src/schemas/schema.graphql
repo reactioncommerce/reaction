@@ -25,7 +25,7 @@ type Location {
     " The name of the location."
     name: String!
 
-    " The type of the location [warehouse, region, dropship, marketplace]."
+    " The type of the location [warehouse, store, dropship, marketplace]."
     type: String!
 
     " The address of the location."
@@ -102,7 +102,7 @@ input LocationFilter {
     " The name of the location."
     name: String
 
-    " The type of the location [warehouse, region, dropship, marketplace]."
+    " The type of the location [warehouse, store, dropship, marketplace]."
     type: String
 
     " The phone of the location."
@@ -149,7 +149,7 @@ input LocationCreateInput {
     " The name of the location."
     name: String!
 
-    " The type of the location [warehouse, region, dropship, marketplace]."
+    " The type of the location [warehouse, store, dropship, marketplace]."
     type: String!
 
     " The address of the location."
@@ -187,7 +187,7 @@ input LocationUpdateInput {
     " The shop ID"
     name: String
 
-    " The type of the location [warehouse, region, dropship, marketplace]."
+    " The type of the location [warehouse, store, dropship, marketplace]."
     type: String
 
     " The address of the location."
