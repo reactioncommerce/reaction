@@ -3,10 +3,8 @@
 // This must not be an ES module because we want
 // this check to work on older Node versions that
 // do not support ES modules.
-
-import * as packageJson from "./package.json" assert { type: "json" };
-
 const semver = require("semver");
+const packageJson = require("../package.json");
 
 const requiredNodeVersion = packageJson.engines.node;
 if (!semver.satisfies(process.version, requiredNodeVersion)) {
