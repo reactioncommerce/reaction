@@ -25,7 +25,8 @@ export const LocationAddress = new SimpleSchema({
   },
   region: {
     label: "State/Province/Region",
-    type: String
+    type: String,
+    optional: true
   },
   postal: {
     label: "ZIP/Postal Code",
@@ -47,17 +48,26 @@ export const LocationAddress = new SimpleSchema({
   }
 });
 
+export const StoreHour = new SimpleSchema({
+  day: {
+    type: String,
+    allowedValues: ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+  },
+  open: String,
+  close: String
+});
+
 export const Location = new SimpleSchema({
-  _id: String,
-  shopId: String,
-  name: String,
-  identifier: String,
-  type: {
+  "_id": String,
+  "shopId": String,
+  "name": String,
+  "identifier": String,
+  "type": {
     type: String,
     allowedValues: ["warehouse", "store", "dropship", "marketplace"]
   },
-  address: LocationAddress,
-  phoneNumber: {
+  "address": LocationAddress,
+  "phoneNumber": {
     type: String,
     custom() {
       const country = this.field("address.country");
@@ -70,40 +80,42 @@ export const Location = new SimpleSchema({
       return this.value.startsWith(phone) ? true : `The phone number must start with ${phone} for ${name}`;
     }
   },
-  fulfillmentMethod: {
+  "fulfillmentMethod": {
     type: String,
     allowedValues: ["shipping", "pickup", "ship-to-store", "local-delivery"]
   },
-  localFulfillmentOnly: {
+  "localFulfillmentOnly": {
     type: Boolean,
     defaultValue: false,
     optional: true
   },
-  storeHours: {
-    type: Number,
-    min: 0,
-    max: 24,
-    optional: true
+  "storeHours": {
+    type: Array,
+    optional: true,
+    maxCount: 7
   },
-  storePickupHours: {
+  "storeHours.$": {
+    type: StoreHour
+  },
+  "storePickupHours": {
     type: Number,
     allowedValues: [2, 4, 6, 12, 24, 48, 120, 178, 336],
     optional: true
   },
-  storePickupInstructions: {
+  "storePickupInstructions": {
     type: String,
     optional: true
   },
-  enabled: {
+  "enabled": {
     type: Boolean,
     defaultValue: false,
     optional: true
   },
-  isArchived: {
+  "isArchived": {
     type: Boolean,
     defaultValue: false,
     optional: true
   },
-  createdAt: Date,
-  updatedAt: Date
+  "createdAt": Date,
+  "updatedAt": Date
 });

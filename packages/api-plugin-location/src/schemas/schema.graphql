@@ -9,13 +9,24 @@ type LocationAddress {
     city: String!
 
     " The State/Province/Region of the address."
-    region: String!
+    region: String
 
     " The ZIP/Postal Code of the address."
-    postal: String!
+    postal: String
 
     " The ISO 3166-1 alpha-2 country code of the address."
     country: String!
+}
+
+type LocationStoreHour {
+    " The day of the week [monday, tuesday, wednesday, thursday, friday, saturday, sunday]."
+    day: String!
+
+    " The open time of the day."
+    open: String!
+
+    " The close time of the day."
+    close: String!
 }
 
 type Location {
@@ -44,7 +55,7 @@ type Location {
     localFulfillmentOnly: Boolean
 
     " The open hours of the type store location."
-    storeHours: Int
+    storeHours: [LocationStoreHour]
 
     " The pickup hours of the type store location."
     storePickupHours: Int
@@ -127,7 +138,18 @@ input LocationFilter {
     isArchived: Boolean
 }
 
-input LocationAddressInput {
+input LocationStoreHourInput {
+    " The day of the week [monday, tuesday, wednesday, thursday, friday, saturday, sunday]."
+    day: String!
+
+    " The open time of the day."
+    open: String!
+
+    " The close time of the day."
+    close: String!
+}
+
+input LocationCreateAddressInput {
     " The first line of the address."
     address1: String!
 
@@ -138,10 +160,10 @@ input LocationAddressInput {
     city: String!
 
     " The State/Province/Region of the address."
-    region: String!
+    region: String
 
     " The ZIP/Postal Code of the address."
-    postal: String!
+    postal: String
 
     " The ISO 3166-1 alpha-2 country code of the address."
     country: String!
@@ -162,7 +184,7 @@ input LocationCreateInput {
     type: String!
 
     " The address of the location."
-    address: LocationAddressInput!
+    address: LocationCreateAddressInput!
 
     " The phone number of the location."
     phoneNumber: String!
@@ -174,7 +196,7 @@ input LocationCreateInput {
     localFulfillmentOnly: Boolean
 
     " The open hours of the type store location."
-    storeHours: Int
+    storeHours: [LocationStoreHourInput]
 
     " The pickup hours of the type store location."
     storePickupHours: Int
@@ -184,6 +206,26 @@ input LocationCreateInput {
 
     " Whether the location is current active"
     enabled: Boolean
+}
+
+input LocationUpdateAddressInput {
+    " The first line of the address."
+    address1: String
+
+    " The second line of the address."
+    address2: String
+
+    " The city of the address."
+    city: String
+
+    " The State/Province/Region of the address."
+    region: String
+
+    " The ZIP/Postal Code of the address."
+    postal: String
+
+    " The ISO 3166-1 alpha-2 country code of the address."
+    country: String
 }
 
 input LocationUpdateInput {
@@ -203,7 +245,7 @@ input LocationUpdateInput {
     type: String
 
     " The address of the location."
-    address: LocationAddressInput
+    address: LocationUpdateAddressInput
 
     " The phone number of the location."
     phoneNumber: String
@@ -215,7 +257,7 @@ input LocationUpdateInput {
     localFulfillmentOnly: Boolean
 
     " The open hours of the type store location."
-    storeHours: Int
+    storeHours: [LocationStoreHourInput]
 
     " The pickup hours of the type store location."
     storePickupHours: Int
