@@ -9,10 +9,10 @@ type LocationAddress {
     city: String!
 
     " The State/Province/Region of the address."
-    region: String!
+    region: String
 
     " The ZIP/Postal Code of the address."
-    postal: String!
+    postal: String
 
     " The ISO 3166-1 alpha-2 country code of the address."
     country: String!
@@ -138,10 +138,10 @@ input LocationAddressInput {
     city: String!
 
     " The State/Province/Region of the address."
-    region: String!
+    region: String
 
     " The ZIP/Postal Code of the address."
-    postal: String!
+    postal: String
 
     " The ISO 3166-1 alpha-2 country code of the address."
     country: String!
@@ -186,6 +186,26 @@ input LocationCreateInput {
     enabled: Boolean
 }
 
+input LocationUpdateAddressInput {
+    " The first line of the address."
+    address1: String
+
+    " The second line of the address."
+    address2: String
+
+    " The city of the address."
+    city: String
+
+    " The State/Province/Region of the address."
+    region: String
+
+    " The ZIP/Postal Code of the address."
+    postal: String
+
+    " The ISO 3166-1 alpha-2 country code of the address."
+    country: String
+}
+
 input LocationUpdateInput {
     " The location ID"
     _id: ID!
@@ -203,7 +223,7 @@ input LocationUpdateInput {
     type: String
 
     " The address of the location."
-    address: LocationAddressInput
+    address: LocationUpdateAddressInput
 
     " The phone number of the location."
     phoneNumber: String

@@ -25,7 +25,8 @@ export const LocationAddress = new SimpleSchema({
   },
   region: {
     label: "State/Province/Region",
-    type: String
+    type: String,
+    optional: true
   },
   postal: {
     label: "ZIP/Postal Code",
