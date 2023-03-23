@@ -58,6 +58,7 @@
     "@reactioncommerce/api-plugin-taxes": "1.1.3",
     "@reactioncommerce/api-plugin-taxes-flat-rate": "1.0.8",
     "@reactioncommerce/api-plugin-translations": "1.2.2",
+    "@reactioncommerce/api-plugin-webhooks": "0.0.1",
     "@reactioncommerce/api-utils": "1.17.1",
     "@reactioncommerce/db-version-check": "1.0.0",
     "@reactioncommerce/file-collections": "0.9.3",

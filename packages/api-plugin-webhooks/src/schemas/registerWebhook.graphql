@@ -1,0 +1,25 @@
+"Input for `registerWebhook` mutation"
+input RegisterWebhookInput {
+    "The shop for which the webhook is registered"
+    shopId: String!
+
+    "The topic for which this webhook will be subscribed to"
+    topic: WebhookTopic!
+
+    "The outbound URL that this webhook is going to call"
+    address: String!
+}
+
+"Response payload for `registerWebhook` mutation"
+type RegisterWebhookPayload {
+    "The newly registered webhook"
+    webhook: Webhook!
+}
+
+extend type Mutation {
+    "Register a new webhook"
+    registerWebhook(
+        "Mutation input"
+        input: RegisterWebhookInput!
+    ): RegisterWebhookPayload!
+}

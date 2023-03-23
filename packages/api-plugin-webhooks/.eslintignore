@@ -1,0 +1,4 @@
+# things to ignore in lint
+node_modules/*
+# plugin node_modules
+**/node_modules/*

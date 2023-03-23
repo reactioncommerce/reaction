@@ -1,0 +1,41 @@
+{
+    "extends": [
+        "@reactioncommerce"
+    ],
+    "root": true,
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "impliedStrict": true
+        }
+    },
+    "env": {
+        "es6": true,
+        "jasmine": true
+    },
+    "rules": {
+        "node/no-missing-import": "off",
+        "node/no-missing-require": "off",
+        "node/no-unsupported-features/es-syntax": "off",
+        "node/no-unpublished-import": "off",
+        "node/no-unpublished-require": "off",
+        "guard-for-in": "off"
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/*.test.js"
+            ],
+            "rules": {
+                "node/no-extraneous-import": "off",
+                "require-jsdoc": "off"
+            }
+        }
+    ]
+}

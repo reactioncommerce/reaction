@@ -1,0 +1,27 @@
+
+"Input for `updateWebhook` mutation"
+input UpdateWebhookInput {
+  "ID of webhook to modify"
+  id: ID!
+
+  "The shop that owns the webhook"
+  shopId: String!
+
+  "The outbound URL that this webhook is going to call"
+  address: String!
+}
+
+"Response payload for `updateWebhook` mutation"
+type UpdateWebhookPayload {
+
+  "The updated webhook"
+  webhook: Webhook!
+}
+
+extend type Mutation {
+  "Updates an existing webhook"
+  updateWebhook(
+    "Mutation input"
+    input: UpdateWebhookInput!
+  ): UpdateWebhookPayload!
+}

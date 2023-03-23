@@ -1,0 +1,19 @@
+"Input for `deregisterWebhook` mutation"
+input DeregisterWebhookInput {
+    "ID of webhook to deregister"
+    id: ID!
+}
+
+"Response payload for `deregisterWebhook` mutation"
+type DeregisterWebhookPayload {
+    "The de-registered webhook"
+    webhook: Webhook!
+}
+
+extend type Mutation {
+    "De-registers an existing webhook"
+    deregisterWebhook(
+        "Mutation input"
+        input: DeregisterWebhookInput!
+    ): DeregisterWebhookPayload!
+}

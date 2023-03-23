@@ -1,0 +1,59 @@
+{
+  "name": "@reactioncommerce/api-plugin-webhooks",
+  "description": "Webhooks plugin for the Reaction API",
+  "label": "reaction-plugin-webhooks",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "email": "hello-open-commerce@mailchimp.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/merchstack/merchstack.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/merchstack/merchstack/issues"
+  },
+  "private": true,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "1.17.1",
+    "@reactioncommerce/logger": "1.1.5",
+    "@reactioncommerce/random": "1.0.2",
+    "@reactioncommerce/reaction-error": "1.0.1",
+    "simpl-schema": "^1.7.0",
+    "node-fetch": "^2.6.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@changesets/cli": "^2.25.2",
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1",
+    "@reactioncommerce/eslint-config": "~2.1.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "~25.1.0",
+    "babel-plugin-rewire-exports": "^2.0.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-plugin-transform-import-meta": "~1.0.0",
+    "eslint": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^23.7.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "husky": "^5.0.8",
+    "vite": "^3.1.0",
+    "vitest": "^0.23.1"
+  },
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint ."
+  }
+}
