@@ -64,6 +64,9 @@
   "main": "./dist/node/index.js",
   "scripts": {
     "build": "rm -rf dist/** && babel src --out-dir dist --ignore \"**/*.test.js\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
