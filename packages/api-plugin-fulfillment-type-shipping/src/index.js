@@ -1,4 +1,5 @@
 import { createRequire } from "module";
+import i18n from "./i18n/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 
@@ -22,6 +23,7 @@ export default async function register(app) {
     label: "Fulfillment Type Shipping",
     name: "fulfillment-type-shipping",
     version: pkg.version,
+    i18n,
     graphQL: {
       schemas
     },

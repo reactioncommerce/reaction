@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 import { MethodDynamicRateData } from "./simpleSchemas.js";
+import i18n from "./i18n/index.js";
 import preStartup from "./preStartup.js";
 import startup from "./startup.js";
 import schemas from "./schemas/index.js";
@@ -19,6 +20,7 @@ export default async function register(app) {
     label: "Fulfillment Method Shipping Dynamic Rate",
     name: "fulfillment-method-shipping-dynamic-rate",
     version: pkg.version,
+    i18n,
     graphQL: {
       schemas
     },
