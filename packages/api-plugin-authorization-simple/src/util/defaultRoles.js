@@ -60,6 +60,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:products/update:prices",
   "reaction:legacy:products/update",
   "reaction:legacy:shipping-rates/update:settings",
+  "reaction:legacy:fulfillmentTypes/update:settings",
   "reaction:legacy:fulfillmentTypes/create",
   "reaction:legacy:fulfillmentTypes/delete",
   "reaction:legacy:fulfillmentTypes/read",

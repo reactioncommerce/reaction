@@ -52,6 +52,22 @@ export default async function register(app) {
     },
     simpleSchemas: {
       MethodEmptyData
+    },
+    shopSettingsConfig: {
+      baseFulfillmentTypesForShop: {
+        permissionsThatCanEdit: ["reaction:legacy:fulfillmentTypes/update:settings"],
+        simpleSchema: {
+          type: {
+            "baseFulfillmentTypesForShop": {
+              type: Array,
+              optional: true
+            },
+            "baseFulfillmentTypesForShop.$": {
+              type: String
+            }
+          }
+        }
+      }
     }
   });
 }

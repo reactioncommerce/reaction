@@ -1,3 +1,17 @@
+extend type ShopSettings {
+  """
+  List of fulfillment types that will be added to each new product by default
+  """
+  baseFulfillmentTypesForShop: [FulfillmentType]
+}
+
+extend input ShopSettingsUpdates {
+  """
+  The input for default fulfillment type for shop should be one of the installed fulfillment type plugin
+  """
+  baseFulfillmentTypesForShop: [FulfillmentType]
+}
+
 "Allowed fulfillment types, extended by fulfillment-type plugins"
 enum FulfillmentType {
   "Default fulfillment type when none is decided by user"
