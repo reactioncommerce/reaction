@@ -1,10 +1,7 @@
-import Logger from "@reactioncommerce/logger";
-import ReactionError from "@reactioncommerce/reaction-error";
 import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 import { extendFulfillmentSchemas } from "./simpleSchemas.js";
 
-const logCtx = { name: "fulfillment", file: "preStartup" };
 const expectedVersion = 4;
 
 /**
