@@ -1,0 +1,81 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "spedizione",
+          "shippingTitle": "spedizione",
+          "shippingDescription": "Fornire le tariffe di spedizione"
+        },
+        "settings": {
+          "shippingLabel": "spedizione"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Selezionare l'opzione di spedizione",
+        "noShippingMethods": "No Metodi di spedizione sono configurati.",
+        "contactAdmin": "Contattare l'amministratore del negozio.",
+        "configureNow": "Configurare ora.",
+        "shipping": "spedizione"
+      },
+      "shipping": {
+        "addShippingProvider": "Aggiungere corriere",
+        "editShippingProvider": "Fornitore di trasporto Modifica",
+        "addShippingMethod": "Aggiungere il metodo di spedizione",
+        "editShippingMethod": "Modifica metodo di spedizione",
+        "deleteShippingMethod": "Elimina metodo di spedizione",
+        "noSettingsForThisView": "Nessuna impostazione per questo punto di vista",
+        "noShippingMethods": "No Metodi di spedizione sono configurati.",
+        "removeShippingMethodConfirm": "Sei sicuro di voler eliminare {{method}}?",
+        "removeShippingMethodTitle": "Rimuovere Metodo di Spedizione",
+        "shippingMethodDeleted": "Questo metodo di trasporto è stato eliminato.",
+        "removeShippingProvider": "Rimuovere Spedizione Provider",
+        "removeShippingProviderConfirm": "Sei sicuro di voler eliminare {{provider}}?",
+        "shippingProviderSaved": "Fornitore di trasporto salvato.",
+        "shippingProviderUpdated": "i dati del provider Spedizione aggiornati.",
+        "shippingMethodRateAdded": "tasso Metodo di trasporto aggiunto.",
+        "shippingMethodRateUpdated": "tasso Metodo di trasporto aggiornato.",
+        "name": "Nome",
+        "label": "Etichetta",
+        "group": "Gruppo",
+        "cost": "Costo",
+        "handling": "maneggio",
+        "rate": "Tasso",
+        "enabled": "Abilitato",
+        "disabled": "Disabilitato",
+        "addRate": "Aggiungere tasso",
+        "updateRate": "Velocità di aggiornamento {{name}}",
+        "addNewCondition": "Aggiungi nuova condizione",
+        "deleteCondition": "Eliminare condizioni",
+        "provider": {
+          "name": "Codice servizio",
+          "label": "pubblico Label",
+          "enabled": "Abilitato"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nome metodo",
+        "label": "pubblico Label",
+        "group": "Gruppo",
+        "cost": "Costo",
+        "handling": "maneggio",
+        "rate": "Tasso",
+        "enabled": "Abilitato",
+        "matchingCartRanges": "Abbinamento Carrello Ranges",
+        "validRanges": {
+          "begin": "Inizio",
+          "end": "Fine"
+        },
+        "matchingLocales": "Impostazioni internazionali di corrispondenza",
+        "validLocales": {
+          "origination": "Da",
+          "destination": "A",
+          "deliveryBegin": "Spedizione Est.",
+          "deliveryEnd": "Consegna Est."
+        }
+      }
+    }
+  }
+}]

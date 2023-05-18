@@ -142,6 +142,12 @@ extend type Query {
     "A valid anonymous access token for this order. Required if the order is not linked with an account."
     token: String
   ): [Refund]
+
+  "Validate the order for correctness & completeness before placing the order"
+  validateOrder(
+    "input with order and payment objects similar to the one used for placeOrder"
+    input: ValidateOrderInput!
+  ): ValidateOrderPayload!
 }
 
 extend type Mutation {
@@ -982,6 +988,37 @@ type MoveOrderItemsPayload {
 
   "The updated order"
   order: Order!
+}
+
+"Input for the validateOrder query"
+input ValidateOrderInput {
+  "The order to be validated and created, if payment is accepted"
+  order: OrderInput!
+
+  """
+  The information necessary to pay. Collect this information from the shopper during a checkout flow.
+  You need not provide any payment input if the total is zero.
+  The total of all payment input `amount` fields must add up to the order total. The first payment
+  method where the `amount` field is `null` will be charged the remainder due.
+  """
+  payments: [PaymentInput]
+}
+
+type ValidationErrors {
+  errorName: String,
+  errorType: String,
+  errorField: String,
+  fieldValue: String,
+  errorMessage: String
+}
+
+"Response payload for the validateOrder query"
+type ValidateOrderPayload {
+  "Orders that were created"
+  errors: [ValidationErrors]
+
+  "Validation Result"
+  success: Boolean
 }
 
 "Response payload for the placeOrder mutation"

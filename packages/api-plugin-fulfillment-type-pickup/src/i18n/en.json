@@ -1,0 +1,58 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "pickupLabel": "Pickup",
+          "pickupTitle": "Pickup",
+          "pickupDescription": "Manage Pickup"
+        },
+        "settings": {
+          "pickupLabel": "Pickup"
+        }
+      },
+      "checkoutPickup": {
+        "selectPickupOption": "Select pickup option",
+        "noPickupMethods": "No pickup methods are configured.",
+        "contactAdmin": "Please contact the store administrator.",
+        "configureNow": "Configure now.",
+        "pickup": "Pickup"
+      },
+      "pickup": {
+        "editPickupProvider": "Edit pickup provider",
+        "editPickupMethod": "Edit pickup method",
+        "noSettingsForThisView": "No settings for this view",
+        "noPickupMethods": "No pickup methods are configured.",
+        "pickupProviderSaved": "Pickup provider saved.",
+        "pickupProviderUpdated": "Pickup provider data updated.",
+        "pickupMethodRateAdded": "Pickup method rate added.",
+        "pickupMethodRateUpdated": "Pickup method rate updated.",
+        "name": "Name",
+        "label": "Label",
+        "group": "Group",
+        "cost": "Cost",
+        "handling": "Handling",
+        "rate": "Rate",
+        "enabled": "Enabled",
+        "disabled": "Disabled",
+        "updateRate": "Update {{name}} rate",
+        "provider": {
+          "name": "Service Code",
+          "label": "Public Label",
+          "enabled": "Enabled"
+        }
+      },
+      "pickupMethod": {
+        "name": "Method Name",
+        "label": "Public Label",
+        "group": "Group",
+        "cost": "Cost",
+        "handling": "Handling",
+        "rate": "Rate",
+        "enabled": "Enabled"
+      }
+    }
+  }
+}]
