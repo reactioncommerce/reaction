@@ -1,4 +1,4 @@
-import flatRateFulfillmentRestrictions from "./flatRateFulfillmentRestrictions";
+import flatRateFulfillmentRestrictions from "./flatRateFulfillmentRestrictions.js";
 
 /**
  * @name getFlatRateFulfillmentRestrictions
