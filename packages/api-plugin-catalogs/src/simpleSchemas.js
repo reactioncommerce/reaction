@@ -468,8 +468,7 @@ export const CatalogProduct = new SimpleSchema({
   },
   "supportedFulfillmentTypes": {
     type: Array,
-    label: "Supported fulfillment types",
-    defaultValue: ["shipping"]
+    label: "Supported fulfillment types"
   },
   "supportedFulfillmentTypes.$": String,
   "tagIds": {
