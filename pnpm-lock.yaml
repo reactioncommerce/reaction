@@ -697,6 +697,7 @@ importers:
       '@reactioncommerce/api-plugin-carts': ^1.0.0
       '@reactioncommerce/api-utils': ^1.16.9
       '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/db-version-check': ^1.0.0
       '@reactioncommerce/logger': ^1.1.3
       '@reactioncommerce/random': ^1.0.2
       '@reactioncommerce/reaction-error': ^1.0.1
@@ -704,6 +705,7 @@ importers:
       simpl-schema: ^1.12.2
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/db-version-check': link:../db-version-check
       '@reactioncommerce/logger': link:../logger
       '@reactioncommerce/random': link:../random
       '@reactioncommerce/reaction-error': link:../reaction-error
