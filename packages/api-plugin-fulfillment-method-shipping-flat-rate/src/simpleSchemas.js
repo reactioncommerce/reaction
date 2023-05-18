@@ -28,7 +28,10 @@ export const methodSchema = new SimpleSchema({
   "fulfillmentTypes.$": String,
   "group": String,
   "handling": Number,
-  "isEnabled": Boolean,
+  "isEnabled": {
+    type: Boolean,
+    optional: true
+  },
   "enabled": {
     type: Boolean,
     optional: true

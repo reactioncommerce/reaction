@@ -41,6 +41,7 @@ export default async function createFlatRateFulfillmentMethod(context, input) {
 
   method._id = Random.id();
   // `isEnabled` has been marked @deprecated and will be removed in next release. 'enabled' is the replacement field
+  if (!method.enabled && !method.isEnabled) method.enabled = false;
   if (!method.enabled) method.enabled = method.isEnabled; // if user not yet using new field, continue to collect it from old field
   if (method.isEnabled) delete method.isEnabled;
 
