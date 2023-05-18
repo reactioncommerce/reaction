@@ -9,11 +9,12 @@ mockContext.validatePermissions.mockReturnValueOnce(Promise.resolve(null));
 
 test("throws if required fields are not supplied", async () => {
   const fulfillmentTypeInput = {
-    shopId: "SHOP_ID",
-    name: "fulfillmentType123"
+    shopId: "SHOP_ID"
+    // name: "fulfillmentType123"
   };
 
-  await expect(createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrowErrorMatchingSnapshot();
+  const expectedError = "Name is required";
+  await expect(createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrow(expectedError);
 });
 
 test("throws if the fulfillmentType added already exists", async () => {
@@ -61,7 +62,7 @@ test("add a new fulfillment type", async () => {
   const result = await createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput);
 
   expect(result).toEqual({
-    group: {
+    fulfillmentType: {
       name: "fulfillmentType123",
       fulfillmentType: "shipping"
     }

@@ -37,7 +37,7 @@ const adminGroup = Factory.Group.makeOne({
   _id: "adminGroup",
   createdBy: null,
   name: "admin",
-  permissions: ["reaction:legacy:shippingMethods/delete"],
+  permissions: ["reaction:legacy:fulfillmentMethods/delete"],
   slug: "admin",
   shopId: internalShopId
 });
@@ -80,7 +80,7 @@ beforeAll(async () => {
   await testApp.collections.Groups.insertOne(adminGroup);
   await testApp.collections.Groups.insertOne(customerGroup);
 
-  await testApp.collections.Shipping.insertOne({
+  await testApp.collections.Fulfillment.insertOne({
     methods: [{
       _id: mockFulfillmentMethodId,
       shopId: internalShopId,
@@ -114,7 +114,7 @@ test("user can not delete flat rate fulfillment method if admin is not logged in
   }
 });
 
-test("user can delete flat rate fulfillment method if they have `reaction:legacy:shippingMethods/delete` permissions", async () => {
+test("user can delete flat rate fulfillment method if they have `reaction:legacy:fulfillmentMethods/delete` permissions", async () => {
   await testApp.setLoggedInUser(mockAdminAccount);
 
   let result;

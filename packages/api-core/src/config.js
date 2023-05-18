@@ -52,6 +52,35 @@ export default envalid.cleanEnv(process.env, {
     devDefault: true,
     desc: "Automatically initialize a replica set for the MongoDB instance. Set this to 'true' when running the app for development or tests."
   }),
+  REDIS_PUB_SUB_URL: str({
+    default: undefined,
+    desc: "Redis Pub/Sub connection url",
+    example: "redis://username:password@127.0.0.1:6379/0"
+  }),
+  REDIS_PUB_SUB_HOST: str({
+    default: undefined,
+    desc: "Redis Pub/Sub host",
+    example: "localhost"
+  }),
+  REDIS_PUB_SUB_PORT: num({
+    default: 6379,
+    desc: "Redis Pub/Sub port",
+    example: "6379"
+  }),
+  REDIS_PUB_SUB_USERNAME: str({
+    default: undefined,
+    desc: "Redis Pub/Sub username",
+    example: "redis"
+  }),
+  REDIS_PUB_SUB_PASSWORD: str({
+    default: undefined,
+    desc: "Redis Pub/Sub password",
+    example: "password"
+  }),
+  REDIS_PUB_SUB_DB: num({
+    default: 0,
+    desc: "Redis Pub/Sub database"
+  }),
   ROOT_URL: str({
     devDefault: "http://localhost:3000",
     desc: "The protocol, domain, and port portion of the URL, to which relative paths will be appended. " +

@@ -53,17 +53,19 @@ test("selects an existing shipping method", async () => {
 });
 
 test("throws if there is no fulfillment group with the given ID", async () => {
+  const expectedError = "Fulfillment group with ID group2 not found in cart with ID cartId";
   await expect(selectFulfillmentOptionForGroup(mockContext, {
     cartId: "cartId",
     fulfillmentGroupId: "group2",
     fulfillmentMethodId: "valid-method"
-  })).rejects.toThrowErrorMatchingSnapshot();
+  })).rejects.toThrow(expectedError);
 });
 
 test("throws if there is no fulfillment method with the given ID among the options", async () => {
+  const expectedError = "Fulfillment option with method ID invalid-method not found in cart with ID cartId";
   await expect(selectFulfillmentOptionForGroup(mockContext, {
     cartId: "cartId",
     fulfillmentGroupId: "group1",
     fulfillmentMethodId: "invalid-method"
-  })).rejects.toThrowErrorMatchingSnapshot();
+  })).rejects.toThrow(expectedError);
 });

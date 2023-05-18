@@ -5,13 +5,13 @@ enum FulfillmentType {
 }
 
 "Default empty object for additionalData"
-type emptyData {
+type EmptyData {
   gqlType: String
   emptyData: Boolean
 }
 
 "Union of Additional Data fields"
-union AdditionalData = emptyData
+union AdditionalData = EmptyData
 
 """
 A single fulfillment method. Fulfillment methods are shown to shoppers along with a quote for them,
@@ -87,7 +87,7 @@ type ProviderInfo{
   label: String!
 
   "Flag defining enabled/disabled status"
-  enabled: Boolean
+  enabled: Boolean!
 }
 "Fulfillment type root object"
 type FulfillmentTypeObj implements Node {
@@ -151,75 +151,60 @@ type CustomFulfillmentMethodObj implements Node {
   rate: Float!
 }
 
-"Input needed to select a fulfillment option for a single fulfillment group on a cart"
-input updateFulfillmentTypeInputInfo {
-  "The shop to which this group belongs"
+"Input needed to update a fulfillment type"
+input UpdateFulfillmentTypeInputInfo {
+  "The shop to which this fulfillment type belongs"
   shopId: ID!
 
-  "The group to update"
-  fulfillmentGroupId: ID!
+  "The fulfillment type to update"
+  fulfillmentTypeId: ID!
 
   "The type name to be updated"
-  name: String!
+  name: String
 
   "The label to be updated"
-  label: String!
+  label: String
 
   "The displayMessage to be updated"
   displayMessageType: String
 
-  "Flag to define if the group should be enabled/disabled"
+  "Flag to define if the type should be enabled/disabled"
   enabled: Boolean
 }
-"Input needed to select a fulfillment option for a single fulfillment group on a cart"
-input updateFulfillmentTypeInput {
-  "The shop to which this group belongs"
-  groupInfo: updateFulfillmentTypeInputInfo!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+"Input needed to update a fulfillment type"
+input UpdateFulfillmentTypeInput {
+  "The input info to update fulfillment type"
+  fulfillmentTypeInfo: UpdateFulfillmentTypeInputInfo!
 }
-"The updated group info from updateFulfillmentType"
-type updateFulfillmentTypeGroup {
-  "The shop to which this group belongs"
+"The updated fulfillment type info from updateFulfillmentType"
+type UpdateFulfillmentTypePayloadObj {
+  "The shop to which this fulfillment type  belongs"
   shopId: ID!
 
-  "The group which was updated"
-  fulfillmentGroupId: ID!
+  "The fulfillment type which was updated"
+  fulfillmentTypeId: ID!
 
-  "The updated group name"
+  "The updated fulfillment type name"
   name: String!
 
-  "The updated group label"
+  "The updated fulfillment type label"
   label: String!
 
   "Flag defining enabled/disabled status"
-  enabled: Boolean
+  enabled: Boolean!
 }
 "The response from the `updateFulfillmentType` mutation"
-type updateFulfillmentTypePayload {
-  "The updated Group"
-  group: updateFulfillmentTypeGroup!
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
+type UpdateFulfillmentTypePayload {
+  "The updated fulfillment type"
+  fulfillmentType: UpdateFulfillmentTypePayloadObj!
 }
 
 
 
-"Method info input"
-input MethodInfoInput{
-  "Name of the provider"
-  name: String!
-  
+"UserEditable Method input"
+input UserEditableMethodInput{
   "Label of the provider"
-  label: String!
-
-  "Fulfillmenttypes"
-  fulfillmentTypes: [String]!
-
-  "Group"
-  group: String!
+  label: String
 
   "Display message Method"
   displayMessageMethod: String
@@ -228,65 +213,56 @@ input MethodInfoInput{
   cost: Int
 
   "Handling"
-  handling: Int!
+  handling: Int
 
   "Rate"
-  rate: Int!
+  rate: Int
 
   "Flag defining enabled/disabled status"
-  enabled: Boolean!
-
-  "FulfillmentMethod"
-  fulfillmentMethod: String
+  enabled: Boolean
 }
 
 
-"The updated group infofrom updateFulfillmentMethod"
-input updateFulfillmentMethodInfo {
+"The updated fulfillment method info from updateFulfillmentMethod"
+input UpdateFulfillmentMethodInfo {
   "Shop Id"
   shopId: String!
 
-  "The group which was updated"
+  "The fulfillment type which has the method to be updated"
   fulfillmentTypeId: String!
 
   "The method which has to be updated"
   methodId: String!
 
-  "Method info"
-  method: MethodInfoInput
+  "Method input"
+  method: UserEditableMethodInput
 }
-input updateFulfillmentMethodInput {
-  "Group Info Fulfillment Method"
-  groupInfo: updateFulfillmentMethodInfo!
-
-  "An optional string identifying the mutation call, which will be returned in the response payload"
-  clientMutationId: String
+input UpdateFulfillmentMethodInput {
+  "Info Fulfillment Method"
+  fulfillmentMethodInfo: UpdateFulfillmentMethodInfo!
 }
-type updateFulfillmentMethodPayload {
-  "The inserted Group"
-  group: FulfillmentMethodObj!
-
-  "The same string you sent with the mutation params, for matching mutation calls with their responses"
-  clientMutationId: String
+type UpdateFulfillmentMethodPayload {
+  "The inserted method"
+  method: FulfillmentMethodObj!
 }
 
 extend type Mutation {
   "Updates the Name and Enabled fields for the provided Fulfillment Type"
   updateFulfillmentType(
     "Mutation input"
-    input: updateFulfillmentTypeInput!
-  ): updateFulfillmentTypePayload!
+    input: UpdateFulfillmentTypeInput!
+  ): UpdateFulfillmentTypePayload!
 
   "Updates the provided Fulfillment Method"
   updateFulfillmentMethod(
     "Mutation input"
-    input: updateFulfillmentMethodInput!
-  ): updateFulfillmentMethodPayload!
+    input: UpdateFulfillmentMethodInput!
+  ): UpdateFulfillmentMethodPayload!
 }
 
 extend type Query {
   "Get a fulfillment type"
-  getFulfillmentType(
+  fulfillmentType(
     "Fulfillment type id"
     fulfillmentTypeId: ID!
 
@@ -295,7 +271,7 @@ extend type Query {
   ): FulfillmentTypeObj!
 
   "Get all fulfillment types"
-  getFulfillmentTypes(
+  fulfillmentTypes(
     "Shop ID"
     shopId: ID!
 
@@ -316,7 +292,7 @@ extend type Query {
   ): FulfillmentTypeObjConnection!
 
   "Get all fulfillment methods for the given type"
-  getFulfillmentMethods(
+  fulfillmentMethods(
     "Shop ID"
     shopId: ID!
 

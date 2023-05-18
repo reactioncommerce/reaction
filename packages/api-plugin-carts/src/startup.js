@@ -1,5 +1,6 @@
 import Logger from "@reactioncommerce/logger";
 import updateCartItemsForVariantChanges from "./util/updateCartItemsForVariantChanges.js";
+import publishCartUpdatedEvent from "./util/publishCartUpdatedEvent.js";
 import { MAX_CART_COUNT as SAVE_MANY_CARTS_LIMIT } from "./mutations/saveManyCarts.js";
 
 const logCtx = { name: "cart", file: "startup" };
@@ -97,6 +98,10 @@ async function updateAllCartsForVariant({ Cart, context, variant }) {
 export default async function cartStartup(context) {
   const { appEvents, collections } = context;
   const { Cart } = collections;
+
+  appEvents.on("afterCartUpdate", async ({ cart: updatedCart, publishUpdatedEvent = true }) => {
+    publishCartUpdatedEvent(context, updatedCart, { publishUpdatedEvent });
+  });
 
   // When an order is created, delete the source cart
   appEvents.on("afterOrderCreate", async ({ order }) => {

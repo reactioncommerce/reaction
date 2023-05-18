@@ -100,8 +100,7 @@
   },
   "pnpm": {
     "overrides": {
-      "graphql-tools": "4.0.5",
-      "graphql": "14.7.0"
+      "graphql": "16.6.0"
     }
   }
 }

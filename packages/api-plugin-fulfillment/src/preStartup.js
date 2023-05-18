@@ -44,11 +44,5 @@ async function dbVersionCheck(context) {
 export default async function fulfillmentPreStartup(context) {
   await dbVersionCheck(context);
   const allFulfillmentTypesArray = context.fulfillment?.registeredFulfillmentTypes;
-
-  if (!allFulfillmentTypesArray || allFulfillmentTypesArray.length === 0) {
-    Logger.warn(logCtx, "No fulfillment types available");
-    throw new ReactionError("not-configured", "No fulfillment types available");
-  }
-
   extendFulfillmentSchemas(context.simpleSchemas, allFulfillmentTypesArray);
 }

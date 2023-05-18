@@ -12,18 +12,18 @@ export default async function fulfillmentTypeUndecidedStartup(context) {
     const shopId = shop._id;
 
     const undecidedRecord = await Fulfillment.findOne({ fulfillmentType: "undecided", shopId });
-    if (!undecidedRecord) {
-      const groupInfo = {
-        name: "Undecided Group",
-        shopId,
-        provider: {
-          enabled: true,
-          label: "Undecided",
-          name: "undecided"
-        },
-        fulfillmentType: "undecided"
-      };
-      await context.mutations.createFulfillmentType(context.getInternalContext(), groupInfo);
-    }
+
+    if (undecidedRecord) return;
+    const fulfillmentTypeInfo = {
+      name: "Undecided Type",
+      shopId,
+      provider: {
+        enabled: true,
+        label: "Undecided",
+        name: "undecided"
+      },
+      fulfillmentType: "undecided"
+    };
+    await context.mutations.createFulfillmentType(context.getInternalContext(), fulfillmentTypeInfo);
   });
 }

@@ -42,16 +42,18 @@ export default async function addShipmentMethodToGroup(context, {
   const rates = await queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
   const errorResult = rates.find((option) => option.requestStatus === "error");
   if (errorResult) {
-    throw new ReactionError("invalid", errorResult.message);
+    const eventData = { field: "FulfillmentMethod", value: "Returned error" };
+    throw new ReactionError("invalid", errorResult.message, eventData);
   }
 
   const selectedFulfillmentMethod = rates.find((rate) => selectedFulfillmentMethodId === rate.method._id);
   if (!selectedFulfillmentMethod) {
+    const eventData = { field: "selectedFulfillmentMethodId", value: selectedFulfillmentMethodId };
     throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
-      " Fetch updated fulfillment options and try creating the order again with a valid method.");
+      " Fetch updated fulfillment options and try creating the order again with a valid method.", eventData);
   }
 
-  group.shipmentMethod = {
+  const output = {
     _id: selectedFulfillmentMethod.method._id,
     carrier: selectedFulfillmentMethod.method.carrier,
     currencyCode,
@@ -61,4 +63,9 @@ export default async function addShipmentMethodToGroup(context, {
     handling: selectedFulfillmentMethod.handlingPrice,
     rate: selectedFulfillmentMethod.rate
   };
+  // Include methodAdditionalData only if available
+  if (selectedFulfillmentMethod?.method?.methodAdditionalData) {
+    output.methodAdditionalData = selectedFulfillmentMethod.method.methodAdditionalData;
+  }
+  return output;
 }
