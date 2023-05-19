@@ -4,7 +4,7 @@ type Cart implements Node {
   _id: ID!
 
   "The Cart version"
-  cartVersion: Int
+  fulfillmentCartVersion: Int
 
   """
   The account that owns the cart. Some carts are created for anonymous users. Anonymous carts have a null account.

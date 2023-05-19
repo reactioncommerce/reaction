@@ -791,7 +791,7 @@ export const Cart = new SimpleSchema({
     type: String,
     optional: true
   },
-  "cartVersion": {
+  "fulfillmentCartVersion": {
     type: Number,
     optional: true
   },

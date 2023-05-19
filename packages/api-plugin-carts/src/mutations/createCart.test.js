@@ -84,7 +84,7 @@ test("creates an anonymous cart if no user is logged in", async () => {
   expect(result).toEqual({
     cart: {
       _id: jasmine.any(String),
-      cartVersion: 2,
+      fulfillmentCartVersion: 2,
       accountId: null,
       anonymousAccessToken: jasmine.any(String),
       currencyCode: "USD",

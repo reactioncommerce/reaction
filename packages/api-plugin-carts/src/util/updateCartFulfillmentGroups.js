@@ -81,7 +81,7 @@ export default async function updateCartFulfillmentGroups(context, cart) {
     let { selectedFulfillmentType } = item;
 
     if (!supportedFulfillmentTypes || supportedFulfillmentTypes.length === 0) {
-      if (!cart.cartVersion) {
+      if (!cart.fulfillmentCartVersion) {
         supportedFulfillmentTypes = ["shipping"]; // we use 'shipping' as default fulfillment type for old v1 carts (prior to fulfillment types)
       } else {
         throw new ReactionError("not-found", "Product does not have any supported FulfillmentTypes");
