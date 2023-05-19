@@ -49,6 +49,10 @@ export default async function buildOrderFulfillmentGroupFromInput(context, {
   if (Array.isArray(additionalItems) && additionalItems.length) {
     group.items.push(...additionalItems);
   }
+  if (cart && Array.isArray(cart.shipping)) {
+    const cartShipping = cart.shipping.find((shipping) => shipping.shipmentMethod?._id === selectedFulfillmentMethodId);
+    group.shipmentMethod = cartShipping?.shipmentMethod;
+  }
 
   // Add some more properties for convenience
   group.itemIds = group.items.map((item) => item._id);

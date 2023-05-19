@@ -39,7 +39,9 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
-        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
+        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes,
+        discount: fulfillmentGroup.shipmentMethod.discount || 0,
+        undiscountedRate: fulfillmentGroup.shipmentMethod.rate || 0
       },
       handlingPrice: {
         amount: fulfillmentGroup.shipmentMethod.handling || 0,
@@ -65,7 +67,8 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
     // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-    type: "shipping"
+    type: "shipping",
+    discounts: fulfillmentGroup.discounts || []
   };
 }
 

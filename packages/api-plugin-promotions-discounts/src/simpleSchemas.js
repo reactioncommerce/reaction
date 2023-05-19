@@ -16,7 +16,7 @@ const allowOperators = [
 export const ConditionRule = new SimpleSchema({
   "fact": {
     type: String,
-    allowedValues: ["cart", "item"]
+    allowedValues: ["cart", "item", "shipping"]
   },
   "operator": {
     type: String,
@@ -145,6 +145,10 @@ export const CartDiscount = new SimpleSchema({
     type: CartDiscountedItem
   },
   "neverStackWithOtherItemLevelDiscounts": {
+    type: Boolean,
+    defaultValue: true
+  },
+  "neverStackWithOtherShippingDiscounts": {
     type: Boolean,
     defaultValue: true
   }

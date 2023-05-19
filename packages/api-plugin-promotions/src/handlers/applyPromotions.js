@@ -2,6 +2,7 @@
 import { createRequire } from "module";
 import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
+import ReactionError from "@reactioncommerce/reaction-error";
 import _ from "lodash";
 import canBeApplied from "../utils/canBeApplied.js";
 import enhanceCart from "../utils/enhanceCart.js";
@@ -39,6 +40,26 @@ async function getImplicitPromotions(context, shopId, currentTime) {
   const promotions = await Promotions.find(selector).toArray();
 
   Logger.info({ ...logCtx, applicablePromotions: promotions.length }, "Fetched applicable promotions");
+  return promotions;
+}
+
+/**
+ * @summary get all explicit promotions by Ids
+ * @param {Object} context - The application context
+ * @param {String} shopId - The shop ID
+ * @param {Array<string>} promotionIds - The promotion IDs
+ * @returns {Promise<Array<Object>>} - An array of promotions
+ */
+async function getExplicitPromotionsByIds(context, shopId, promotionIds) {
+  const now = new Date();
+  const { collections: { Promotions } } = context;
+  const promotions = await Promotions.find({
+    _id: { $in: promotionIds },
+    shopId,
+    enabled: true,
+    triggerType: "explicit",
+    startDate: { $lt: now }
+  }).toArray();
   return promotions;
 }
 
@@ -95,9 +116,10 @@ export async function getCurrentTime(context, shopId) {
  * @summary apply promotions to a cart
  * @param {Object} context - The application context
  * @param {Object} cart - The cart to apply promotions to
+ * @param {Object} options - Options
  * @returns {Promise<Object>} - mutated cart
  */
-export default async function applyPromotions(context, cart) {
+export default async function applyPromotions(context, cart, options = { skipTemporaryPromotions: false }) {
   const currentTime = await getCurrentTime(context, cart.shopId);
   const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
   const { promotions: pluginPromotions, simpleSchemas: { Cart, CartPromotionItem } } = context;
@@ -106,11 +128,26 @@ export default async function applyPromotions(context, cart) {
   const actionHandleByKey = _.keyBy(pluginPromotions.actions, "key");
 
   const appliedPromotions = [];
-  const appliedExplicitPromotions = _.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]);
+  const appliedExplicitPromotionsIds = _.map(_.filter(cart.appliedPromotions || [], ["triggerType", "explicit"]), "_id");
+  const explicitPromotions = await getExplicitPromotionsByIds(context, cart.shopId, appliedExplicitPromotionsIds);
 
   const cartMessages = cart.messages || [];
 
-  const unqualifiedPromotions = promotions.concat(appliedExplicitPromotions);
+  const unqualifiedPromotions = promotions.concat(_.map(explicitPromotions, (promotion) => {
+    const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
+    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon || undefined;
+    if (typeof existsPromotion?.newlyAdded !== "undefined") promotion.newlyAdded = existsPromotion.newlyAdded;
+    return promotion;
+  }));
+
+  const newlyAddedPromotionId = _.find(unqualifiedPromotions, "newlyAdded")?._id;
+
+  // sort to move shipping discounts to the end
+  unqualifiedPromotions.sort((promA, promB) => {
+    if (_.some(promA.actions, (action) => action.actionParameters.discountType === "shipping")) return 1;
+    if (_.some(promB.actions, (action) => action.actionParameters.discountType === "shipping")) return -1;
+    return 0;
+  });
 
   for (const { cleanup } of pluginPromotions.actions) {
     cleanup && await cleanup(context, cart);
@@ -191,18 +228,20 @@ export default async function applyPromotions(context, cart) {
       }
 
       let affected = false;
+      let temporaryAffected = false;
       let rejectedReason;
       for (const action of promotion.actions) {
         const actionFn = actionHandleByKey[action.actionKey];
         if (!actionFn) continue;
 
         const result = await actionFn.handler(context, enhancedCart, { promotion, ...action });
-        ({ affected, reason: rejectedReason } = result);
+        ({ affected, temporaryAffected, reason: rejectedReason } = result);
         enhancedCart = enhanceCart(context, pluginPromotions.enhancers, enhancedCart);
       }
 
-      if (affected) {
+      if (affected || (!options.skipTemporaryPromotions && temporaryAffected)) {
         const affectedPromotion = _.cloneDeep(promotion);
+        affectedPromotion.isTemporary = !affected && temporaryAffected;
         CartPromotionItem.clean(affectedPromotion);
         appliedPromotions.push(affectedPromotion);
         continue;
@@ -223,7 +262,13 @@ export default async function applyPromotions(context, cart) {
     }
   }
 
-  enhancedCart.appliedPromotions = appliedPromotions;
+  // If a explicit promotion was just applied, throw an error so that the client can display the message
+  if (newlyAddedPromotionId) {
+    const message = _.find(cartMessages, ({ metaFields }) => metaFields.promotionId === newlyAddedPromotionId);
+    if (message) throw new ReactionError("invalid-params", message.message);
+  }
+
+  enhancedCart.appliedPromotions = _.map(appliedPromotions, (promotion) => _.omit(promotion, "newlyAdded"));
 
   // Remove messages that are no longer relevant
   const cleanedMessages = _.filter(cartMessages, (message) => {

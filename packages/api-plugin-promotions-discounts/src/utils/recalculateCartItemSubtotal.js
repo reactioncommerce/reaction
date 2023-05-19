@@ -1,3 +1,4 @@
+import calculateDiscountAmount from "./calculateDiscountAmount.js";
 import formatMoney from "./formatMoney.js";
 
 /**
@@ -20,7 +21,7 @@ export default function recalculateCartItemSubtotal(context, item) {
       if (typeof discountMaxUnits === "number" && discountMaxUnits > 0 && discountMaxUnits < item.quantity) {
         const pricePerUnit = item.subtotal.amount / item.quantity;
         const amountCanBeDiscounted = pricePerUnit * discountMaxUnits;
-        const maxUnitsDiscountedAmount = calculationMethod(discountValue, amountCanBeDiscounted);
+        const maxUnitsDiscountedAmount = calculateDiscountAmount(context, amountCanBeDiscounted, discount);
         return formatMoney(maxUnitsDiscountedAmount + (item.subtotal.amount - amountCanBeDiscounted));
       }
       return formatMoney(calculationMethod(discountValue, item.subtotal.amount));

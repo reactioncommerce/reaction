@@ -34,7 +34,8 @@ test("should return correct cart total discount when cart has no discounts", asy
         },
         discounts: []
       }
-    ]
+    ],
+    shipping: []
   };
 
   const results = await getDiscountsTotalForCart(mockContext, cart);

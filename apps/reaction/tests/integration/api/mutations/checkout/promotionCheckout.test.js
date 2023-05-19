@@ -96,10 +96,10 @@ describe("Promotions", () => {
     region: "CA"
   };
 
-  const removeAllPromotions = async () => {
-    await testApp.setLoggedInUser(mockAdminAccount);
-    await testApp.collections.Promotions.remove({});
-    await testApp.clearLoggedInUser();
+  const cleanup = async () => {
+    await testApp.collections.Promotions.deleteMany();
+    await testApp.collections.Orders.deleteMany();
+    await testApp.collections.Cart.deleteMany();
   };
 
   const createTestPromotion = (overlay = {}) => {
@@ -253,7 +253,7 @@ describe("Promotions", () => {
 
   describe("when a promotion is applied to an order with fixed promotion", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     createTestPromotion();
@@ -277,7 +277,7 @@ describe("Promotions", () => {
 
   describe("when a promotion is applied to an order percentage discount", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     createTestPromotion({
@@ -321,7 +321,7 @@ describe("Promotions", () => {
 
   describe("when a promotion applied via inclusion criteria", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
@@ -401,7 +401,7 @@ describe("Promotions", () => {
 
   describe("when a promotion isn't applied via inclusion criteria", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
@@ -442,7 +442,7 @@ describe("Promotions", () => {
 
   describe("when a promotion isn't applied by exclusion criteria", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     const triggerParameters = { ...fixedDiscountPromotion.triggers[0].triggerParameters };
@@ -500,7 +500,7 @@ describe("Promotions", () => {
 
   describe("cart shouldn't contains any promotion when qualified promotion is change to disabled", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     createTestPromotion();
@@ -534,13 +534,13 @@ describe("Promotions", () => {
       expect(cart.appliedPromotions).toHaveLength(0);
       expect(cart.messages).toHaveLength(1);
 
-      await removeAllPromotions();
+      await cleanup();
     });
   });
 
   describe("cart applied promotion with 10% but max discount is $20", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     createTestPromotion({
@@ -599,7 +599,7 @@ describe("Promotions", () => {
 
   describe("Stackability: shouldn't stack with other promotion when stackability is none", () => {
     afterAll(async () => {
-      await removeAllPromotions();
+      await cleanup();
     });
 
     createTestPromotion();
@@ -618,6 +618,10 @@ describe("Promotions", () => {
   });
 
   describe("Stackability: should applied with other promotions when stackability is all", () => {
+    afterAll(async () => {
+      await cleanup();
+    });
+
     createTestPromotion();
     createTestPromotion();
     createTestCart({ quantity: 20 });
@@ -626,6 +630,95 @@ describe("Promotions", () => {
       const cartId = decodeOpaqueIdForNamespace("reaction/cart")(opaqueCartId);
       const cart = await testApp.collections.Cart.findOne({ _id: cartId });
       expect(cart.appliedPromotions).toHaveLength(2);
+    });
+  });
+
+  describe("apply with single shipping promotion", () => {
+    afterAll(async () => {
+      await cleanup();
+    });
+
+    createTestPromotion({
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "shipping",
+            discountCalculationType: "percentage",
+            discountValue: 50
+          }
+        }
+      ]
+    });
+
+    createCartAndPlaceOrder({ quantity: 6 });
+
+    test("placed order get the correct values", async () => {
+      const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
+      const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
+      expect(newOrder.shipping[0].invoice.total).toEqual(121.94);
+      expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
+      expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(2);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.5);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.5);
+      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
+
+      expect(newOrder.shipping[0].items[0].quantity).toEqual(6);
+
+      expect(newOrder.appliedPromotions[0]._id).toEqual(mockPromotion._id);
+      expect(newOrder.discounts).toHaveLength(1);
+    });
+  });
+
+  describe("apply with two shipping promotions", () => {
+    beforeAll(async () => {
+      await cleanup();
+    });
+
+    createTestPromotion({
+      label: "shipping promotion 1",
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "shipping",
+            discountCalculationType: "percentage",
+            discountValue: 50
+          }
+        }
+      ]
+    });
+
+    createTestPromotion({
+      label: "shipping promotion 2",
+      actions: [
+        {
+          actionKey: "discounts",
+          actionParameters: {
+            discountType: "shipping",
+            discountCalculationType: "percentage",
+            discountValue: 10
+          }
+        }
+      ]
+    });
+
+    createCartAndPlaceOrder({ quantity: 6 });
+
+    test("placed order get the correct values", async () => {
+      const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
+      const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
+      expect(newOrder.shipping[0].invoice.total).toEqual(121.89);
+      expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
+      expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(1.95);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.55);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.45);
+      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
+
+      expect(newOrder.appliedPromotions).toHaveLength(2);
+      expect(newOrder.discounts).toHaveLength(2);
     });
   });
 });
