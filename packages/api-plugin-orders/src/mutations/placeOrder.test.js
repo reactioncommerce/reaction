@@ -54,6 +54,11 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
     availablePaymentMethods: ["PAYMENT1"]
   }]);
 
+  mockContext.queries.getDiscountsTotalForCart = jest.fn().mockName("getDiscountsTotalForCart").mockReturnValueOnce({
+    discounts: [],
+    total: 0
+  });
+
   const orderInput = Factory.orderInputSchema.makeOne({
     billingAddress: null,
     cartId: null,
@@ -155,7 +160,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
         },
         shopId: orderInput.shopId,
         totalItemQuantity: 1,
-        type: "shipping",
+        type: "mockType",
         workflow: {
           status: "new",
           workflow: [

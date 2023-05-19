@@ -75,6 +75,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     total: null
   };
   let fulfillmentMethodId;
+  let methodAdditionalData;
 
   if (shipmentMethod) {
     fulfillmentPrices = {
@@ -93,6 +94,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     };
 
     fulfillmentMethodId = shipmentMethod._id;
+    methodAdditionalData = shipmentMethod.methodAdditionalData || { gqlType: "emptyData", emptyData: false };
   }
 
   // TODO: In the future, we should update this with a discounts update
@@ -138,6 +140,7 @@ export default async function xformCartGroupToCommonOrder(cart, group, context) 
     fulfillmentMethodId,
     fulfillmentPrices,
     fulfillmentType,
+    methodAdditionalData,
     items,
     orderId: null,
     originAddress: (shop && Array.isArray(shop.addressBook) && shop.addressBook[0]) || null,

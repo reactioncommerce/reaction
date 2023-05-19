@@ -1,0 +1,23 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "معدل",
+          "confirmRateDelete": "حذف معدل؟",
+          "rateSaved": "معدل ثابت حفظها.",
+          "rateFailed": "فشل تحديث معدل ثابت.",
+          "noRatesFound": "لم يتم العثور على أسعار الفائدة."
+        },
+        "shippingGrid": {
+          "name": "اسم",
+          "group": "مجموعة",
+          "rate": "معدل",
+          "label": "ملصق"
+        }
+      }
+    }
+  }
+}]
