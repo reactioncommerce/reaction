@@ -14,7 +14,15 @@ export default async (app) => {
   if (accountsServer && accountsGraphQL) {
     return { accountsServer, accountsGraphQL };
   }
-  const { MONGO_URL, PASSWORD_RESET_PATH_FRAGMENT, STORE_URL, TOKEN_SECRET } = config;
+  const {
+    ACCOUNTS_JS_RETURN_TOKENS_AFTER_RESET_PASSWORD,
+    ACCOUNTS_JS_ACCESS_TOKEN_EXPIRES_IN,
+    ACCOUNTS_JS_REFRESH_TOKEN_EXPIRES_IN,
+    MONGO_URL,
+    PASSWORD_RESET_PATH_FRAGMENT,
+    STORE_URL,
+    TOKEN_SECRET
+  } = config;
   const { context } = app;
 
   const client = await mongoConnectWithRetry(MONGO_URL);
@@ -26,12 +34,22 @@ export default async (app) => {
     idProvider: () => mongoose.Types.ObjectId().toString()
   });
 
-  const password = new AccountsPassword();
+  const password = new AccountsPassword({
+    returnTokensAfterResetPassword: ACCOUNTS_JS_RETURN_TOKENS_AFTER_RESET_PASSWORD
+  });
 
   accountsServer = new AccountsServer(
     {
       siteUrl: STORE_URL,
       tokenSecret: TOKEN_SECRET,
+      tokenConfigs: {
+        accessToken: {
+          expiresIn: ACCOUNTS_JS_ACCESS_TOKEN_EXPIRES_IN
+        },
+        refreshToken: {
+          expiresIn: ACCOUNTS_JS_REFRESH_TOKEN_EXPIRES_IN
+        }
+      },
       db: accountsMongo,
       enableAutologin: true,
       ambiguousErrorMessages: false,
