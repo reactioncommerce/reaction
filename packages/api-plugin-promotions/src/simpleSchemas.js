@@ -64,6 +64,10 @@ export const Promotion = new SimpleSchema({
     type: String,
     allowedValues: ["implicit", "explicit"]
   },
+  "promotionType": {
+    type: String, // this is the key to the promotion type object
+    allowedValues: promotionTypeKeys
+  },
   "referenceId": {
     type: SimpleSchema.Integer
   },

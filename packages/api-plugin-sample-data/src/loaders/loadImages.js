@@ -2,7 +2,6 @@
 /* eslint-disable no-await-in-loop */
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import { Readable } from "stream";
 import pkg from "@reactioncommerce/file-collections";
 
@@ -107,8 +106,8 @@ export default async function loadImages(context, shopId) {
 
   const topProdIds = [];
   const fileType = "image/jpeg";
-  const currentDir = path.dirname(fileURLToPath(import.meta.url));
-  const folderPath = path.join(currentDir, "../images/");
+  const folderPath = "../../packages/api-plugin-sample-data/src/images/";
+
   let fileList = [];
   try {
     fileList = fs.readdirSync(folderPath);

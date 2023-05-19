@@ -472,6 +472,21 @@ input CartUpdatedInput {
   cartToken: String
 }
 
+"Input for the `acknowledgeCartMessage` mutation call"
+input AcknowledgeCartMessageInput {
+  "The cart ID"
+  cartId: ID!,
+
+  "The message to acknowledge"
+  messageId: String!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The cart anonymous token"
+  cartToken: String
+}
+
 ####################
 # Payloads
 # These types are used as return values for mutation calls

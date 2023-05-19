@@ -59,7 +59,7 @@ export default function requestRange(headers, fileSize) {
   if (String(startByte) !== start) startByte = 0;
   if ((String(endByte) !== end) || endByte === 0) endByte = fileSize - 1;
 
-  if (startByte >= endByte || endByte >= fileSize) {
+  if (start >= end) {
     return {
       errorCode: 416,
       errorMessage: "Requested Range Not Satisfiable"
@@ -68,11 +68,11 @@ export default function requestRange(headers, fileSize) {
 
   const partSize = (endByte - startByte) + 1;
   return {
-    end: endByte,
+    end,
     len: partSize,
     partial: (partSize < fileSize),
     size: fileSize,
-    start: startByte,
+    start,
     unit
   };
 }

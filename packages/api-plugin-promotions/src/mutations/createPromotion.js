@@ -12,6 +12,17 @@ import validateTriggerParams from "./validateTriggerParams.js";
 export default async function createPromotion(context, promotion) {
   const { collections: { Promotions }, simpleSchemas: { Promotion: PromotionSchema }, promotions } = context;
   promotion._id = Random.id();
+  const now = new Date();
+  if (promotion.triggers && promotion.triggers.length) { // if there are no triggers, this is an error, but we'll let schema validation catch it
+    const [firstTrigger] = promotion.triggers; // currently support only one trigger
+    const { triggerKey } = firstTrigger;
+    const trigger = promotions.triggers.find((tr) => tr.key === triggerKey);
+    if (!trigger) throw new ReactionError("invalid-params", `No trigger found with key ${triggerKey}`);
+    promotion.triggerType = trigger.type;
+  }
+  promotion.state = "created";
+  promotion.createdAt = now;
+  promotion.updatedAt = now;
   promotion.referenceId = await context.mutations.incrementSequence(context, promotion.shopId, "Promotions");
 
   PromotionSchema.validate(promotion);
