@@ -39,5 +39,6 @@
   "promotionsCoupons": "@reactioncommerce/api-plugin-promotions-coupons",
   "promotionsDiscounts": "@reactioncommerce/api-plugin-promotions-discounts",
   "promotionsOffers": "@reactioncommerce/api-plugin-promotions-offers",
-  "bullJobQueue": "@reactioncommerce/api-plugin-bull-queue"
+  "bullJobQueue": "@reactioncommerce/api-plugin-bull-queue",
+  "location": "@reactioncommerce/api-plugin-location"
 }
