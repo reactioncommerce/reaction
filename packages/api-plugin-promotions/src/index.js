@@ -10,6 +10,7 @@ import queries from "./queries/index.js";
 import qualifiers from "./qualifiers/index.js";
 import stackabilities from "./stackabilities/index.js";
 import resolvers from "./resolvers/index.js";
+import utils from "./utils/index.js";
 import applyPromotions from "./handlers/applyPromotions.js";
 import startupPromotions from "./startup.js";
 import registerOffersHandlers from "./handlers/registerHandlers.js";
@@ -70,7 +71,8 @@ export default async function register(app) {
       actions,
       qualifiers,
       stackabilities,
-      promotionTypes
+      promotionTypes,
+      utils
     },
     sequenceConfigs: [
       {

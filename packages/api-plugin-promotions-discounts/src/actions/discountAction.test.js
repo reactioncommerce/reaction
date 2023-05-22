@@ -27,6 +27,7 @@ test("should call discount item function when discountType parameters is item", 
       discountType: "item"
     }
   };
+  applyItemDiscountToCart.mockReturnValueOnce({ cart: "cart", affected: "affected", reason: "reason" });
   discountAction.handler(context, cart, params);
   expect(applyItemDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });
@@ -40,6 +41,7 @@ test("should call discount order function when discountType parameters is order"
       discountType: "order"
     }
   };
+  applyOrderDiscountToCart.mockReturnValueOnce({ cart: "cart", affected: "affected", reason: "reason" });
   discountAction.handler(context, cart, params);
   expect(applyOrderDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });
@@ -53,6 +55,7 @@ test("should call discount shipping function when discountType parameters is shi
       discountType: "shipping"
     }
   };
+  applyShippingDiscountToCart.mockReturnValueOnce({ cart: "cart", affected: "affected", reason: "reason" });
   discountAction.handler(context, cart, params);
   expect(applyShippingDiscountToCart).toHaveBeenCalledWith(context, params, cart);
 });

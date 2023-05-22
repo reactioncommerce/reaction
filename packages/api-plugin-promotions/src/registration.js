@@ -58,7 +58,12 @@ const PromotionsDeclaration = new SimpleSchema({
     type: PromotionType
   },
   "allowOperators": Array,
-  "allowOperators.$": String
+  "allowOperators.$": String,
+  "getApplicablePromotions": Function,
+  "utils": {
+    type: Object,
+    blackbox: true
+  }
 });
 
 export const promotions = {
@@ -70,18 +75,9 @@ export const promotions = {
   qualifiers: [],
   promotionTypes: [],
   stackabilities: [],
-  allowOperators: [
-    "equal",
-    "notEqual",
-    "lessThan",
-    "lessThanInclusive",
-    "greaterThan",
-    "greaterThanInclusive",
-    "in",
-    "notIn",
-    "contains",
-    "doesNotContain"
-  ]
+  getApplicablePromotions: () => {},
+  allowOperators: ["equal", "notEqual", "lessThan", "lessThanInclusive", "greaterThan", "greaterThanInclusive", "in", "notIn", "contains", "doesNotContain"],
+  utils: {}
 };
 
 /**
@@ -91,7 +87,8 @@ export const promotions = {
  */
 export function registerPluginHandlerForPromotions({ promotions: pluginPromotions }) {
   if (pluginPromotions) {
-    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers, stackabilities, promotionTypes } = pluginPromotions;
+    const { triggers, actions, enhancers, schemaExtensions, operators, qualifiers, stackabilities, promotionTypes, getApplicablePromotions, utils } =
+      pluginPromotions;
     if (triggers) {
       promotions.triggers = _.uniqBy(promotions.triggers.concat(triggers), "key");
     }
@@ -115,6 +112,12 @@ export function registerPluginHandlerForPromotions({ promotions: pluginPromotion
     }
     if (promotionTypes) {
       promotions.promotionTypes = promotions.promotionTypes.concat(promotionTypes);
+    }
+    if (getApplicablePromotions) {
+      promotions.getApplicablePromotions = getApplicablePromotions;
+    }
+    if (utils) {
+      promotions.utils = { ...promotions.utils, ...utils };
     }
   }
   PromotionsDeclaration.validate(promotions);
