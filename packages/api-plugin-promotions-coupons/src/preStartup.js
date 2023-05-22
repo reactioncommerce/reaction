@@ -38,6 +38,7 @@ export default async function preStartupPromotionCoupon(context) {
   });
 
   const setToExpectedIfMissing = async () => {
+    if (!context.collections.Discounts) return true;
     const anyDiscount = await context.collections.Discounts.findOne();
     return !anyDiscount;
   };
