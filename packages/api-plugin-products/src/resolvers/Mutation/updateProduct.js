@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -23,14 +24,14 @@ export default async function updateProduct(_, { input }, context) {
   } = input;
 
   if (Array.isArray(productInput.tagIds)) {
-    productInput.hashtags = productInput.tagIds.map(decodeTagOpaqueId);
+    productInput.hashtags = productInput.tagIds.map((tagId) => (isOpaqueId(tagId) ? decodeTagOpaqueId(tagId) : tagId));
     delete productInput.tagIds;
   }
 
   const updatedProduct = await context.mutations.updateProduct(context, {
     product: productInput,
-    productId: decodeProductOpaqueId(productId),
-    shopId: decodeShopOpaqueId(shopId)
+    productId: isOpaqueId(productId) ? decodeProductOpaqueId(productId) : productId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 
   return {

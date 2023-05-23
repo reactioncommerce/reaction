@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,10 +20,10 @@ export default async function cloneProductVariants(_, { input }, context) {
     variantIds
   } = input;
 
-  const decodedVariantIds = variantIds.map((variantId) => decodeProductOpaqueId(variantId));
+  const decodedVariantIds = variantIds.map((variantId) => (isOpaqueId(variantId) ? decodeProductOpaqueId(variantId) : variantId));
 
   const clonedVariants = await context.mutations.cloneProductVariants(context, {
-    shopId: decodeShopOpaqueId(shopId),
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId,
     variantIds: decodedVariantIds
   });
 

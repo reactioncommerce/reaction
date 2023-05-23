@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -23,7 +24,7 @@ export default async function reconcileCarts(parentResult, { input }, context) {
   } = input;
 
   const { cart } = await context.mutations.reconcileCarts(context, {
-    anonymousCartId: decodeCartOpaqueId(opaqueAnonymousCartId),
+    anonymousCartId: isOpaqueId(opaqueAnonymousCartId) ? decodeCartOpaqueId(opaqueAnonymousCartId) : opaqueAnonymousCartId,
     cartToken,
     mode
   });

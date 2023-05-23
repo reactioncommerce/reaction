@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,8 +21,8 @@ export default async function removeTag(parentResult, { input }, context) {
     shopId: opaqueShopId
   } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const tagId = decodeTagOpaqueId(opaqueTagId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const tagId = isOpaqueId(opaqueTagId) ? decodeTagOpaqueId(opaqueTagId) : opaqueTagId;
 
   const tag = await context.mutations.removeTag(context, {
     shopId,

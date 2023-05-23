@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,8 +19,8 @@ export default async function flatRateFulfillmentMethod(_, args, context) {
     shopId: opaqueShopId
   } = args;
 
-  const methodId = decodeFulfillmentMethodOpaqueId(opaqueMethodId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const methodId = isOpaqueId(opaqueMethodId) ? decodeFulfillmentMethodOpaqueId(opaqueMethodId) : opaqueMethodId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   return context.queries.flatRateFulfillmentMethod(context, {
     methodId,

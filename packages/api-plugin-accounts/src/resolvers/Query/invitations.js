@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function invitations(_, args, context, info) {
   let shopIds;
 
   if (Array.isArray(encodedShopIds) && encodedShopIds.length > 0) {
-    shopIds = encodedShopIds.map((shopId) => decodeShopOpaqueId(shopId));
+    shopIds = encodedShopIds.map((shopId) => (isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId));
   }
 
   const query = await context.queries.invitations(context, { shopIds });

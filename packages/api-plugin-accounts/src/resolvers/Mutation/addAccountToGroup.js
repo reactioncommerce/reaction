@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,8 +17,8 @@ import { decodeAccountOpaqueId, decodeGroupOpaqueId } from "../../xforms/id.js";
 export default async function addAccountToGroup(parentResult, { input }, context) {
   const { accountId: opaqueAccountId, groupId: opaqueGroupId, clientMutationId = null } = input;
 
-  const accountId = decodeAccountOpaqueId(opaqueAccountId);
-  const groupId = decodeGroupOpaqueId(opaqueGroupId);
+  const accountId = isOpaqueId(opaqueAccountId) ? decodeAccountOpaqueId(opaqueAccountId) : opaqueAccountId;
+  const groupId = isOpaqueId(opaqueGroupId) ? decodeGroupOpaqueId(opaqueGroupId) : opaqueGroupId;
 
   const group = await context.mutations.addAccountToGroup(context, {
     accountId,

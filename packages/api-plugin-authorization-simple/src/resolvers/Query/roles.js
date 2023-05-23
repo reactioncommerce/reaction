@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -13,7 +14,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  */
 export default async function roles(_, { shopId, ...connectionArgs }, context, info) {
   // Transform ID from base64
-  const dbShopId = decodeShopOpaqueId(shopId);
+  const dbShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
 
   const query = await context.queries.roles(context, dbShopId);
 

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 import deleteFlatRateFulfillmentMethodMutation from "../../mutations/deleteFlatRateFulfillmentMethod.js";
 
@@ -17,8 +18,8 @@ import deleteFlatRateFulfillmentMethodMutation from "../../mutations/deleteFlatR
 export default async function deleteFlatRateFulfillmentMethod(parentResult, { input }, context) {
   const { clientMutationId = null, methodId: opaqueMethodId, shopId: opaqueShopId } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const methodId = decodeFulfillmentMethodOpaqueId(opaqueMethodId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const methodId = isOpaqueId(opaqueMethodId) ? decodeFulfillmentMethodOpaqueId(opaqueMethodId) : opaqueMethodId;
 
   const { method } = await deleteFlatRateFulfillmentMethodMutation(context, {
     methodId,

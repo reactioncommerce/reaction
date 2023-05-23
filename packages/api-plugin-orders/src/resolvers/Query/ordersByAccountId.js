@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,10 +20,10 @@ import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 export default async function ordersByAccountId(parentResult, args, context, info) {
   const { accountId, orderStatus, shopIds: opaqueShopIds, ...connectionArgs } = args;
 
-  const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
+  const shopIds = opaqueShopIds && opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
 
   const query = await context.queries.ordersByAccountId(context, {
-    accountId: decodeAccountOpaqueId(accountId),
+    accountId: isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId,
     orderStatus,
     shopIds
   });

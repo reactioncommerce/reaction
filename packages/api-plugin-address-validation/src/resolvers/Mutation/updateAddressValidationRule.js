@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAddressValidationRuleOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,8 +20,8 @@ export default async function updateAddressValidationRule(parentResult, { input 
     ...otherInput
   } = input;
 
-  const _id = decodeAddressValidationRuleOpaqueId(opaqueRuleId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const _id = isOpaqueId(opaqueRuleId) ? decodeAddressValidationRuleOpaqueId(opaqueRuleId) : opaqueRuleId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const addressValidationRule = await context.mutations.updateAddressValidationRule(context, {
     ...otherInput,
