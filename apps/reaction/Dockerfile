@@ -1,7 +1,7 @@
 # Dockerfile for production builds
 # syntax=docker/dockerfile:1.4
 
-FROM node:14.20.0-alpine as deps
+FROM node:18.10.0-alpine as deps
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add bash less curl make g++ glib
@@ -17,7 +17,7 @@ RUN pnpm --filter=reaction --prod deploy deps --ignore-scripts
 # hadolint ignore=DL3003,SC2015
 RUN cd deps/node_modules/sharp && npm run install
 
-FROM node:14.20.0-alpine
+FROM node:18.10.0-alpine
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add bash less tini vim curl

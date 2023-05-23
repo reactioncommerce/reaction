@@ -1,7 +1,7 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import queries from "./queries/index.js";
 import { registerPluginHandlerForAddress } from "./registration.js";
 import resolvers from "./resolvers/index.js";

@@ -8,7 +8,7 @@ import pkg from "@reactioncommerce/file-collections";
 
 const { FileRecord } = pkg;
 import Logger from "@reactioncommerce/logger";
-import ProductsData from "../json-data/Products.json";
+import ProductsData from "../json-data/Products.json" assert { type: "json" };
 
 
 /**

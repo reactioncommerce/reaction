@@ -1,7 +1,7 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import getSurcharges from "./getSurcharges.js";
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
