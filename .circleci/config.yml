@@ -10,7 +10,7 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: cimg/node:14.20.0
+    - image: cimg/node:18.10.0
 
 install_pnpm: &install_pnpm
   - run:
@@ -91,12 +91,14 @@ jobs:
       - <<: *pnpm_install
       - run:
           name: Test Unit
+          no_output_timeout: 30m
           command: pnpm test
+    resource_class: large
 
   test-integration-query:
     <<: *defaults
     docker:
-      - image: cimg/node:14.20.0
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -119,11 +121,12 @@ jobs:
             sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:query
+    resource_class: large
 
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: cimg/node:14.20.0
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
@@ -146,6 +149,7 @@ jobs:
             sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:mutation
+    resource_class: large
 
   release:
     <<: *defaults
@@ -167,8 +171,8 @@ jobs:
       - run:
           name: Check should build new image
           command: |
-            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-            if curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REPOSITORY}/tags/${VERSION}/ > /dev/null; then
+            head_commit=$(git log -1 --oneline | grep -m 1 releases)
+            if [[ $head_commit != *"/releases/docker-image"* ]]; then
               circleci-agent step halt
             fi
       - run:
@@ -260,4 +264,9 @@ workflows:
               only:
                 - trunk
           requires:
-            - release
+            - dockerfile-lint
+            - eslint
+            - graphql-lint
+            - test-unit
+            - test-integration-query
+            - test-integration-mutation

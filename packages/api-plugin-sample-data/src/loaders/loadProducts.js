@@ -1,6 +1,6 @@
 import Logger from "@reactioncommerce/logger";
-import ProductData from "../json-data/Products.json";
-import TagProductMappingData from "../json-data/TagProductMapping.json";
+import ProductData from "../json-data/Products.json" assert { type: "json" };
+import TagProductMappingData from "../json-data/TagProductMapping.json" assert { type: "json" };
 
 const now = new Date();
 

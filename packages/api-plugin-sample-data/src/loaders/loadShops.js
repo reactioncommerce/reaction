@@ -1,5 +1,5 @@
 import Logger from "@reactioncommerce/logger";
-import ShopsData from "../json-data/Shops.json";
+import ShopsData from "../json-data/Shops.json" assert { type: "json" };
 
 
 /**

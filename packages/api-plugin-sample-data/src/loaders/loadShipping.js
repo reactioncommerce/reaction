@@ -1,4 +1,4 @@
-import ShippingMethodData from "../json-data/ShippingMethod.json";
+import ShippingMethodData from "../json-data/ShippingMethod.json" assert { type: "json" };
 
 /**
  * @summary load a single Shipping entry
