@@ -1,4 +1,4 @@
-import en from "./en.json";
+import en from "./en.json" assert { type: "json" };
 
 //
 // we want all the files in individual

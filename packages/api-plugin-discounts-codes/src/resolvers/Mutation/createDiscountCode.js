@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function createDiscountCode(parentResult, { input }, contex
     discountCode: discountCodeInput
   } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const discountCode = await context.mutations.createDiscountCode(context, {
     shopId,

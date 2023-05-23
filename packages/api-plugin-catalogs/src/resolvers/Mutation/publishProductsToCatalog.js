@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,6 +13,6 @@ import { decodeProductOpaqueId } from "../../xforms/id.js";
  */
 export default async function publishProductsToCatalog(_, args, context) {
   const { productIds } = args;
-  const internalProductIds = productIds.map(decodeProductOpaqueId);
+  const internalProductIds = productIds.map((productId) => (isOpaqueId(productId) ? decodeProductOpaqueId(productId) : productId));
   return context.mutations.publishProducts(context, internalProductIds);
 }

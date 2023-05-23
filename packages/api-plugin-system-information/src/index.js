@@ -1,5 +1,5 @@
-import pkg from "../package.json";
-import policies from "./policies.json";
+import pkg from "../package.json" assert { type: "json" };
+import policies from "./policies.json" assert { type: "json" };
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";

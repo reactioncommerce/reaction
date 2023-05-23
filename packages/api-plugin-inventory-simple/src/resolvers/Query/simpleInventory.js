@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 
 const decodeProductOpaqueId = decodeOpaqueIdForNamespace("reaction/product");
@@ -16,9 +17,11 @@ const decodeShopOpaqueId = decodeOpaqueIdForNamespace("reaction/shop");
 export default async function simpleInventory(_, args, context) {
   const { productConfiguration, shopId: opaqueShopId } = args;
 
-  const productId = decodeProductOpaqueId(productConfiguration.productId);
-  const productVariantId = decodeProductOpaqueId(productConfiguration.productVariantId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const productId = isOpaqueId(productConfiguration.productId) ?
+    decodeProductOpaqueId(productConfiguration.productId) : productConfiguration.productId;
+  const productVariantId = isOpaqueId(productConfiguration.productVariantId) ?
+    decodeProductOpaqueId(productConfiguration.productVariantId) : productConfiguration.productVariantId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   return context.queries.simpleInventory(context, {
     productConfiguration: {

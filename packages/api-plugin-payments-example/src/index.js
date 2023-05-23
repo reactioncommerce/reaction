@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import i18n from "./i18n/index.js";
 import schemas from "./schemas/index.js";
 import exampleCapturePayment from "./util/exampleCapturePayment.js";

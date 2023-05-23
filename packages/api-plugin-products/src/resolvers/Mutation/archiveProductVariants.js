@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,14 +20,14 @@ export default async function archiveProductVariants(_, { input }, context) {
     variantIds
   } = input;
 
-  const decodedVariantIds = variantIds.map((variantId) => decodeProductOpaqueId(variantId));
+  const decodedVariantIds = variantIds.map((variantId) => (isOpaqueId(variantId) ? decodeProductOpaqueId(variantId) : variantId));
 
   // This `archiveProductVariants` resolver calls the `archiveProducts` mutation
   // as we don't have the need to separate this into `archiveProductVariants` at this time.
   // In the future, we can create a `archiveProductVariants` mutation if needed.
   const archivedVariants = await context.mutations.archiveProducts(context, {
     productIds: decodedVariantIds,
-    shopId: decodeShopOpaqueId(shopId)
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 
   return {

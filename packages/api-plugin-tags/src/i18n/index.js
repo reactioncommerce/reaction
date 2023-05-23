@@ -1,6 +1,6 @@
-import en from "./en.json";
-import es from "./es.json";
-import pt from "./pt.json";
+import en from "./en.json" assert { type: "json" };
+import es from "./es.json" assert { type: "json" };
+import pt from "./pt.json" assert { type: "json" };
 
 //
 // we want all the files in individual

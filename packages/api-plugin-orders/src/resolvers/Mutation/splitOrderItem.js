@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import {
   decodeOrderItemOpaqueId,
   decodeOrderOpaqueId
@@ -28,8 +29,8 @@ export default async function splitOrderItem(parentResult, { input }, context) {
 
   const { newItemId, order } = await context.mutations.splitOrderItem(context, {
     newItemQuantity,
-    itemId: decodeOrderItemOpaqueId(itemId),
-    orderId: decodeOrderOpaqueId(orderId)
+    itemId: isOpaqueId(itemId) ? decodeOrderItemOpaqueId(itemId) : itemId,
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId
   });
 
   return {

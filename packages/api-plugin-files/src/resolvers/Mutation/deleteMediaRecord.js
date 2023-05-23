@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,8 +21,8 @@ export default async function deleteMediaRecord(parentResult, { input }, context
   } = input;
 
   const mediaRecord = await context.mutations.deleteMediaRecord(context, {
-    mediaRecordId: decodeMediaRecordOpaqueId(opaqueMediaRecordId),
-    shopId: decodeShopOpaqueId(opaqueShopId)
+    mediaRecordId: isOpaqueId(opaqueMediaRecordId) ? decodeMediaRecordOpaqueId(opaqueMediaRecordId) : opaqueMediaRecordId,
+    shopId: isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId
   });
 
   return {

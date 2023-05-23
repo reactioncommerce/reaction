@@ -1,6 +1,6 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";

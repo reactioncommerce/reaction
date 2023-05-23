@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,8 +19,8 @@ export default async function updateAdminUIAccess(parentResult, { input = {} }, 
     shopIds: opaqueShopIds
   } = input;
 
-  const accountIds = opaqueAccountIds.map((opaqueAccountId) => decodeAccountOpaqueId(opaqueAccountId));
-  const shopIds = opaqueShopIds.map((opaqueShopId) => decodeShopOpaqueId(opaqueShopId));
+  const accountIds = opaqueAccountIds.map((opaqueAccountId) => (isOpaqueId(opaqueAccountId) ? decodeAccountOpaqueId(opaqueAccountId) : opaqueAccountId));
+  const shopIds = opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
 
   const accounts = await context.mutations.updateAdminUIAccess(context, { accountIds, shopIds });
 

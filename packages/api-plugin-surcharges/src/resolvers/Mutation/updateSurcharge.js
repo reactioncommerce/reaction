@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -17,12 +18,12 @@ import { decodeFulfillmentMethodOpaqueId, decodeShopOpaqueId, decodeSurchargeOpa
 export default async function updateSurcharge(parentResult, { input }, context) {
   const { clientMutationId = null, surcharge, surchargeId: opaqueSurchargeId, shopId: opaqueShopId } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const surchargeId = decodeSurchargeOpaqueId(opaqueSurchargeId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const surchargeId = isOpaqueId(opaqueSurchargeId) ? decodeSurchargeOpaqueId(opaqueSurchargeId) : opaqueSurchargeId;
 
   let decodedMethodIds = [];
   if (surcharge.methodIds && Array.isArray(surcharge.methodIds)) {
-    decodedMethodIds = surcharge.methodIds.map((methodId) => decodeFulfillmentMethodOpaqueId(methodId));
+    decodedMethodIds = surcharge.methodIds.map((methodId) => (isOpaqueId(methodId) ? decodeFulfillmentMethodOpaqueId(methodId) : methodId));
   }
 
   surcharge.methodIds = decodedMethodIds;

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -15,7 +16,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
 export default async function generateSitemaps(parentResult, { input = {} }, context) {
   const { clientMutationId = null, shopId: opaqueShopId } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   await context.mutations.generateSitemaps(context, { shopId });
 

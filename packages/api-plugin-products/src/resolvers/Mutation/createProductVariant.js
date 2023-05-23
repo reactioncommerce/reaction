@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -23,8 +24,8 @@ export default async function createProductVariant(_, { input }, context) {
   } = input;
 
   const variant = await context.mutations.createProductVariant(context, {
-    productId: decodeProductOpaqueId(productId),
-    shopId: decodeShopOpaqueId(shopId),
+    productId: isOpaqueId(productId) ? decodeProductOpaqueId(productId) : productId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId,
     variant: variantInput
   });
 
