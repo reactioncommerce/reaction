@@ -171,8 +171,8 @@ jobs:
       - run:
           name: Check should build new image
           command: |
-            VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
-            if curl --silent -f --head -lL https://hub.docker.com/v2/repositories/${DOCKER_REPOSITORY}/tags/${VERSION}/ > /dev/null; then
+            head_commit=$(git log -1 --oneline | grep -m 1 releases)
+            if [[ $head_commit != *"/releases/docker-image"* ]]; then
               circleci-agent step halt
             fi
       - run:
@@ -264,4 +264,9 @@ workflows:
               only:
                 - trunk
           requires:
-            - release
+            - dockerfile-lint
+            - eslint
+            - graphql-lint
+            - test-unit
+            - test-integration-query
+            - test-integration-mutation
