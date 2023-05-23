@@ -1,5 +1,6 @@
 import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -17,7 +18,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
 export default async function flatRateFulfillmentMethods(_, args, context, info) {
   const { shopId: opaqueShopId, ...connectionArgs } = args;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const { collection, pipeline } = await context.queries.flatRateFulfillmentMethods(context, {
     shopId

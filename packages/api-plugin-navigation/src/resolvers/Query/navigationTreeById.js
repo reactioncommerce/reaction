@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,8 +20,8 @@ export default async function navigationTreeById(_, args, context) {
 
   return context.queries.navigationTreeById(context, {
     language,
-    navigationTreeId: decodeNavigationTreeOpaqueId(id),
-    shopId: decodeShopOpaqueId(shopId),
+    navigationTreeId: isOpaqueId(id) ? decodeNavigationTreeOpaqueId(id) : id,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId,
     shouldIncludeSecondary
   });
 }

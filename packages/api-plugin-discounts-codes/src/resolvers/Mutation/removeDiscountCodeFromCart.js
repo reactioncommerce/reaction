@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId, decodeDiscountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -25,9 +26,9 @@ export default async function removeDiscountCodeFromCart(parentResult, { input }
   } = input;
 
   const updatedCartWithRemovedDiscountCode = await context.mutations.removeDiscountCodeFromCart(context, {
-    cartId: decodeCartOpaqueId(cartId),
-    discountId: decodeDiscountOpaqueId(discountId),
-    shopId: decodeShopOpaqueId(shopId),
+    cartId: isOpaqueId(cartId) ? decodeCartOpaqueId(cartId) : cartId,
+    discountId: isOpaqueId(discountId) ? decodeDiscountOpaqueId(discountId) : discountId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId,
     token
   });
 

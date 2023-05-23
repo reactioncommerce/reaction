@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,6 +13,6 @@ import { decodeAccountOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} user account object
  */
 export default function account(_, { id }, context) {
-  const dbAccountId = decodeAccountOpaqueId(id);
+  const dbAccountId = isOpaqueId(id) ? decodeAccountOpaqueId(id) : id;
   return context.queries.userAccount(context, dbAccountId);
 }

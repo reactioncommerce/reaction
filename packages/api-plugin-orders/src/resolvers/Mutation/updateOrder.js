@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -27,7 +28,7 @@ export default async function updateOrder(parentResult, { input }, context) {
   const { order } = await context.mutations.updateOrder(context, {
     customFields,
     email,
-    orderId: decodeOrderOpaqueId(orderId),
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
     status
   });
 

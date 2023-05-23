@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationItemOpaqueId } from "../xforms/id.js";
 
 /**
@@ -9,7 +10,7 @@ import { decodeNavigationItemOpaqueId } from "../xforms/id.js";
 export default function decodeNavigationTreeItemIds(items) {
   items.forEach((item) => {
     const { navigationItemId, items: childItems } = item;
-    item.navigationItemId = decodeNavigationItemOpaqueId(navigationItemId);
+    item.navigationItemId = isOpaqueId(navigationItemId) ? decodeNavigationItemOpaqueId(navigationItemId) : navigationItemId;
     if (childItems) {
       decodeNavigationTreeItemIds(childItems);
     }

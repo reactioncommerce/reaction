@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import {
   decodeOrderFulfillmentGroupOpaqueId,
   decodeOrderItemOpaqueId,
@@ -31,10 +32,10 @@ export default async function moveOrderItems(parentResult, { input }, context) {
   } = input;
 
   const { order } = await context.mutations.moveOrderItems(context, {
-    fromFulfillmentGroupId: decodeOrderFulfillmentGroupOpaqueId(fromFulfillmentGroupId),
-    itemIds: itemIds.map(decodeOrderItemOpaqueId),
-    orderId: decodeOrderOpaqueId(orderId),
-    toFulfillmentGroupId: decodeOrderFulfillmentGroupOpaqueId(toFulfillmentGroupId)
+    fromFulfillmentGroupId: isOpaqueId(fromFulfillmentGroupId) ? decodeOrderFulfillmentGroupOpaqueId(fromFulfillmentGroupId) : fromFulfillmentGroupId,
+    itemIds: itemIds.map((itemId) => (isOpaqueId(itemId) ? decodeOrderItemOpaqueId(itemId) : itemId)),
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
+    toFulfillmentGroupId: isOpaqueId(toFulfillmentGroupId) ? decodeOrderFulfillmentGroupOpaqueId(toFulfillmentGroupId) : toFulfillmentGroupId
   });
 
   return {

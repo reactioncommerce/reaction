@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeJobOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,8 +20,8 @@ export default async function retryFailedEmail(parentResult, { input }, context)
     shopId: opaqueShopId
   } = input;
   const resp = await context.mutations.retryFailedEmail(context, {
-    jobId: decodeJobOpaqueId(opaqueJobId),
-    shopId: decodeShopOpaqueId(opaqueShopId)
+    jobId: isOpaqueId(opaqueJobId) ? decodeJobOpaqueId(opaqueJobId) : opaqueJobId,
+    shopId: isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId
   });
 
   return {

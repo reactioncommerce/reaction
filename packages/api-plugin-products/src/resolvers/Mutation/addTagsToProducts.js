@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeProductOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,12 +21,12 @@ import { decodeShopOpaqueId, decodeProductOpaqueId, decodeTagOpaqueId } from "..
 export default async function addTagsToProducts(_, { input }, context) {
   const { clientMutationId } = input;
   const { productIds: opaqueProductIds, shopId: opaqueShopId, tagIds: opaqueTagIds } = input;
-  const productIds = opaqueProductIds.map(decodeProductOpaqueId);
-  const tagIds = opaqueTagIds.map(decodeTagOpaqueId);
+  const productIds = opaqueProductIds.map((opaqueProductId) => (isOpaqueId(opaqueProductId) ? decodeProductOpaqueId(opaqueProductId) : opaqueProductId));
+  const tagIds = opaqueTagIds.map((opaqueTagId) => (isOpaqueId(opaqueTagId) ? decodeTagOpaqueId(opaqueTagId) : opaqueTagId));
 
   const results = await context.mutations.addTagsToProducts(context, {
     productIds,
-    shopId: decodeShopOpaqueId(opaqueShopId),
+    shopId: isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId,
     tagIds
   });
 

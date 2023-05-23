@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,8 +17,8 @@ import { decodeAccountOpaqueId, decodeGroupOpaqueId } from "../../xforms/id.js";
 export default async function updateGroupsForAccounts(parentResult, { input }, context) {
   const { accountIds: opaqueAccountIds, groupIds: opaqueGroupIds, clientMutationId = null } = input;
 
-  const accountIds = opaqueAccountIds.map((id) => decodeAccountOpaqueId(id));
-  const groupIds = opaqueGroupIds.map((id) => decodeGroupOpaqueId(id));
+  const accountIds = opaqueAccountIds.map((id) => (isOpaqueId(id) ? decodeAccountOpaqueId(id) : id));
+  const groupIds = opaqueGroupIds.map((id) => (isOpaqueId(id) ? decodeGroupOpaqueId(id) : id));
 
   const accounts = await context.mutations.updateGroupsForAccounts(context, {
     accountIds,

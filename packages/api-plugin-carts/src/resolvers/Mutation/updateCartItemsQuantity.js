@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,8 +20,11 @@ import { decodeCartItemOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 export default async function updateCartItemsQuantity(parentResult, { input }, context) {
   const { cartId: opaqueCartId, clientMutationId = null, items: itemsInput, cartToken } = input;
 
-  const cartId = decodeCartOpaqueId(opaqueCartId);
-  const items = itemsInput.map((item) => ({ cartItemId: decodeCartItemOpaqueId(item.cartItemId), quantity: item.quantity }));
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
+  const items = itemsInput.map((item) => ({
+    cartItemId: isOpaqueId(item.cartItemId) ? decodeCartItemOpaqueId(item.cartItemId) : item.cartItemId,
+    quantity: item.quantity
+  }));
 
   const { cart } = await context.mutations.updateCartItemsQuantity(context, {
     cartId,

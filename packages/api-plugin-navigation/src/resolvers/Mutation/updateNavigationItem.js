@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -21,14 +22,14 @@ export default async function updateNavigationItem(parentResult, { input }, cont
     navigationItem
   } = input;
 
-  const navigationItemId = decodeNavigationItemOpaqueId(opaqueNavigationItemId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const navigationItemId = isOpaqueId(opaqueNavigationItemId) ? decodeNavigationItemOpaqueId(opaqueNavigationItemId) : opaqueNavigationItemId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const updatedNavigationItem = await context.mutations.updateNavigationItem(context, {
     navigationItemId,
     navigationItem: {
       ...navigationItem,
-      shopId: decodeShopOpaqueId(navigationItem.shopId)
+      shopId: isOpaqueId(navigationItem.shopId) ? decodeShopOpaqueId(navigationItem.shopId) : navigationItem.shopId
     },
     shopId
   });

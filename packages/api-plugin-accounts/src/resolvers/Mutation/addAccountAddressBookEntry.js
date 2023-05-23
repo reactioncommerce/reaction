@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -15,7 +16,7 @@ import { decodeAccountOpaqueId } from "../../xforms/id.js";
  */
 export default async function addAccountAddressBookEntry(parentResult, { input }, context) {
   const { accountId, address, clientMutationId = null } = input;
-  const dbAccountId = decodeAccountOpaqueId(accountId);
+  const dbAccountId = isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId;
   const updatedAddress = await context.mutations.addressBookAdd(context, address, dbAccountId);
   return {
     address: updatedAddress,

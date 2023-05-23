@@ -2,6 +2,7 @@ import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters.js";
 
@@ -23,8 +24,8 @@ import xformCatalogBooleanFilters from "../../utils/catalogBooleanFilters.js";
 export default async function catalogItems(_, args, context, info) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, booleanFilters, searchQuery, ...connectionArgs } = args;
 
-  const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
-  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+  const shopIds = opaqueShopIds && opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
+  const tagIds = opaqueTagIds && opaqueTagIds.map((opaqueTagId) => (isOpaqueId(opaqueTagId) ? decodeTagOpaqueId(opaqueTagId) : opaqueTagId));
 
   let catalogBooleanFilters = {};
   if (Array.isArray(booleanFilters) && booleanFilters.length) {

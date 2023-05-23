@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -26,8 +27,11 @@ export default async function createStripePaymentIntent(
     cartToken
   } = input;
 
-  const cartId = opaqueCartId ? decodeCartOpaqueId(opaqueCartId) : null;
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  let cartId = null;
+  if (opaqueCartId) {
+    cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
+  }
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const paymentIntentClientSecret =
     await context.mutations.createStripePaymentIntent(context, {
