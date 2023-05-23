@@ -22,7 +22,9 @@ export default async function createFlatRateFulfillmentRestriction(parentResult,
 
   let decodedMethodIds = [];
   if (restriction.methodIds && Array.isArray(restriction.methodIds)) {
-    decodedMethodIds = restriction.methodIds.map((methodId) => isOpaqueId(methodId) ? decodeFulfillmentMethodOpaqueId(methodId) : methodId);
+    decodedMethodIds = restriction.methodIds.map((methodId) => {
+      return isOpaqueId(methodId) ? decodeFulfillmentMethodOpaqueId(methodId) : methodId;
+    });
   }
 
   restriction.methodIds = decodedMethodIds;

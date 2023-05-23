@@ -19,7 +19,7 @@ export default async function updateFulfillmentOptionsForGroup(parentResult, { i
   const { cartId: opaqueCartId, cartToken, clientMutationId = null, fulfillmentGroupId: opaqueFulfillmentGroupId } = input;
 
   const fulfillmentGroupId = isOpaqueId(opaqueFulfillmentGroupId) ? decodeFulfillmentGroupOpaqueId(opaqueFulfillmentGroupId) : opaqueFulfillmentGroupId;
-  const cartId = isOpaqueId(opaqueCartId)? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
   const { cart } = await updateFulfillmentOptionsForGroupMutation(context, {
     cartId,
     cartToken,

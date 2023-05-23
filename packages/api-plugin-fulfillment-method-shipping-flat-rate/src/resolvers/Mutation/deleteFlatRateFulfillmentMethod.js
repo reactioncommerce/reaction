@@ -19,7 +19,7 @@ export default async function deleteFlatRateFulfillmentMethod(parentResult, { in
   const { clientMutationId = null, methodId: opaqueMethodId, shopId: opaqueShopId } = input;
 
   const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
-  const methodId = isOpaqueId(opaqueMethodId)? decodeFulfillmentMethodOpaqueId(opaqueMethodId) : opaqueMethodId;
+  const methodId = isOpaqueId(opaqueMethodId) ? decodeFulfillmentMethodOpaqueId(opaqueMethodId) : opaqueMethodId;
 
   const { method } = await deleteFlatRateFulfillmentMethodMutation(context, {
     methodId,
