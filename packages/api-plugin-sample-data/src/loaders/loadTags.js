@@ -1,4 +1,4 @@
-import TagsData from "../json-data/Tags.json";
+import TagsData from "../json-data/Tags.json" assert { type: "json" };
 
 /**
  * @summary loads Tag data

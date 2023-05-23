@@ -1,5 +1,5 @@
 import Random from "@reactioncommerce/random";
-import NavigationItemsData from "../json-data/NavigationItems.json";
+import NavigationItemsData from "../json-data/NavigationItems.json" assert { type: "json" };
 
 const DEFAULT_NAME = "Main Navigation";
 

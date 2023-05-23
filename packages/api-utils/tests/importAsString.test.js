@@ -6,6 +6,6 @@ test("imports a string from a relative path", () => {
 });
 
 test("imports a string from a path in a package", () => {
-  const result = importAsString("jest/README.md");
-  expect(result.slice(0, 6)).toBe("# Jest");
+  const result = importAsString("is-docker/readme.md");
+  expect(result.slice(0, 11)).toBe("# is-docker");
 });
