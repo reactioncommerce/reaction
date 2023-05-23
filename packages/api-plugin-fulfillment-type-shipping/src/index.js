@@ -1,10 +1,8 @@
-import { createRequire } from "module";
+import pkg from "../package.json" assert { type: "json" };
 import i18n from "./i18n/index.js";
 import schemas from "./schemas/index.js";
 import startup from "./startup.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../package.json");
 
 const { name, version } = pkg;
 export const logCtx = {

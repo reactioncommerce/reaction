@@ -1,17 +1,15 @@
-import { createRequire } from "module";
+import pkg from "../package.json" assert { type: "json" };
 import fulfillmentMethodsWithQuotesShippingFlatRate from "./fulfillmentMethodsWithQuotesShippingFlatRate.js";
 import validateOrderMethodsFlatRate from "./util/validateOrderMethodsFlatRate.js";
 import i18n from "./i18n/index.js";
 import resolvers from "./resolvers/index.js";
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import queries from "./queries/index.js";
 import schemas from "./schemas/index.js";
 import fulfillmentMethodShippingFlatRatePreStartup from "./preStartup.js";
 import { MethodFlatRateData } from "./simpleSchemas.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../package.json");
 
 const { name, version } = pkg;
 export const logCtx = {
