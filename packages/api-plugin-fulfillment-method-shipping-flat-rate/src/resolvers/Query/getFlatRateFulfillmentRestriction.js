@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeFulfillmentRestrictionOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,7 +17,7 @@ export default async function getFlatRateFulfillmentRestriction(parentResult, ar
   const { restrictionId, shopId } = args;
 
   return context.queries.getFlatRateFulfillmentRestriction(context, {
-    restrictionId: decodeFulfillmentRestrictionOpaqueId(restrictionId),
-    shopId: decodeShopOpaqueId(shopId)
+    restrictionId: isOpaqueId(restrictionId) ? decodeFulfillmentRestrictionOpaqueId(restrictionId) : restrictionId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 }
