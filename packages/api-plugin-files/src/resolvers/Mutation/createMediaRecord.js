@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -23,12 +24,14 @@ export default async function createMediaRecord(parentResult, { input }, context
     mediaRecord: {
       metadata: {
         ...mediaRecordInput.metadata,
-        productId: decodeProductOpaqueId(mediaRecordInput.metadata.productId),
-        variantId: decodeProductOpaqueId(mediaRecordInput.metadata.variantId)
+        productId: isOpaqueId(mediaRecordInput.metadata.productId) ?
+          decodeProductOpaqueId(mediaRecordInput.metadata.productId) : mediaRecordInput.metadata.productId,
+        variantId: isOpaqueId(mediaRecordInput.metadata.variantId) ?
+          decodeProductOpaqueId(mediaRecordInput.metadata.variantId) : mediaRecordInput.metadata.variantId
       },
       original: mediaRecordInput.original
     },
-    shopId: decodeShopOpaqueId(opaqueShopId)
+    shopId: isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId
   });
 
   return {

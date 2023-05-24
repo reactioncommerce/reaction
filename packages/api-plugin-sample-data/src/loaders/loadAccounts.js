@@ -1,4 +1,4 @@
-import AccountData from "../json-data/Accounts.json";
+import AccountData from "../json-data/Accounts.json" assert { type: "json" };
 
 /**
  * @summary load Accounts data

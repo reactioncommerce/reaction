@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTaxRateOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,8 +21,8 @@ export default async function deleteTaxRate(parentResult, { input }, context) {
     shopId: opaqueShopId
   } = input;
 
-  const _id = decodeTaxRateOpaqueId(opaqueTaxRateId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const _id = isOpaqueId(opaqueTaxRateId) ? decodeTaxRateOpaqueId(opaqueTaxRateId) : opaqueTaxRateId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const taxRate = await context.mutations.deleteTaxRate(context, {
     _id,

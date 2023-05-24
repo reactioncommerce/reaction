@@ -1,4 +1,5 @@
 import ReactionError from "@reactioncommerce/reaction-error";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeGroupOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -32,9 +33,8 @@ export default async function inviteShopMember(_, { input }, context) {
     groupIds = [groupId];
   }
 
-  const decodedGroupIds = groupIds.map((encodedGroupId) => decodeGroupOpaqueId(encodedGroupId));
-  const decodedShopId = decodeShopOpaqueId(shopId);
-
+  const decodedGroupIds = groupIds.map((encodedGroupId) => (isOpaqueId(encodedGroupId) ? decodeGroupOpaqueId(encodedGroupId) : encodedGroupId));
+  const decodedShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
   const account = await context.mutations.inviteShopMember(context, {
     email,
     groupIds: decodedGroupIds,

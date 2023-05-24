@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderItemOpaqueId, decodeOrderOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -26,8 +27,8 @@ export default async function cancelOrderItem(parentResult, { input }, context) 
 
   const { order } = await context.mutations.cancelOrderItem(context, {
     cancelQuantity,
-    itemId: decodeOrderItemOpaqueId(itemId),
-    orderId: decodeOrderOpaqueId(orderId),
+    itemId: isOpaqueId(itemId) ? decodeOrderItemOpaqueId(itemId) : itemId,
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
     reason
   });
 

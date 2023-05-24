@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeFulfillmentRestrictionOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 import deleteFlatRateFulfillmentRestrictionMutation from "../../mutations/deleteFlatRateFulfillmentRestriction.js";
 
@@ -17,8 +18,8 @@ import deleteFlatRateFulfillmentRestrictionMutation from "../../mutations/delete
 export default async function deleteFlatRateFulfillmentRestriction(parentResult, { input }, context) {
   const { clientMutationId = null, restrictionId: opaqueRestrictionId, shopId: opaqueShopId } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const restrictionId = decodeFulfillmentRestrictionOpaqueId(opaqueRestrictionId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const restrictionId = isOpaqueId(opaqueRestrictionId) ? decodeFulfillmentRestrictionOpaqueId(opaqueRestrictionId) : opaqueRestrictionId;
 
   const { restriction } = await deleteFlatRateFulfillmentRestrictionMutation(context, {
     restrictionId,

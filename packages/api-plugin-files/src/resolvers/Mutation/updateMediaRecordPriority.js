@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -22,9 +23,9 @@ export default async function updateMediaRecordPriority(parentResult, { input },
   } = input;
 
   const mediaRecord = await context.mutations.updateMediaRecordPriority(context, {
-    mediaRecordId: decodeMediaRecordOpaqueId(opaqueMediaRecordId),
+    mediaRecordId: isOpaqueId(opaqueMediaRecordId) ? decodeMediaRecordOpaqueId(opaqueMediaRecordId) : opaqueMediaRecordId,
     priority,
-    shopId: decodeShopOpaqueId(opaqueShopId)
+    shopId: isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId
   });
 
   return {

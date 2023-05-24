@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import decodeOpaqueIdForNamespace from "@reactioncommerce/api-utils/decodeOpaqueIdForNamespace.js";
 import encodeOpaqueId from "@reactioncommerce/api-utils/encodeOpaqueId.js";
 
@@ -43,8 +44,10 @@ export function decodeOrderItemsOpaqueIds(items) {
   return items.map((item) => ({
     ...item,
     productConfiguration: {
-      productId: decodeProductOpaqueId(item.productConfiguration.productId),
-      productVariantId: decodeProductOpaqueId(item.productConfiguration.productVariantId)
+      productId: isOpaqueId(item.productConfiguration.productId) ?
+        decodeProductOpaqueId(item.productConfiguration.productId) : item.productConfiguration.productId,
+      productVariantId: isOpaqueId(item.productConfiguration.productVariantId) ?
+        decodeProductOpaqueId(item.productConfiguration.productVariantId) : item.productConfiguration.productVariantId
     }
   }));
 }

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,6 +13,6 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Array<Object>>} Array of PaymentMethods
  */
 export default async function availablePaymentMethods(_, { shopId }, context) {
-  const dbShopId = decodeShopOpaqueId(shopId);
+  const dbShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
   return context.queries.availablePaymentMethods(context, dbShopId);
 }

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartItemsOpaqueIds, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -15,7 +16,7 @@ import { decodeCartItemsOpaqueIds, decodeShopOpaqueId } from "../../xforms/id.js
  */
 export default async function createCart(parentResult, { input }, context) {
   const { clientMutationId = null, items: itemsInput, shopId: opaqueShopId } = input;
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
   const items = decodeCartItemsOpaqueIds(itemsInput);
 
   const {

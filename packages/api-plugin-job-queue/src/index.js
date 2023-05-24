@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import { addWorker, cancelJobs, getJob, scheduleJob } from "./api.js";
 import { registerPluginHandlerForJobQueue } from "./registration.js";
 import shutdown from "./shutdown.js";

@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import calculateOrderTaxes from "./util/calculateOrderTaxes.js";
 import getTaxCodes from "./util/getTaxCodes.js";
 import { TaxRates } from "./simpleSchemas.js";

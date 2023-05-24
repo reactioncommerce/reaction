@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -32,9 +33,10 @@ export default async function products(_, args, context, info) {
     ...connectionArgs
   } = args;
 
-  const shopIds = opaqueShopIds.map(decodeShopOpaqueId);
-  const productIds = opaqueProductIds && opaqueProductIds.map(decodeProductOpaqueId);
-  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+  const shopIds = opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
+  const productIds = opaqueProductIds &&
+    opaqueProductIds.map((opaqueProductId) => (isOpaqueId(opaqueProductId) ? decodeProductOpaqueId(opaqueProductId) : opaqueProductId));
+  const tagIds = opaqueTagIds && opaqueTagIds.map((opaqueTagId) => (isOpaqueId(opaqueTagId) ? decodeTagOpaqueId(opaqueTagId) : opaqueTagId));
 
   const query = await context.queries.products(context, {
     createdAt,
