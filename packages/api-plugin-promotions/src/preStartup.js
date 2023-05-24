@@ -22,7 +22,7 @@ function extendCartSchema(context) {
   const { simpleSchemas: { Cart } } = context; // we get this here rather then importing it to get the extended version
 
   Cart.extend({
-    "version": {
+    "promotionsVersion": {
       type: Number,
       optional: true
     },

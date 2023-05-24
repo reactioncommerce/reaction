@@ -133,11 +133,19 @@ async function getPromotionByDiscountId(db, discountId) {
  * @returns {undefined}
  */
 async function migrateCart(db) {
-  const carts = await db.collection("Cart").find({}, { _id: 1 }).toArray();
+  // Find carts that need to be migrated by checking if they have a billing address and promotionsVersion !== 2
+  const cartsToMigrate = await db.collection("Cart").find({
+    billing: { $exists: true, $ne: [] },
+    promotionsVersion: { $ne: 2 }
+  }, { _id: 1 }).toArray();
 
-  for (const { _id } of carts) {
+  // Proceed only if there are carts to migrate
+  if (cartsToMigrate.length === 0) return;
+
+
+  for (const { _id } of cartsToMigrate) {
     const cart = await db.collection("Cart").findOne({ _id });
-    if (cart.version && cart.version === 2) continue;
+    if (cart.promotionsVersion && cart.promotionsVersion === 2) continue;
 
     if (!cart.billing) continue;
 
@@ -149,7 +157,7 @@ async function migrateCart(db) {
       cart.appliedPromotions.push(promotion);
     }
 
-    cart.version = 2;
+    cart.promotionsVersion = 2;
     await db.collection("Cart").updateOne({ _id: cart._id }, { $set: cart });
   }
 }
@@ -199,11 +207,11 @@ async function down({ db, progress }) {
   const promotionIds = coupons.map((coupon) => coupon.promotionId);
   await db.collection("Promotions").remove({ _id: { $in: promotionIds } });
 
-  const carts = await db.collection("Cart").find({ version: 2 }, { _id: 1 }).toArray();
+  const carts = await db.collection("Cart").find({ promotionsVersion: 2 }, { _id: 1 }).toArray();
   for (const { _id } of carts) {
     const cart = await db.collection("Cart").findOne({ _id });
     cart.appliedPromotions.length = 0;
-    cart.version = 1;
+    cart.promotionsVersion = 1;
     await db.collection("Cart").updateOne({ _id: cart._id }, { $set: cart });
   }
 
