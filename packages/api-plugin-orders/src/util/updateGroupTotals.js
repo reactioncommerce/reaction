@@ -32,7 +32,7 @@ export default async function updateGroupTotals(context, {
   selectedFulfillmentMethodId
 }) {
   // Apply shipment method
-  await addShipmentMethodToGroup(context, {
+  group.shipmentMethod = await addShipmentMethodToGroup(context, {
     accountId,
     billingAddress,
     cartId,
@@ -70,7 +70,7 @@ export default async function updateGroupTotals(context, {
   });
 
   // Build and set the group invoice
-  addInvoiceToGroup({
+  group.invoice = addInvoiceToGroup({
     currencyCode,
     group,
     groupDiscountTotal: discountTotal,

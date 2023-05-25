@@ -192,6 +192,7 @@ const ShippoShippingMethod = new SimpleSchema({
  * @type {SimpleSchema}
  * @property {String} _id Shipment method Id
  * @property {String} name Method name
+ * @property {String} fulfillmentMethod Method name identifier for app, not user editable
  * @property {String} label Public label
  * @property {String} group Group, allowed values: `Ground`, `Priority`, `One Day`, `Free`
  * @property {Number} cost optional
@@ -224,6 +225,16 @@ export const ShippingMethod = new SimpleSchema({
   "label": {
     type: String,
     label: "Public Label"
+  },
+  "fulfillmentMethod": {
+    type: String,
+    optional: true,
+    label: "Method name identifier Internal"
+  },
+  "displayMessageMethod": {
+    type: String,
+    optional: true,
+    label: "Display message to show in UI for this Method"
   },
   "group": {
     type: String,
@@ -571,9 +582,7 @@ export const Shipment = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["shipping"],
-    defaultValue: "shipping"
+    type: String
   },
   "parcel": {
     type: ShippingParcel,
@@ -691,6 +700,8 @@ const CartItemAttribute = new SimpleSchema({
  * @property {String} title Cart Item title
  * @property {Object} transaction Transaction associated with this item
  * @property {String} updatedAt required
+ * @property {String} selectedFulfillmentType Fulfillment Type (if selected/passed from UI)
+ * @property {String[]} supportedFulfillmentTypes Fulfillment Types supported by the item (received from Catalog)
  * @property {String} variantId required
  * @property {String} variantTitle Title from the selected variant
  */
@@ -763,6 +774,19 @@ export const CartItem = new SimpleSchema({
     blackbox: true
   },
   "updatedAt": Date,
+  "selectedFulfillmentType": {
+    type: String,
+    allowedValues: ["undecided"], // extended with dynamic values in fulfillment plugin startup
+    optional: true
+  },
+  "supportedFulfillmentTypes": {
+    type: Array,
+    optional: true
+  },
+  "supportedFulfillmentTypes.$": {
+    type: String,
+    allowedValues: ["undecided"] // extended with dynamic values in fulfillment plugin startup
+  },
   "variantId": {
     type: String,
     optional: true
@@ -795,6 +819,10 @@ export const CartItem = new SimpleSchema({
 export const Cart = new SimpleSchema({
   "_id": {
     type: String,
+    optional: true
+  },
+  "fulfillmentCartVersion": {
+    type: Number,
     optional: true
   },
   "shopId": {

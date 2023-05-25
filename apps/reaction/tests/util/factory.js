@@ -16,6 +16,8 @@ import {
   CartAddress,
   CartInvoice,
   CartItem,
+  Shipment,
+  ShippingMethod,
   ShipmentQuote
 } from "@reactioncommerce/api-plugin-carts/src/simpleSchemas.js";
 
@@ -45,6 +47,7 @@ import {
 } from "@reactioncommerce/api-plugin-navigation/src/simpleSchemas.js";
 
 import {
+  SelectedFulfillmentOption,
   CommonOrder,
   CommonOrderItem,
   extendOrdersSchemas,
@@ -72,9 +75,10 @@ import {
   Shop
 } from "@reactioncommerce/api-plugin-shops/src/simpleSchemas.js";
 
-import FulfillmentMethod from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/methodSchema.js";
-
-import Restriction from "@reactioncommerce/api-plugin-shipments-flat-rate/src/util/restrictionSchema.js";
+import {
+  methodSchema as FulfillmentMethod,
+  restrictionSchema as Restriction
+} from "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate/src/simpleSchemas.js";
 
 import {
   Sitemap
@@ -97,11 +101,24 @@ import {
 } from "@reactioncommerce/api-plugin-taxes-flat-rate/src/simpleSchemas.js";
 
 import {
+  MethodEmptyData,
+  FulfillmentMethodSchema,
+  fulfillmentTypeSchema,
+  extendFulfillmentSchemas
+} from "@reactioncommerce/api-plugin-fulfillment/src/simpleSchemas.js";
+
+import {
   Promotion
 } from "@reactioncommerce/api-plugin-promotions/src/simpleSchemas.js";
 
 
 const schemasToAddToFactory = {
+  MethodEmptyData,
+  FulfillmentMethodSchema,
+  fulfillmentTypeSchema,
+  Shipment,
+  ShippingMethod,
+  SelectedFulfillmentOption,
   Account,
   AccountProfileAddress,
   AddressValidationRule,
@@ -150,6 +167,7 @@ extendInventorySchemas(schemasToAddToFactory);
 extendSimplePricingSchemas(schemasToAddToFactory);
 extendTaxesSchemas(schemasToAddToFactory);
 extendOrdersSchemas(schemasToAddToFactory);
+extendFulfillmentSchemas(schemasToAddToFactory, ["shipping", "mockType", "undecided"]);
 
 // Adds each to `Factory` object. For example, `Factory.Cart`
 // will be the factory that builds an object that matches the

@@ -3,6 +3,9 @@ type Cart implements Node {
   "The Cart ID"
   _id: ID!
 
+  "The Cart version"
+  fulfillmentCartVersion: Int
+
   """
   The account that owns the cart. Some carts are created for anonymous users. Anonymous carts have a null account.
   Every account has exactly one cart per shop.
@@ -272,6 +275,12 @@ type CartItem implements Node {
   "A title for use in cart/orders that conveys the selected product's title + chosen options"
   title: String!
 
+  "The fulfillment type of the item (if implemented in UI & selected by user) while adding item to cart"
+  selectedFulfillmentType: String
+
+  "The fulfillment types supported by the item (received from Catalog)"
+  supportedFulfillmentTypes: [String]
+
   "The date and time at which this item was last updated"
   updatedAt: DateTime!
 
@@ -356,6 +365,9 @@ input CartItemInput {
 
   "The number of this item to add to the cart"
   quantity: Int!
+
+  "The fulfillment type of the item (if implemented in UI & selected by user) while adding item to cart"
+  selectedFulfillmentType: String
 }
 
 "Input that defines a single configuration of a product"
@@ -380,6 +392,24 @@ input AddCartItemsInput {
 
   "Array of items to be added to the cart"
   items: [CartItemInput]!
+}
+
+"Input for the `setFulfillmentTypeForItems` mutation"
+input SetFulfillmentTypeForItemsInput {
+  "The cart ID"
+  cartId: ID!
+
+  "If this cart is anonymous, provide the `cartToken` that was returned in the `CreateCartPayload`"
+  cartToken: String
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "Fulfillment Type to be assigned to the items"
+  fulfillmentType: String!
+
+  "Array of item IDs for which selectedFulfillmentType has to be updated"
+  itemIds: [String]!
 }
 
 "Input for the `removeCartItems` mutation"
@@ -556,6 +586,17 @@ type CreateCartPayload {
   token: String
 }
 
+"The payload returned from the `setFulfillmentTypeForItems` mutation call"
+type SetFulfillmentTypeForItemsPayload {
+  """
+  The modified cart.
+  """
+  cart: Cart
+
+  "The same string you sent with the mutation params, for matching mutation calls with their responses"
+  clientMutationId: String
+}
+
 "The payload returned from the `addCartItems` mutation call"
 type AddCartItemsPayload {
   """
@@ -644,6 +685,12 @@ extend type Mutation {
     "Mutation input"
     input: CreateCartInput!
   ): CreateCartPayload!
+
+  "Updates the Selected fulfillment type and Fulfillment groups of the item(s)"
+  setFulfillmentTypeForItems(
+    "SetFulfillmentTypeForItems input"
+    input: SetFulfillmentTypeForItemsInput!
+  ): SetFulfillmentTypeForItemsPayload!
 
   "Reconcile an anonymous cart with the current account cart for the same shop"
   reconcileCarts(

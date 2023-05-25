@@ -107,10 +107,14 @@ const mockShippingMethod = {
     label: "Flat Rate",
     name: "flatRates"
   },
+  fulfillmentType: "shipping",
   methods: [
     {
       cost: 2.5,
-      fulfillmentTypes: ["shipping"],
+      fulfillmentTypes: [
+        "shipping"
+      ],
+      fulfillmentMethod: "flatRate",
       group: "Ground",
       handling: 1.5,
       label: "Standard mockMethod",
@@ -218,7 +222,7 @@ beforeAll(async () => {
 
   // Add shipping methods
   mockShippingMethod.shopId = internalShopId;
-  await testApp.collections.Shipping.insertOne(mockShippingMethod);
+  await testApp.collections.Fulfillment.insertOne(mockShippingMethod);
 
   // Add Tags and products
   mockProduct.shopId = internalShopId;

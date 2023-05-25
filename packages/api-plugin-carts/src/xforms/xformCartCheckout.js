@@ -14,6 +14,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       displayName: option.method.label || option.method.name,
       group: option.method.group || null,
       name: option.method.name,
+      methodAdditionalData: option.method.methodAdditionalData || { gqlType: "emptyData", emptyData: false },
       fulfillmentTypes: option.method.fulfillmentTypes
     },
     handlingPrice: {
@@ -39,6 +40,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
+        methodAdditionalData: fulfillmentGroup.shipmentMethod.methodAdditionalData || { gqlType: "emptyData", emptyData: false },
         fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes,
         discount: fulfillmentGroup.shipmentMethod.discount || 0,
         undiscountedRate: fulfillmentGroup.shipmentMethod.rate || 0
@@ -67,7 +69,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
     // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-    type: "shipping",
+    type: fulfillmentGroup.type,
     discounts: fulfillmentGroup.discounts || []
   };
 }

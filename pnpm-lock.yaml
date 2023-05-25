@@ -159,6 +159,12 @@ importers:
       '@reactioncommerce/api-plugin-email-smtp': 1.0.8
       '@reactioncommerce/api-plugin-email-templates': 1.1.7
       '@reactioncommerce/api-plugin-files': 1.1.0
+      '@reactioncommerce/api-plugin-fulfillment': 1.0.0
+      '@reactioncommerce/api-plugin-fulfillment-method-pickup-store': 1.0.0
+      '@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate': 1.0.0
+      '@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate': 1.0.0
+      '@reactioncommerce/api-plugin-fulfillment-type-pickup': 1.0.0
+      '@reactioncommerce/api-plugin-fulfillment-type-shipping': 1.0.0
       '@reactioncommerce/api-plugin-i18n': 1.0.6
       '@reactioncommerce/api-plugin-inventory': 1.0.5
       '@reactioncommerce/api-plugin-inventory-simple': 1.0.6
@@ -177,8 +183,6 @@ importers:
       '@reactioncommerce/api-plugin-promotions-offers': .0.0
       '@reactioncommerce/api-plugin-sequences': 0.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
-      '@reactioncommerce/api-plugin-shipments': 1.0.3
-      '@reactioncommerce/api-plugin-shipments-flat-rate': 1.0.10
       '@reactioncommerce/api-plugin-shops': 1.3.0
       '@reactioncommerce/api-plugin-simple-schema': 1.0.3
       '@reactioncommerce/api-plugin-sitemap-generator': 1.2.3
@@ -223,6 +227,12 @@ importers:
       '@reactioncommerce/api-plugin-email-smtp': link:../../packages/api-plugin-email-smtp
       '@reactioncommerce/api-plugin-email-templates': link:../../packages/api-plugin-email-templates
       '@reactioncommerce/api-plugin-files': link:../../packages/api-plugin-files
+      '@reactioncommerce/api-plugin-fulfillment': link:../../packages/api-plugin-fulfillment
+      '@reactioncommerce/api-plugin-fulfillment-method-pickup-store': link:../../packages/api-plugin-fulfillment-method-pickup-store
+      '@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate': link:../../packages/api-plugin-fulfillment-method-shipping-dynamic-rate
+      '@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate': link:../../packages/api-plugin-fulfillment-method-shipping-flat-rate
+      '@reactioncommerce/api-plugin-fulfillment-type-pickup': link:../../packages/api-plugin-fulfillment-type-pickup
+      '@reactioncommerce/api-plugin-fulfillment-type-shipping': link:../../packages/api-plugin-fulfillment-type-shipping
       '@reactioncommerce/api-plugin-i18n': link:../../packages/api-plugin-i18n
       '@reactioncommerce/api-plugin-inventory': link:../../packages/api-plugin-inventory
       '@reactioncommerce/api-plugin-inventory-simple': link:../../packages/api-plugin-inventory-simple
@@ -241,8 +251,6 @@ importers:
       '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
       '@reactioncommerce/api-plugin-sequences': link:../../packages/api-plugin-sequences
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
-      '@reactioncommerce/api-plugin-shipments': link:../../packages/api-plugin-shipments
-      '@reactioncommerce/api-plugin-shipments-flat-rate': link:../../packages/api-plugin-shipments-flat-rate
       '@reactioncommerce/api-plugin-shops': link:../../packages/api-plugin-shops
       '@reactioncommerce/api-plugin-simple-schema': link:../../packages/api-plugin-simple-schema
       '@reactioncommerce/api-plugin-sitemap-generator': link:../../packages/api-plugin-sitemap-generator
@@ -724,6 +732,93 @@ importers:
     devDependencies:
       '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
       '@reactioncommerce/data-factory': 1.0.1
+
+  packages/api-plugin-fulfillment:
+    specifiers:
+      '@reactioncommerce/api-plugin-carts': ^1.0.0
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/db-version-check': ^1.0.0
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      lodash: ^4.17.21
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/db-version-check': link:../db-version-check
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+    devDependencies:
+      '@reactioncommerce/api-plugin-carts': link:../api-plugin-carts
+      '@reactioncommerce/data-factory': 1.0.1
+
+  packages/api-plugin-fulfillment-method-pickup-store:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.4
+      '@reactioncommerce/reaction-error': ^1.0.1
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-fulfillment-method-shipping-dynamic-rate:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/reaction-error': ^1.0.1
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-fulfillment-method-shipping-flat-rate:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ~1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      lodash: ^4.17.15
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-fulfillment-type-pickup:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/random': ~1.0.2
+      '@reactioncommerce/reaction-error': 1.0.1
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+
+  packages/api-plugin-fulfillment-type-shipping:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ~1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      lodash: ^4.17.21
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
 
   packages/api-plugin-i18n:
     specifiers:

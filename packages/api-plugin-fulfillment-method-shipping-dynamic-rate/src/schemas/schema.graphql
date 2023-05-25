@@ -1,0 +1,7 @@
+"Additional data from Shipping Dynamic Rate"
+type dynamicRateData {
+  gqlType: String
+  dynamicRateData: String
+}
+
+extend union AdditionalData = dynamicRateData

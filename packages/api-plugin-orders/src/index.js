@@ -7,7 +7,7 @@ import queries from "./queries/index.js";
 import { registerPluginHandlerForOrder } from "./registration.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
-import { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, SelectedFulfillmentOption } from "./simpleSchemas.js";
+import { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, orderFulfillmentGroupInputSchema, SelectedFulfillmentOption } from "./simpleSchemas.js";
 import startup from "./startup.js";
 import getDataForOrderEmail from "./util/getDataForOrderEmail.js";
 
@@ -60,6 +60,7 @@ export default async function register(app) {
       OrderFulfillmentGroup,
       OrderItem,
       CommonOrder,
+      orderFulfillmentGroupInputSchema,
       SelectedFulfillmentOption
     }
   });
