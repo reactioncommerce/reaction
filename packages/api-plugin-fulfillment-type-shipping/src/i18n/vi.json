@@ -1,0 +1,81 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Đang chuyển hàng",
+          "shippingTitle": "Đang chuyển hàng",
+          "shippingDescription": "Cung cấp mức giá vận chuyển"
+        },
+        "settings": {
+          "shippingLabel": "Đang chuyển hàng"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Chọn tùy chọn vận chuyển",
+        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
+        "contactAdmin": "Vui lòng liên hệ với quản trị viên kho.",
+        "configureNow": "Cấu hình hiện nay.",
+        "shipping": "Đang chuyển hàng"
+      },
+      "shipping": {
+        "addShippingProvider": "Thêm nhà cung cấp vận chuyển",
+        "editShippingProvider": "Sửa nhà cung cấp vận chuyển",
+        "addShippingMethod": "Thêm phương thức vận chuyển",
+        "editShippingMethod": "Chỉnh sửa phương thức vận chuyển",
+        "deleteShippingMethod": "Xóa phương thức vận chuyển",
+        "noSettingsForThisView": "Không có thiết lập cho quan điểm này",
+        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
+        "removeShippingMethodConfirm": "Bạn có chắc chắn muốn xóa {{method}}?",
+        "removeShippingMethodTitle": "Di Shipping Method",
+        "shippingMethodDeleted": "Phương pháp vận chuyển này đã bị xóa.",
+        "removeShippingProvider": "Di Vận Chuyển Nhà cung cấp",
+        "removeShippingProviderConfirm": "Bạn có chắc chắn muốn xóa {{provider}}?",
+        "shippingProviderSaved": "cung cấp dịch vụ vận chuyển lưu.",
+        "shippingProviderUpdated": "cung cấp dữ liệu vận chuyển được cập nhật.",
+        "shippingMethodRateAdded": "tỷ lệ phương pháp vận chuyển thêm.",
+        "shippingMethodRateUpdated": "phương pháp tỷ lệ vận chuyển được cập nhật.",
+        "name": "Tên",
+        "label": "Nhãn",
+        "group": "Nhóm",
+        "cost": "Giá cả",
+        "handling": "xử lý",
+        "rate": "Tỷ lệ",
+        "enabled": "Bật",
+        "disabled": "Tàn tật",
+        "addRate": "Thêm tỷ lệ",
+        "updateRate": "tốc độ cập nhật {{name}}",
+        "addNewCondition": "Thêm điều kiện mới",
+        "deleteCondition": "xóa điều kiện",
+        "provider": {
+          "name": "Mã dịch vụ",
+          "label": "Nhãn Công",
+          "enabled": "Bật"
+        }
+      },
+      "shippingMethod": {
+        "name": "Tên phương pháp",
+        "label": "Nhãn Công",
+        "group": "Nhóm",
+        "cost": "Giá cả",
+        "handling": "xử lý",
+        "rate": "Tỷ lệ",
+        "enabled": "Bật",
+        "matchingCartRanges": "Phù hợp với Ranges Giỏ hàng",
+        "validRanges": {
+          "begin": "bắt đầu",
+          "end": "Kết thúc"
+        },
+        "matchingLocales": "phù hợp với miền địa phương",
+        "validLocales": {
+          "origination": "Từ",
+          "destination": "Đến",
+          "deliveryBegin": "Vận Chuyển Est.",
+          "deliveryEnd": "Giao hàng Est."
+        }
+      }
+    }
+  }
+}]

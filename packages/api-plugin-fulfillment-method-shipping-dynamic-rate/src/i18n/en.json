@@ -1,0 +1,23 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping-dynamic-rate",
+  "translation": {
+    "reaction-shipping-dynamic-rate": {
+      "admin": {
+        "shippingSettings": {
+          "header": "Shipping",
+          "methodLabel": "Dynamic Rate",
+          "rateSaved": "Fulfillment method saved",
+          "rateFailed": "Fulfillment method update failed",
+          "noRatesFound": "No dynamic rate fulfillment methods found"
+        },
+        "shippingGrid": {
+          "name": "Name",
+          "group": "Group",
+          "rate": "Rate",
+          "label": "Label"
+        }
+      }
+    }
+  }
+}]
