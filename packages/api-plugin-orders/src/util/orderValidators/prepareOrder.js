@@ -2,12 +2,12 @@ import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import { Order as OrderSchema, orderInputSchema, paymentInputSchema } from "../../simpleSchemas.js";
+import { customOrderValidators } from "../../../src/registration.js";
 import validateInitialOrderData from "./validateInitialOrderData.js";
 import getFinalFulfillmentGroups from "./getFinalFulfillmentGroups.js";
 import createPayments from "./createPayments.js";
 import getReferenceId from "./getReferenceId.js";
 import getCustomFields from "./getCustomFields.js";
-import { customOrderValidators } from "../../../src/registration.js";
 
 const inputSchema = new SimpleSchema({
   "order": orderInputSchema,
