@@ -58,6 +58,7 @@ test("places an anonymous $0 order with no cartId and no payments", async () => 
 
   mockContext.queries.getDiscountsTotalForCart = jest.fn().mockName("getDiscountsTotalForCart").mockReturnValueOnce({
     discounts: [],
+    appliedPromotions: [],
     total: 0
   });
 
@@ -201,6 +202,7 @@ test("should throw invalid-cart error when the a cart message is not acknowledge
       { _id: "testId", requiresReadAcknowledgement: true, acknowledged: false }
     ]
   };
+  mockContext.queries.getCartById = jest.fn().mockName("getCartById").mockResolvedValueOnce(cart);
 
   mockContext.collections = {
     Cart: {
