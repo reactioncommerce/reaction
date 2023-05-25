@@ -1,5 +1,5 @@
-import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
+import pkg from "../../package.json" assert { type: "json" };
 import createEngine from "../utils/engineHelpers.js";
 import { OfferTriggerParameters } from "../simpleSchemas.js";
 

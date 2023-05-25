@@ -1,6 +1,6 @@
-import pkg from "../../package.json" assert { type: "json" };
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
+import pkg from "../../package.json" assert { type: "json" };
 import applyPromotions from "../handlers/applyPromotions.js";
 
 

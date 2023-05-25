@@ -1,8 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import _ from "lodash";
+import pkg from "../../package.json" assert { type: "json" };
 import enhanceCart from "../utils/enhanceCart.js";
 import isPromotionExpired from "../utils/isPromotionExpired.js";
 import createCartMessage from "../utils/createCartMessage.js";

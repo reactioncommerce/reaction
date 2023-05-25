@@ -1,6 +1,5 @@
-import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
-
+import pkg from "../../package.json" assert { type: "json" };
 
 
 const { name, version } = pkg;

@@ -1,5 +1,5 @@
-import pkg from "../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
+import pkg from "../package.json" assert { type: "json" };
 import setPromotionState from "./watchers/setPromotionState.js";
 import checkCartForPromotionChange from "./utils/checkCartForPromotionChange.js";
 

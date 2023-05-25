@@ -1,6 +1,6 @@
-import pkg from "../../package.json" assert { type: "json" };
-import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
+import SimpleSchema from "simpl-schema";
+import pkg from "../../package.json" assert { type: "json" };
 import applyItemDiscountToCart from "../discountTypes/item/applyItemDiscountToCart.js";
 import applyShippingDiscountToCart from "../discountTypes/shipping/applyShippingDiscountToCart.js";
 import applyOrderDiscountToCart from "../discountTypes/order/applyOrderDiscountToCart.js";

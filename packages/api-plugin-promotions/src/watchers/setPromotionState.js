@@ -1,5 +1,5 @@
-import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
+import pkg from "../../package.json" assert { type: "json" };
 import getCurrentShopTime from "../utils/getCurrentShopTime.js";
 
 

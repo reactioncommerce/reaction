@@ -1,7 +1,7 @@
-import pkg from "../../package.json" assert { type: "json" };
+import Logger from "@reactioncommerce/logger";
 import Queue from "bull";
 import ms from "ms";
-import Logger from "@reactioncommerce/logger";
+import pkg from "../../package.json" assert { type: "json" };
 import config from "../config.js";
 
 

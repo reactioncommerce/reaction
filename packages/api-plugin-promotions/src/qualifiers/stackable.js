@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
-import pkg from "../../package.json" assert { type: "json" };
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
+import pkg from "../../package.json" assert { type: "json" };
 
 
 const { name, version } = pkg;

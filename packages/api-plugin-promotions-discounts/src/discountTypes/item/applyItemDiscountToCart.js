@@ -1,6 +1,6 @@
-import pkg from "../../../package.json" assert { type: "json" };
-import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
+import _ from "lodash";
+import pkg from "../../../package.json" assert { type: "json" };
 
 import getEligibleItems from "../../utils/getEligibleItems.js";
 import recalculateCartItemSubtotal from "../../utils/recalculateCartItemSubtotal.js";
