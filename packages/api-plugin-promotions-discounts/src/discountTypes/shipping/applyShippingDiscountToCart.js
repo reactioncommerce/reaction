@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import pkg from "../../../package.json" assert { type: "json" };
 import _ from "lodash";
 import Logger from "@reactioncommerce/logger";
 import recalculateShippingDiscount from "../../utils/recalculateShippingDiscount.js";
@@ -8,9 +8,6 @@ import calculateDiscountAmount from "../../utils/calculateDiscountAmount.js";
 import recalculateQuoteDiscount from "../../utils/recalculateQuoteDiscount.js";
 import checkShippingStackable from "./checkShippingStackable.js";
 
-const require = createRequire(import.meta.url);
-
-const pkg = require("../../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {

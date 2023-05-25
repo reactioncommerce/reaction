@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import pkg from "../../package.json" assert { type: "json" };
 import SimpleSchema from "simpl-schema";
 import Logger from "@reactioncommerce/logger";
 import applyItemDiscountToCart from "../discountTypes/item/applyItemDiscountToCart.js";
@@ -6,9 +6,6 @@ import applyShippingDiscountToCart from "../discountTypes/shipping/applyShipping
 import applyOrderDiscountToCart from "../discountTypes/order/applyOrderDiscountToCart.js";
 import { DiscountActionCondition } from "../simpleSchemas.js";
 
-const require = createRequire(import.meta.url);
-
-const pkg = require("../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {

@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import pkg from "../package.json" assert { type: "json" };
 import schemas from "./schemas/index.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
@@ -8,8 +8,6 @@ import { Coupon, CouponLog } from "./simpleSchemas.js";
 import preStartupPromotionCoupon from "./preStartup.js";
 import updateOrderCoupon from "./utils/updateOrderCoupon.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../package.json");
 
 /**
  * @summary Import and call this function to add this plugin to your API.

@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import pkg from "../package.json" assert { type: "json" };
 import { promotions, registerPluginHandlerForPromotions } from "./registration.js";
 import mutations from "./mutations/index.js";
 import preStartupPromotions from "./preStartup.js";
@@ -15,8 +15,6 @@ import applyPromotions from "./handlers/applyPromotions.js";
 import startupPromotions from "./startup.js";
 import registerOffersHandlers from "./handlers/registerHandlers.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../package.json");
 
 /**
  * @summary Import and call this function to add this plugin to your API.

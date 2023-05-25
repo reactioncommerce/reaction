@@ -1,4 +1,4 @@
-import { createRequire } from "module";
+import pkg from "../package.json" assert { type: "json" };
 import actions from "./actions/index.js";
 import methods from "./methods/index.js";
 import queries from "./queries/index.js";
@@ -11,8 +11,6 @@ import getTotalDiscountOnCart from "./utils/getTotalDiscountOnCart.js";
 import getApplicablePromotions from "./handlers/getApplicablePromotions.js";
 import facts from "./facts/index.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../package.json");
 
 /**
  * @summary Import and call this function to add this plugin to your API.

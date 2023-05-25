@@ -1,11 +1,8 @@
-import { createRequire } from "module";
+import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
 import createEngine from "../utils/engineHelpers.js";
 import { OfferTriggerParameters } from "../simpleSchemas.js";
 
-const require = createRequire(import.meta.url);
-
-const pkg = require("../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {

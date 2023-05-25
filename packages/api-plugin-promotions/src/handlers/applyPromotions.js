@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { createRequire } from "module";
+import pkg from "../../package.json" assert { type: "json" };
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 import _ from "lodash";
@@ -10,8 +10,6 @@ import canAddToCartMessages from "../utils/canAddCartMessage.js";
 import triggerHandler from "../utils/triggerHandler.js";
 import applyCombinationPromotions from "./applyCombinationPromotions.js";
 
-const require = createRequire(import.meta.url);
-const pkg = require("../../package.json");
 
 const { name, version } = pkg;
 const logCtx = {

@@ -115,7 +115,7 @@ test("should throw error if coupon not found", async () => {
     })
   };
 
-  const expectedError = new ReactionError("not-found", "The coupon CODE is not found");
+  const expectedError = new ReactionError("invalid-params", "The coupon CODE is not found");
 
   expect(applyCouponToCart(mockContext, {
     shopId: "_shopId",
@@ -165,11 +165,7 @@ test("should throw error if promotion expired", async () => {
     _id: "promotionId",
     type: "explicit"
   };
-  const coupon = {
-    _id: "couponId",
-    code: "CODE",
-    promotionId: "promotionId"
-  };
+
   mockContext.collections.Promotions = {
     findOne: jest.fn().mockResolvedValueOnce(promotion)
   };
@@ -178,11 +174,10 @@ test("should throw error if promotion expired", async () => {
   };
   mockContext.collections.Coupons = {
     find: jest.fn().mockReturnValue({
-      toArray: jest.fn().mockResolvedValueOnce([coupon])
+      toArray: jest.fn().mockResolvedValueOnce([])
     })
   };
-
-  const expectedError = new ReactionError("not-found", "The coupon CODE is not found");
+  const expectedError = new ReactionError("invalid-params", "The coupon CODE is not found");
 
   expect(applyCouponToCart(mockContext, {
     shopId: "_shopId",
@@ -340,6 +335,12 @@ test("should query cart with anonymous token when the input provided cartToken",
     type: "explicit"
   };
 
+  const coupon = {
+    _id: "couponId",
+    code: "CODE",
+    promotionId: "promotionId"
+  };
+
   mockContext.collections.Cart = {
     findOne: jest.fn().mockResolvedValueOnce(cart)
   };
@@ -348,9 +349,11 @@ test("should query cart with anonymous token when the input provided cartToken",
   };
   mockContext.collections.Coupons = {
     find: jest.fn().mockReturnValue({
-      toArray: jest.fn().mockResolvedValueOnce([])
+      toArray: jest.fn().mockResolvedValueOnce([coupon])
     })
   };
+
+  mockContext.mutations.applyExplicitPromotionToCart = jest.fn().mockName("applyExplicitPromotionToCart").mockResolvedValueOnce(cart);
 
   applyCouponToCart(mockContext, { shopId: "_shopId", cartId: "_id", couponCode: "CODE", cartToken: "anonymousToken" });
 
@@ -388,6 +391,7 @@ test("should query cart with accountId when request is authenticated user", asyn
   };
 
   mockContext.userId = "_userId";
+  mockContext.mutations.applyExplicitPromotionToCart = jest.fn().mockName("applyExplicitPromotionToCart").mockResolvedValueOnce(cart);
 
   await applyCouponToCart(mockContext, { shopId: "_shopId", cartId: "_id", couponCode: "CODE" });
 
