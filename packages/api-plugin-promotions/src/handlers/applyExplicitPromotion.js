@@ -13,6 +13,7 @@ export default async function applyExplicitPromotion(context, cart, promotion) {
     ...promotion,
     newlyAdded: true
   });
+  cart.promotionsVersion = 2;
   const updatedCart = await context.mutations.saveCart(context, cart);
   return updatedCart;
 }

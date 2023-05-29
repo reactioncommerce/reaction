@@ -218,6 +218,7 @@ export default async function applyPromotions(context, cart, options = { skipTem
     return _.find(enhancedCart.appliedPromotions, { _id: message.metaFields.promotionId, triggerType: "implicit" }) === undefined;
   });
 
+  enhanceCart.promotionsVersion = 2;
   Cart.clean(enhancedCart, { mutate: true });
   Object.assign(cart, enhancedCart);
 
