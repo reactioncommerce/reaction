@@ -262,7 +262,7 @@ describe("Promotions", () => {
     test("placed order get the correct values", async () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
-      expect(newOrder.shipping[0].invoice.total).toEqual(112.44);
+      expect(newOrder.shipping[0].invoice.total).toEqual(139.94);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(10);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
 
@@ -299,7 +299,7 @@ describe("Promotions", () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
 
-      expect(newOrder.shipping[0].invoice.total).toEqual(110.45);
+      expect(newOrder.shipping[0].invoice.total).toEqual(137.95);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(11.99);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
 
@@ -656,13 +656,13 @@ describe("Promotions", () => {
     test("placed order get the correct values", async () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
-      expect(newOrder.shipping[0].invoice.total).toEqual(121.94);
+      expect(newOrder.shipping[0].invoice.total).toEqual(144.94);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
-      expect(newOrder.shipping[0].invoice.shipping).toEqual(2);
-      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.5);
-      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.5);
-      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(25);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(5);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(5);
+      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(20);
 
       expect(newOrder.shipping[0].items[0].quantity).toEqual(6);
 
@@ -709,13 +709,13 @@ describe("Promotions", () => {
     test("placed order get the correct values", async () => {
       const orderId = decodeOpaqueIdForNamespace("reaction/order")(placedOrderId);
       const newOrder = await testApp.collections.Orders.findOne({ _id: orderId });
-      expect(newOrder.shipping[0].invoice.total).toEqual(121.89);
+      expect(newOrder.shipping[0].invoice.total).toEqual(144.44);
       expect(newOrder.shipping[0].invoice.discounts).toEqual(0);
       expect(newOrder.shipping[0].invoice.subtotal).toEqual(119.94);
-      expect(newOrder.shipping[0].invoice.shipping).toEqual(1.95);
-      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(0.55);
-      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(0.45);
-      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(1.5);
+      expect(newOrder.shipping[0].invoice.shipping).toEqual(24.5);
+      expect(newOrder.shipping[0].shipmentMethod.discount).toEqual(5.5);
+      expect(newOrder.shipping[0].shipmentMethod.rate).toEqual(4.5);
+      expect(newOrder.shipping[0].shipmentMethod.handling).toEqual(20);
 
       expect(newOrder.appliedPromotions).toHaveLength(2);
       expect(newOrder.discounts).toHaveLength(2);
