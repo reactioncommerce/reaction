@@ -361,7 +361,7 @@ export default {
   },
   PKR: {
     format: "%s%v",
-    symbol: "₨"
+    symbol: "₨."
   },
   PLN: {
     format: "%v %s",
