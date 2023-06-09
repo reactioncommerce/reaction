@@ -20,7 +20,7 @@ export default function addInvoiceToGroup({
   taxTotal
 }) {
   // Items
-  const itemTotal = +accounting.toFixed(group.items.reduce((sum, item) => (sum + item.subtotal), 0), 3);
+  const itemTotal = +accounting.toFixed(group.items.reduce((sum, item) => (sum + (item.price.amount * item.quantity)), 0), 3);
 
   // Taxes
   const effectiveTaxRate = taxableAmount > 0 ? taxTotal / taxableAmount : 0;

@@ -27,6 +27,7 @@ test("should throw if no cart retrieved using cartId provided", async () => {
 test("should return shop and cart details", async () => {
   mockContext.queries.shopById = jest.fn().mockReturnValueOnce({ shopId: "shop123" });
   mockContext.queries.getCartById = jest.fn().mockReturnValueOnce({ cartId: "cart123" });
+  mockContext.mutations.transformAndValidateCart = jest.fn();
   const cleanedInput = { order: { cartId: "cart123", shopId: "shop123" } };
   const resultExpected = { cart: { cartId: "cart123" }, shop: { shopId: "shop123" } };
   const result = await validateInitialOrderData(mockContext, cleanedInput);

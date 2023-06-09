@@ -3,6 +3,9 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-discounts-codes.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-discounts-codes)
 [![CircleCI](https://circleci.com/gh/reactioncommerce/api-plugin-discounts-codes.svg?style=svg)](https://circleci.com/gh/reactioncommerce/api-plugin-discounts-codes)
 
+## This repository is deprecated
+This plugin is deprecated and will be removed in a future release. Please use the `@reactioncommetce/api-plugin-promotions` plugin instead.
+
 ## Summary
 
 Discount Codes plugin for the Reaction API

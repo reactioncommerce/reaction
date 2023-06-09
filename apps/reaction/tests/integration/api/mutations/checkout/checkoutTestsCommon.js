@@ -15,6 +15,7 @@ const SelectFulfillmentOptionForGroupMutation = importAsString("./SelectFulfillm
 const SetShippingAddressOnCartMutation = importAsString("./SetShippingAddressOnCartMutation.graphql");
 const UpdateCartItemsQuantityMutation = importAsString("./UpdateCartItemsQuantityMutation.graphql");
 const UpdateFulfillmentOptionsForGroupMutation = importAsString("./UpdateFulfillmentOptionsForGroupMutation.graphql");
+const CreatePromotionMutation = importAsString("./CreatePromotionMutation.graphql");
 
 jest.setTimeout(300000);
 
@@ -24,6 +25,10 @@ const internalProductId = "999";
 const opaqueProductId = encodeProductOpaqueId(999);
 const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874", "925"];
+
+const internalProductTwoId = "888";
+const opaqueProductTwoId = encodeProductOpaqueId(888);
+const internalVariantTwoIds = ["889", "890"];
 
 const shopName = "Test Shop";
 
@@ -65,6 +70,35 @@ const mockOptionTwo = {
   price: 29.99
 };
 
+const mockProductTwo = {
+  _id: internalProductTwoId,
+  ancestors: [],
+  title: "Fake Product two",
+  isDeleted: false,
+  isVisible: true,
+  supportedFulfillmentTypes: ["shipping"],
+  vendor: "Nike"
+};
+
+const mockVariantTwo = {
+  _id: internalVariantTwoIds[0],
+  ancestors: [internalProductTwoId],
+  attributeLabel: "Variant",
+  title: "Fake Product Two Variant",
+  isDeleted: false,
+  isVisible: true
+};
+
+const mockOptionTwoOne = {
+  _id: internalVariantTwoIds[1],
+  ancestors: [internalProductTwoId, internalVariantTwoIds[0]],
+  attributeLabel: "Option",
+  title: "Fake Product Two Option One",
+  isDeleted: false,
+  isVisible: true,
+  price: 19.99
+};
+
 const mockShippingMethod = {
   _id: "mockShippingMethod",
   name: "Default Shipping Provider",
@@ -96,6 +130,7 @@ let addCartItems;
 let availablePaymentMethods;
 let createCart;
 let createShop;
+let createPromotion;
 let internalShopId;
 let opaqueShopId;
 let placeOrder;
@@ -129,6 +164,7 @@ beforeAll(async () => {
   setShippingAddressOnCart = testApp.mutate(SetShippingAddressOnCartMutation);
   updateCartItemsQuantity = testApp.mutate(UpdateCartItemsQuantityMutation);
   updateFulfillmentOptionsForGroup = testApp.mutate(UpdateFulfillmentOptionsForGroupMutation);
+  createPromotion = testApp.mutate(CreatePromotionMutation);
 
   const shopCreateGroup = Factory.Group.makeOne({
     _id: "shopCreateGroup",
@@ -151,9 +187,7 @@ beforeAll(async () => {
 
   const {
     createShop: {
-      shop: {
-        _id: newShopId
-      }
+      shop: { _id: newShopId }
     }
   } = await createShop({
     input: {
@@ -161,18 +195,18 @@ beforeAll(async () => {
     }
   });
 
+  opaqueShopId = newShopId;
+  internalShopId = decodeOpaqueIdForNamespace("reaction/shop", newShopId);
+
   const adminGroup = Factory.Group.makeOne({
     _id: "adminGroup",
     createdBy: null,
     name: "admin",
-    permissions: ["reaction:legacy:products/publish"],
+    permissions: ["reaction:legacy:products/publish", "reaction:legacy:promotions/create"],
     slug: "admin",
-    shopId: newShopId
+    shopId: internalShopId
   });
   await testApp.collections.Groups.insertOne(adminGroup);
-
-  opaqueShopId = newShopId;
-  internalShopId = decodeOpaqueIdForNamespace("reaction/shop", newShopId);
 
   // Set other shop settings
   await testApp.collections.Shops.updateOne(
@@ -195,14 +229,20 @@ beforeAll(async () => {
   mockVariant.shopId = internalShopId;
   mockOptionOne.shopId = internalShopId;
   mockOptionTwo.shopId = internalShopId;
+  mockProductTwo.shopId = internalShopId;
+  mockVariantTwo.shopId = internalShopId;
+  mockOptionTwoOne.shopId = internalShopId;
   await Promise.all(internalTagIds.map((_id) => testApp.collections.Tags.insertOne({ _id, shopId: internalShopId, slug: `slug${_id}` })));
   await testApp.collections.Products.insertOne(mockProduct);
   await testApp.collections.Products.insertOne(mockVariant);
   await testApp.collections.Products.insertOne(mockOptionOne);
   await testApp.collections.Products.insertOne(mockOptionTwo);
+  await testApp.collections.Products.insertOne(mockProductTwo);
+  await testApp.collections.Products.insertOne(mockVariantTwo);
+  await testApp.collections.Products.insertOne(mockOptionTwoOne);
 
   // Publish products to the catalog
-  await publishProducts({ productIds: [opaqueProductId] });
+  await publishProducts({ productIds: [opaqueProductId, opaqueProductTwoId] });
 });
 
 // eslint-disable-next-line require-jsdoc
@@ -212,10 +252,13 @@ export default function getCommonData() {
     availablePaymentMethods,
     createCart,
     createShop,
+    createPromotion,
     encodeProductOpaqueId,
     internalShopId,
     internalVariantIds,
+    internalVariantTwoIds,
     opaqueProductId,
+    opaqueProductTwoId,
     opaqueShopId,
     placeOrder,
     publishProducts,

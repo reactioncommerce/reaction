@@ -114,7 +114,7 @@ export default async function addCartItems(context, currentItems, inputItems, op
       attributes,
       compareAtPrice: null,
       isTaxable: chosenVariant.isTaxable || false,
-      metafields,
+      metafields: metafields || catalogProduct.metafields,
       supportedFulfillmentTypes: catalogProduct.supportedFulfillmentTypes || [],
       selectedFulfillmentType,
       optionTitle: chosenVariant.optionTitle,

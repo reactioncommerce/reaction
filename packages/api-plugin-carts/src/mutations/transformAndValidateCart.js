@@ -11,9 +11,10 @@ const logCtx = { name: "cart", file: "transformAndValidateCart" };
  *   and validates it. Throws an error if invalid. The cart object is mutated.
  * @param {Object} context - App context
  * @param {Object} cart - The cart to transform and validate
+ * @param {Object} options - transform options
  * @returns {undefined}
  */
-export default async function transformAndValidateCart(context, cart) {
+export default async function transformAndValidateCart(context, cart, options = {}) {
   const { simpleSchemas: { Cart: cartSchema } } = context;
   await updateCartFulfillmentGroups(context, cart);
 
@@ -41,7 +42,7 @@ export default async function transformAndValidateCart(context, cart) {
   await forEachPromise(cartTransforms, async (transformInfo) => {
     const startTime = Date.now();
     /* eslint-disable no-await-in-loop */
-    await transformInfo.fn(context, cart, { getCommonOrders });
+    await transformInfo.fn(context, cart, { getCommonOrders, ...options });
     /* eslint-enable no-await-in-loop */
     Logger.debug({ ...logCtx, cartId: cart._id, ms: Date.now() - startTime }, `Finished ${transformInfo.name} cart transform`);
   });

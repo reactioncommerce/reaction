@@ -6,6 +6,7 @@ import setEmailOnAnonymousCart from "./setEmailOnAnonymousCart.js";
 import setShippingAddressOnCart from "./setShippingAddressOnCart.js";
 import setFulfillmentTypeForItems from "./setFulfillmentTypeForItems.js";
 import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
+import acknowledgeCartMessage from "./acknowledgeCartMessage.js";
 
 export default {
   addCartItems,
@@ -15,5 +16,6 @@ export default {
   setEmailOnAnonymousCart,
   setShippingAddressOnCart,
   setFulfillmentTypeForItems,
-  updateCartItemsQuantity
+  updateCartItemsQuantity,
+  acknowledgeCartMessage
 };

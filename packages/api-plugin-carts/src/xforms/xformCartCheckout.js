@@ -41,7 +41,9 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
         methodAdditionalData: fulfillmentGroup.shipmentMethod.methodAdditionalData || { gqlType: "emptyData", emptyData: false },
-        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
+        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes,
+        discount: fulfillmentGroup.shipmentMethod.discount || 0,
+        undiscountedRate: fulfillmentGroup.shipmentMethod.rate || 0
       },
       handlingPrice: {
         amount: fulfillmentGroup.shipmentMethod.handling || 0,
@@ -67,7 +69,8 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
     // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-    type: fulfillmentGroup.type
+    type: fulfillmentGroup.type,
+    discounts: fulfillmentGroup.discounts || []
   };
 }
 
@@ -78,7 +81,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  */
 export default async function xformCartCheckout(collections, cart) {
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.price.amount * item.quantity)), 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed

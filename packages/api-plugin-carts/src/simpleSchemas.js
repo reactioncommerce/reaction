@@ -633,6 +633,36 @@ const Money = new SimpleSchema({
   }
 });
 
+const CartMessages = new SimpleSchema({
+  _id: String,
+  title: String,
+  message: {
+    type: String,
+    optional: true
+  },
+  severity: {
+    type: String,
+    allowedValues: ["info", "warning", "error"],
+    defaultValue: "info"
+  },
+  acknowledged: {
+    type: Boolean,
+    defaultValue: false
+  },
+  subject: {
+    type: String,
+    optional: true
+  },
+  metaFields: {
+    type: Object,
+    blackbox: true
+  },
+  requiresReadAcknowledgement: {
+    type: Boolean,
+    defaultValue: false
+  }
+});
+
 /**
  * @name CartItemAttribute
  * @memberof Schemas
@@ -883,5 +913,12 @@ export const Cart = new SimpleSchema({
   "updatedAt": {
     type: Date,
     optional: true
+  },
+  "messages": {
+    type: Array,
+    optional: true
+  },
+  "messages.$": {
+    type: CartMessages
   }
 });

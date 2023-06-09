@@ -1,0 +1,416 @@
+"The trigger that will set a promotion into motion"
+type Trigger {
+  "The key that defines this action"
+  triggerKey: String!
+
+  "Parameters that define the trigger"
+  triggerParameters: JSONObject
+}
+
+"The action to be taken when a promotion is triggered"
+type Action {
+  "The key that defines this action"
+  actionKey: String!
+
+  "Parameters to be passed to the action"
+  actionParameters: JSONObject
+}
+
+type Stackability {
+  "The key that defines this stackability"
+  key: String!
+
+  "Parameters to be passed to the stackability"
+  parameters: JSONObject
+}
+
+"The trigger that will set a promotion into motion"
+input TriggerInput {
+  "The key that defines this action"
+  triggerKey: String!
+
+  "Parameters that define the trigger"
+  triggerParameters: JSONObject
+}
+
+"The action to be taken when a promotion is triggered"
+input ActionInput {
+  "The key that defines this action"
+  actionKey: String!
+
+  "Parameters to be passed to the action"
+  actionParameters: JSONObject
+}
+
+input StackabilityInput {
+  "The key that defines this stackability"
+  key: String!
+
+  "Parameters to be passed to the stackability"
+  parameters: JSONObject
+}
+
+enum TriggerType {
+  implicit
+  explicit
+}
+
+enum PromotionState {
+  created
+  active
+  completed
+  archived
+}
+
+"The fields by which you are allowed to sort any query that returns an `PromotionConnection`"
+enum PromotionSortByField {
+  "Promotion ID"
+  _id
+
+  "What type of promotion is this"
+  PromotionType
+
+  "What type of trigger this promotion uses"
+  TriggerType
+
+  "Date and time at which this Promotion was created"
+  createdAt
+
+  "The short description of the promotion"
+  label
+
+  "Whether the promotion is current active"
+  enabled
+
+  "Date and time at which this Promotion was last updated"
+  updatedAt
+}
+
+"A record representing a particular promotion"
+type Promotion {
+  "The unique ID of the promotion"
+  _id: String!
+
+  "What type of promotion is this"
+  promotionType: String!
+
+  "What type of trigger this promotion uses"
+  triggerType: TriggerType!
+
+  "An integer ID for user reference"
+  referenceId: Int!
+
+  "The id of the shop that this promotion resides"
+  shopId: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "The short description of the promotion"
+  name: String!
+
+  "A longer detailed description of the promotion"
+  description: String
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "What is the current state of the promotion"
+  state: PromotionState!
+
+  "The triggers for this Promotion"
+  triggers: [Trigger!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [Action!]
+
+  "The date that the promotion begins"
+  startDate: DateTime!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: DateTime
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackability: Stackability
+
+  "When was this record created"
+  createdAt: Date!
+
+  "When was this record last updated"
+  updatedAt: Date!
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
+}
+
+"A applied promotion on the cart"
+type CartPromotionItem {
+  "The unique ID of the promotion"
+  _id: ID!
+
+  "The short description of the promotion"
+  name: String!
+
+  "The short description of the promotion"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String!
+
+  "What type of trigger this promotion uses"
+  triggerType: TriggerType!
+}
+
+extend type Cart {
+  "The promotions that have been applied to this cart"
+  appliedPromotions: [CartPromotionItem]
+}
+
+"A connection edge in which each node is a `Promotion` object"
+type PromotionEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The product"
+  node: Promotion
+}
+
+type PromotionConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [PromotionEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Promotion]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+input PromotionDateOperators {
+  "The value must be equal to the given value"
+  eq: Date
+
+  "The value must be less than the given value"
+  before: Date
+
+  "The value must be greater than the given value"
+  after: Date
+}
+
+input PromotionFilter {
+  enabled: Boolean
+  startDate: PromotionDateOperators
+  endDate: PromotionDateOperators
+  state: PromotionState
+}
+
+input PromotionCreateInput {
+  "The id of the shop that this promotion resides in"
+  shopId: String!
+
+  "What type of promotion this is for stackability purposes"
+  promotionType: String!
+
+  "The short description of the promotion visible to the customer"
+  label: String!
+
+  "The short description of the promotion"
+  name: String!
+
+  "A longer detailed description of the promotion"
+  description: String
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "The triggers for this Promotion"
+  triggers: [TriggerInput!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [ActionInput!]
+
+  "The date that the promotion begins"
+  startDate: DateTime!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: DateTime
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackability: StackabilityInput
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
+}
+
+input PromotionDuplicateArchiveInput {
+  "shopId"
+  shopId: String!
+
+  "The id of the promotion to duplicate or archive"
+  promotionId: String!
+}
+
+"This is identical to the PromotionCreate except it includes the _id"
+input PromotionUpdateInput {
+  "The unique ID of the promotion"
+  _id: String!
+
+  "The id of the shop that this promotion resides"
+  shopId: String!
+
+  "What type of trigger this uses"
+  triggerType: TriggerType!
+
+  "What type of promotion this is for stackability purposes"
+  promotionType: String!
+
+  "The short description of the promotion"
+  name: String!
+
+  "The short description of the promotion visible to the customer"
+  label: String!
+
+  "A longer detailed description of the promotion"
+  description: String
+
+  "Whether the promotion is current active"
+  enabled: Boolean!
+
+  "The triggers for this Promotion"
+  triggers: [TriggerInput!]
+
+  "The actions to be taken when the promotion is triggered"
+  actions: [ActionInput!]
+
+  "The date that the promotion begins"
+  startDate: DateTime!
+
+  "The date that the promotion end (empty means it never ends)"
+  endDate: DateTime
+
+  "Definition of how this promotion can be combined (none, per-type, or all)"
+  stackability: StackabilityInput
+
+  "What is the current state of the promotion"
+  state: PromotionState
+
+  "Call to Action message a customer sees in the storefront PDP to encourage customers to use the promotion"
+  callToActionMessage: String
+
+  "URL to the Terms and Conditions so that customers can get more information about the promotion"
+  termsAndConditionsUrl: String
+}
+
+type PromotionUpdatedPayload {
+  "Was the operation a success"
+  success: Boolean!
+
+  "The updated or created promotion"
+  promotion: Promotion
+}
+
+input PromotionQueryInput {
+  "The unique ID of the promotion"
+  _id: String!
+
+  "The unique ID of the shop"
+  shopId: String!
+}
+
+extend type Mutation {
+  "Create a new promotion"
+  createPromotion(
+    input: PromotionCreateInput
+  ): PromotionUpdatedPayload
+
+  "Create a new promotion based on an existing promotion"
+  duplicatePromotion(
+    input: PromotionDuplicateArchiveInput
+  ): PromotionUpdatedPayload
+
+  "Mark a promotion as archived"
+  archivePromotion(
+    input: PromotionDuplicateArchiveInput
+  ): PromotionUpdatedPayload
+
+  "Update values on promotion"
+  updatePromotion(
+    input: PromotionUpdateInput
+  ): PromotionUpdatedPayload
+}
+
+extend type Query {
+  promotion(
+    input: PromotionQueryInput
+  ): Promotion
+}
+
+extend type Query {
+  promotions(
+    "Shop ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    filter: PromotionFilter
+
+    sortBy: String
+
+    sortOrder: String
+  ): PromotionConnection!
+
+    "Query to get a filtered list of Accounts"
+  filterPromotions(
+    "Shop ID"
+    shopId: ID!,
+
+    "Input Conditions for fliter (use either 'any' or 'all' not both)"
+    conditions: FilterConditionsInput,
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    "Return results sorted in this order"
+    sortOrder: SortOrder = desc,
+
+    "By default, accounts are sorted by createdAt. Set this to sort by one of the other allowed fields"
+    sortBy: PromotionSortByField = createdAt
+  ): PromotionConnection
+}

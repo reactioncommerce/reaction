@@ -14,6 +14,7 @@ import setShippingAddressOnCart from "./setShippingAddressOnCart.js";
 import setFulfillmentTypeForItems from "./setFulfillmentTypeForItems.js";
 import transformAndValidateCart from "./transformAndValidateCart.js";
 import updateCartItemsQuantity from "./updateCartItemsQuantity.js";
+import acknowledgeCartMessage from "./acknowledgeCartMessage.js";
 
 export default {
   addCartItems,
@@ -31,5 +32,6 @@ export default {
   setShippingAddressOnCart,
   setFulfillmentTypeForItems,
   transformAndValidateCart,
-  updateCartItemsQuantity
+  updateCartItemsQuantity,
+  acknowledgeCartMessage
 };

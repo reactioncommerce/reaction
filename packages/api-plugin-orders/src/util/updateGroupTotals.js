@@ -80,17 +80,10 @@ export default async function updateGroupTotals(context, {
   });
 
   if (expectedGroupTotal) {
-    // For now we expect that the client has NOT included discounts in the expected total it sent.
-    // Note that we don't currently know which parts of `discountTotal` go with which fulfillment groups.
-    // This needs to be rewritten soon for discounts to work when there are multiple fulfillment groups.
-    // Probably the client should be sending all applied discount IDs and amounts in the order input (by group),
-    // and include total discount in `groupInput.totalPrice`, and then we simply verify that they are valid here.
-    const expectedTotal = Math.max(expectedGroupTotal - discountTotal, 0);
-
     // Compare expected and actual totals to make sure client sees correct calculated price
     // Error if we calculate total price differently from what the client has shown as the preview.
     // It's important to keep this after adding and verifying the shipmentMethod and order item prices.
-    compareExpectedAndActualTotals(group.invoice.total, expectedTotal);
+    compareExpectedAndActualTotals(group.invoice.total, expectedGroupTotal);
   }
 
   return {

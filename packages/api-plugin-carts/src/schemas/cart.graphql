@@ -65,6 +65,9 @@ type Cart implements Node {
   """
   missingItems: [CartItem]
 
+  "The cart messages. These are messages that are returned from the server and displayed to the user."
+  messages: [CartMessage]
+
   """
   If you integrate with third-party systems that require you to send the same ID for order
   calculations as for cart calculations, you may use this ID, which is the same on a `cart` as on
@@ -90,6 +93,45 @@ enum CartItemsSortByField {
 
   "Date and time at which the item was added to the cart"
   addedAt
+}
+
+
+enum CartMessageSeverity {
+  "Informational message"
+  info
+
+  "Warning message"
+  warning
+
+  "Error message"
+  error
+}
+
+"The cart message type"
+type CartMessage {
+  "Cart message ID"
+  _id: ID!
+
+  "Cart message title"
+  title: String!
+
+  "Cart message severity"
+  severity: CartMessageSeverity!
+
+  "Cart message content"
+  message: String
+
+  "Cart message is acknowledged"
+  acknowledged: Boolean
+
+  "Cart message subject"
+  subject: String
+
+  "Cart message meta fields"
+  metaFields: JSONObject
+
+  "The cart message should be confirm by user or not"
+  requiresReadAcknowledgement: Boolean
 }
 
 """
@@ -460,6 +502,21 @@ input CartUpdatedInput {
   cartToken: String
 }
 
+"Input for the `acknowledgeCartMessage` mutation call"
+input AcknowledgeCartMessageInput {
+  "The cart ID"
+  cartId: ID!,
+
+  "The message to acknowledge"
+  messageId: String!
+
+  "An optional string identifying the mutation call, which will be returned in the response payload"
+  clientMutationId: String
+
+  "The cart anonymous token"
+  cartToken: String
+}
+
 ####################
 # Payloads
 # These types are used as return values for mutation calls
@@ -606,6 +663,12 @@ type SetEmailOnAnonymousCartPayload {
   clientMutationId: String
 }
 
+"The payload returned from the `acknowledgeCartMessage` mutation call"
+type AcknowledgeCartMessagePayload {
+  "The modified cart"
+  cart: Cart!
+}
+
 ####################
 # Mutations
 ####################
@@ -652,6 +715,12 @@ extend type Mutation {
     "Mutation input"
     input: UpdateCartItemsQuantityInput!
   ): UpdateCartItemsQuantityPayload!
+
+  "Acknowledge a message on the account cart"
+  acknowledgeCartMessage(
+    "Mutation input"
+    input: AcknowledgeCartMessageInput!
+  ): AcknowledgeCartMessagePayload!
 }
 
 ####################

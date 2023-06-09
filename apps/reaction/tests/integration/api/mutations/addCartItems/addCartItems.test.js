@@ -36,6 +36,7 @@ beforeAll(async () => {
   catalogItem = Factory.Catalog.makeOne({
     isDeleted: false,
     product: Factory.CatalogProduct.makeOne({
+      title: "Test Product",
       isDeleted: false,
       isVisible: true,
       variants: Factory.CatalogProductVariant.makeMany(1, {
@@ -79,7 +80,8 @@ beforeAll(async () => {
     anonymousAccessToken: hashToken(cartToken),
     shipping: null,
     items: [],
-    workflow: null
+    workflow: null,
+    discounts: []
   });
   opaqueCartId = encodeOpaqueId("reaction/cart", mockCart._id);
   await testApp.collections.Cart.insertOne(mockCart);

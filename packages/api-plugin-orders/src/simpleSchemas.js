@@ -791,6 +791,11 @@ export const SelectedFulfillmentOption = new SimpleSchema({
   rate: {
     type: Number,
     min: 0
+  },
+  discount: {
+    type: Number,
+    min: 0,
+    optional: true
   }
 });
 
@@ -1111,6 +1116,15 @@ export const Order = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
+  },
+  "appliedPromotions": {
+    type: Array,
+    optional: true,
+    defaultValue: []
+  },
+  "appliedPromotions.$": {
+    type: Object,
+    blackbox: true
   }
 });
 

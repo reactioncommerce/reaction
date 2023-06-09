@@ -1,3 +1,4 @@
+import _ from "lodash";
 import ReactionError from "@reactioncommerce/reaction-error";
 
 /**
@@ -23,6 +24,13 @@ export default async function validateInitialOrderData(context, cleanedInput) {
     if (!cart) {
       throw new ReactionError("not-found", "Cart not found while trying to validate order data", { field: "CartId", value: cartId });
     }
+
+    const allCartMessageAreAcknowledged = _.every((cart.messages || []), (message) => !message.requiresReadAcknowledgement || message.acknowledged);
+    if (!allCartMessageAreAcknowledged) {
+      throw new ReactionError("invalid-cart", "Cart messages should be acknowledged before placing order");
+    }
+
+    await context.mutations.transformAndValidateCart(context, cart, { skipTemporaryPromotions: true });
   }
 
   if (!userId && !shop.allowGuestCheckout) {

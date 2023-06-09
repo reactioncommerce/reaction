@@ -2,6 +2,7 @@ import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import getAnonymousAccessToken from "@reactioncommerce/api-utils/getAnonymousAccessToken.js";
 import { Order as OrderSchema, orderInputSchema, paymentInputSchema } from "../../simpleSchemas.js";
+import { customOrderValidators } from "../../../src/registration.js";
 import validateInitialOrderData from "./validateInitialOrderData.js";
 import getFinalFulfillmentGroups from "./getFinalFulfillmentGroups.js";
 import createPayments from "./createPayments.js";
@@ -123,7 +124,7 @@ export default async function prepareOrder(context, input, mode) {
     const validationErrors = formatErrors(err);
     validationResults.push(...validationErrors);
   }
-  const { discounts, total: discountTotal } = getDiscountsResult;
+  const { discounts, appliedPromotions, total: discountTotal } = getDiscountsResult;
 
   // Create array for surcharges to apply to order, if applicable
   // Array is populated inside `fulfillmentGroups.map()`
@@ -224,7 +225,8 @@ export default async function prepareOrder(context, input, mode) {
     workflow: {
       status: "new",
       workflow: ["new"]
-    }
+    },
+    appliedPromotions
   };
 
   if (createOrderMode) {
@@ -265,6 +267,11 @@ export default async function prepareOrder(context, input, mode) {
   let output;
   if (createOrderMode) {
     OrderSchema.validate(order);
+
+    for (const customOrderValidateFunc of customOrderValidators) {
+      await customOrderValidateFunc.fn(context, order); // eslint-disable-line no-await-in-loop
+    }
+
     output = { order, fullToken, errors: validationResults, success };
   } else { // mode expected to be "validateOrder"
     const OrderWithoutPaymentsSchema = OrderSchema.omit("payments");

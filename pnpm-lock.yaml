@@ -152,10 +152,9 @@ importers:
       '@reactioncommerce/api-plugin-address-validation-test': 1.0.3
       '@reactioncommerce/api-plugin-authentication': 2.2.5
       '@reactioncommerce/api-plugin-authorization-simple': 1.3.2
+      '@reactioncommerce/api-plugin-bull-queue': 0.0.0
       '@reactioncommerce/api-plugin-carts': 1.3.5
       '@reactioncommerce/api-plugin-catalogs': 1.1.2
-      '@reactioncommerce/api-plugin-discounts': 1.0.4
-      '@reactioncommerce/api-plugin-discounts-codes': 1.2.4
       '@reactioncommerce/api-plugin-email': 1.1.5
       '@reactioncommerce/api-plugin-email-smtp': 1.0.8
       '@reactioncommerce/api-plugin-email-templates': 1.1.7
@@ -178,6 +177,11 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': 1.0.2
       '@reactioncommerce/api-plugin-pricing-simple': 1.0.7
       '@reactioncommerce/api-plugin-products': 1.3.1
+      '@reactioncommerce/api-plugin-promotions': 0.0.0
+      '@reactioncommerce/api-plugin-promotions-coupons': 0.0.0
+      '@reactioncommerce/api-plugin-promotions-discounts': 0.0.0
+      '@reactioncommerce/api-plugin-promotions-offers': .0.0
+      '@reactioncommerce/api-plugin-sequences': 0.0.0
       '@reactioncommerce/api-plugin-settings': 1.0.7
       '@reactioncommerce/api-plugin-shops': 1.3.0
       '@reactioncommerce/api-plugin-simple-schema': 1.0.3
@@ -195,13 +199,13 @@ importers:
       '@reactioncommerce/file-collections': 0.9.3
       '@reactioncommerce/file-collections-sa-gridfs': 0.1.5
       '@reactioncommerce/logger': 1.1.5
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': 1.0.2
       '@snyk/protect': latest
       faker: ~4.1.0
       graphql: 16.6.0
       nock: ~11.4.0
       node-fetch: ~2.6.0
+      nodemailer: ^6.8.0
       pinst: ^2.1.4
       semver: ~6.3.0
       sharp: ^0.30.7
@@ -216,10 +220,9 @@ importers:
       '@reactioncommerce/api-plugin-address-validation-test': link:../../packages/api-plugin-address-validation-test
       '@reactioncommerce/api-plugin-authentication': link:../../packages/api-plugin-authentication
       '@reactioncommerce/api-plugin-authorization-simple': link:../../packages/api-plugin-authorization-simple
+      '@reactioncommerce/api-plugin-bull-queue': link:../../packages/api-plugin-bull-queue
       '@reactioncommerce/api-plugin-carts': link:../../packages/api-plugin-carts
       '@reactioncommerce/api-plugin-catalogs': link:../../packages/api-plugin-catalogs
-      '@reactioncommerce/api-plugin-discounts': link:../../packages/api-plugin-discounts
-      '@reactioncommerce/api-plugin-discounts-codes': link:../../packages/api-plugin-discounts-codes
       '@reactioncommerce/api-plugin-email': link:../../packages/api-plugin-email
       '@reactioncommerce/api-plugin-email-smtp': link:../../packages/api-plugin-email-smtp
       '@reactioncommerce/api-plugin-email-templates': link:../../packages/api-plugin-email-templates
@@ -242,6 +245,11 @@ importers:
       '@reactioncommerce/api-plugin-payments-stripe-sca': link:../../packages/api-plugin-payments-stripe-sca
       '@reactioncommerce/api-plugin-pricing-simple': link:../../packages/api-plugin-pricing-simple
       '@reactioncommerce/api-plugin-products': link:../../packages/api-plugin-products
+      '@reactioncommerce/api-plugin-promotions': link:../../packages/api-plugin-promotions
+      '@reactioncommerce/api-plugin-promotions-coupons': link:../../packages/api-plugin-promotions-coupons
+      '@reactioncommerce/api-plugin-promotions-discounts': link:../../packages/api-plugin-promotions-discounts
+      '@reactioncommerce/api-plugin-promotions-offers': link:../../packages/api-plugin-promotions-offers
+      '@reactioncommerce/api-plugin-sequences': link:../../packages/api-plugin-sequences
       '@reactioncommerce/api-plugin-settings': link:../../packages/api-plugin-settings
       '@reactioncommerce/api-plugin-shops': link:../../packages/api-plugin-shops
       '@reactioncommerce/api-plugin-simple-schema': link:../../packages/api-plugin-simple-schema
@@ -257,10 +265,10 @@ importers:
       '@reactioncommerce/file-collections': link:../../packages/file-collections
       '@reactioncommerce/file-collections-sa-gridfs': link:../../packages/file-collections-sa-gridfs
       '@reactioncommerce/logger': link:../../packages/logger
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/random': link:../../packages/random
-      '@snyk/protect': 1.1081.0
+      '@snyk/protect': 1.1096.0
       graphql: 16.6.0
+      nodemailer: 6.8.0
       semver: 6.3.0
       sharp: 0.30.7
     devDependencies:
@@ -486,6 +494,31 @@ importers:
       babel-plugin-transform-es2015-modules-commonjs: 6.26.2
       babel-plugin-transform-import-meta: 1.0.1_@babel+core@7.19.0
 
+  packages/api-plugin-bull-queue:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
+      '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      bull: 4.10.1
+      dotenv: ^16.0.3
+      envalid: ^7.3.1
+      ms: 2.1.3
+      simpl-schema: ^1.12.0
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      bull: 4.10.1
+      dotenv: 16.0.3
+      envalid: 7.3.1
+      ms: 2.1.3
+      simpl-schema: 1.12.3
+    devDependencies:
+      '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
+      '@reactioncommerce/data-factory': 1.0.1
+
   packages/api-plugin-carts:
     specifiers:
       '@babel/core': ^7.7.7
@@ -607,10 +640,14 @@ importers:
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/db-version-check': ^1.0.0
       '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ~1.0.2
+      envalid: ^6.0.1
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/db-version-check': link:../db-version-check
       '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      envalid: 6.0.2
     devDependencies:
       '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
       '@reactioncommerce/data-factory': 1.0.1
@@ -623,19 +660,19 @@ importers:
       '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
       '@reactioncommerce/data-factory': ~1.0.1
       '@reactioncommerce/logger': ^1.1.3
-      '@reactioncommerce/nodemailer': ^5.0.5
       '@reactioncommerce/reaction-error': ^1.0.1
       babel-plugin-rewire-exports: ^2.0.0
       babel-plugin-transform-es2015-modules-commonjs: ^6.26.2
       babel-plugin-transform-import-meta: ~1.0.0
       envalid: ^6.0.2
+      nodemailer: ^6.8.0
       simpl-schema: ^1.12.0
     dependencies:
       '@reactioncommerce/api-utils': link:../api-utils
       '@reactioncommerce/logger': link:../logger
-      '@reactioncommerce/nodemailer': 5.0.5
       '@reactioncommerce/reaction-error': link:../reaction-error
       envalid: 6.0.2
+      nodemailer: 6.8.0
       simpl-schema: 1.12.3
     devDependencies:
       '@babel/core': 7.19.0
@@ -1105,6 +1142,90 @@ importers:
       babel-plugin-transform-es2015-modules-commonjs: 6.26.2
       babel-plugin-transform-import-meta: 1.0.1_@babel+core@7.19.0
 
+  packages/api-plugin-promotions:
+    specifiers:
+      '@reactioncommerce/api-utils': ~1.17.1
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      envalid: ^6.0.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.21
+      node-cache: ^5.1.2
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      envalid: 6.0.2
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      node-cache: 5.1.2
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-promotions-coupons:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/db-version-check': workspace:^1.0.0
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      accounting-js: ^1.1.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.21
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/db-version-check': link:../db-version-check
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      accounting-js: 1.1.1
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-promotions-discounts:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      accounting-js: ^1.1.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.15
+      simpl-schema: ^1.12.3
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      accounting-js: 1.1.1
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
+  packages/api-plugin-promotions-offers:
+    specifiers:
+      '@reactioncommerce/api-utils': ^1.16.9
+      '@reactioncommerce/logger': ^1.1.3
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ^1.0.1
+      accounting-js: ^1.1.1
+      json-rules-engine: ^6.1.2
+      lodash: ^4.17.21
+      simpl-schema: ^1.12.2
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/logger': link:../logger
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      accounting-js: 1.1.1
+      json-rules-engine: 6.1.2
+      lodash: 4.17.21
+      simpl-schema: 1.12.3
+
   packages/api-plugin-sample-data:
     specifiers:
       '@babel/core': ^7.7.7
@@ -1133,6 +1254,31 @@ importers:
       babel-plugin-rewire-exports: 2.3.0
       babel-plugin-transform-es2015-modules-commonjs: 6.26.2
       babel-plugin-transform-import-meta: 1.0.1_@babel+core@7.19.0
+
+  packages/api-plugin-sequences:
+    specifiers:
+      '@babel/core': ^7.7.7
+      '@babel/preset-env': ^7.7.7
+      '@reactioncommerce/api-utils': ^1.16.7
+      '@reactioncommerce/babel-remove-es-create-require': ~1.0.0
+      '@reactioncommerce/data-factory': ~1.0.1
+      '@reactioncommerce/random': ^1.0.2
+      '@reactioncommerce/reaction-error': ~1.0.1
+      dotenv: ^16.0.1
+      envalid: ^7.3.1
+      simpl-schema: ^3.0.1
+    dependencies:
+      '@reactioncommerce/api-utils': link:../api-utils
+      '@reactioncommerce/random': link:../random
+      '@reactioncommerce/reaction-error': link:../reaction-error
+      dotenv: 16.0.2
+      envalid: 7.3.1
+      simpl-schema: 3.4.1
+    devDependencies:
+      '@babel/core': 7.19.0
+      '@babel/preset-env': 7.19.0_@babel+core@7.19.0
+      '@reactioncommerce/babel-remove-es-create-require': 1.0.0_@babel+core@7.19.0
+      '@reactioncommerce/data-factory': 1.0.1
 
   packages/api-plugin-settings:
     specifiers:
@@ -4473,6 +4619,7 @@ packages:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       graphql: 16.6.0
+      tslib: 2.4.1
     dev: false
 
   /@humanwhocodes/config-array/0.10.4:
@@ -4961,6 +5108,54 @@ packages:
       read-yaml-file: 1.1.0
     dev: false
 
+  /@msgpackr-extract/msgpackr-extract-darwin-arm64/2.2.0:
+    resolution: {integrity: sha512-Z9LFPzfoJi4mflGWV+rv7o7ZbMU5oAU9VmzCgL240KnqDW65Y2HFCT3MW06/ITJSnbVLacmcEJA8phywK7JinQ==}
+    cpu: [arm64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@msgpackr-extract/msgpackr-extract-darwin-x64/2.2.0:
+    resolution: {integrity: sha512-vq0tT8sjZsy4JdSqmadWVw6f66UXqUCabLmUVHZwUFzMgtgoIIQjT4VVRHKvlof3P/dMCkbMJ5hB1oJ9OWHaaw==}
+    cpu: [x64]
+    os: [darwin]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@msgpackr-extract/msgpackr-extract-linux-arm/2.2.0:
+    resolution: {integrity: sha512-SaJ3Qq4lX9Syd2xEo9u3qPxi/OB+5JO/ngJKK97XDpa1C587H9EWYO6KD8995DAjSinWvdHKRrCOXVUC5fvGOg==}
+    cpu: [arm]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@msgpackr-extract/msgpackr-extract-linux-arm64/2.2.0:
+    resolution: {integrity: sha512-hlxxLdRmPyq16QCutUtP8Tm6RDWcyaLsRssaHROatgnkOxdleMTgetf9JsdncL8vLh7FVy/RN9i3XR5dnb9cRA==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@msgpackr-extract/msgpackr-extract-linux-x64/2.2.0:
+    resolution: {integrity: sha512-94y5PJrSOqUNcFKmOl7z319FelCLAE0rz/jPCWS+UtdMZvpa4jrQd+cJPQCLp2Fes1yAW/YUQj/Di6YVT3c3Iw==}
+    cpu: [x64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
+    optional: true
+
+  /@msgpackr-extract/msgpackr-extract-win32-x64/2.2.0:
+    resolution: {integrity: sha512-XrC0JzsqQSvOyM3t04FMLO6z5gCuhPE6k4FXuLK5xf52ZbdvcFe1yBmo7meCew9B8G2f0T9iu9t3kfTYRYROgA==}
+    cpu: [x64]
+    os: [win32]
+    requiresBuild: true
+    dev: false
+    optional: true
+
   /@nicolo-ribaudo/chokidar-2/2.1.8-no-fsevents.3:
     resolution: {integrity: sha512-s88O1aVtXftvp5bCPB7WnmXc5IwOZZ7YPuwNPt+GtOOXpPvad1LfbmjYv+qII7zP6RU2QGnqve27dnLycEnyEQ==}
     requiresBuild: true
@@ -5083,11 +5278,6 @@ packages:
       eslint-plugin-you-dont-need-lodash-underscore: 6.12.0
     dev: true
 
-  /@reactioncommerce/nodemailer/5.0.5:
-    resolution: {integrity: sha512-u4ontTETlROmLglkMDyouMXlX62NXOGfOUAd75Ilk3W4tcsRjRXX+g5C5B4mBCCcJB0wHn1yh/a4pOYkn81vUQ==}
-    engines: {node: '>=4.0.0'}
-    dev: false
-
   /@repeaterjs/repeater/3.0.4:
     resolution: {integrity: sha512-AW8PKd6iX3vAZ0vA43nOUOnbq/X5ihgU+mSXXqunMkeQADGiqw/PY0JNeYtD5sr0PAy51YPgAPbDoeapv9r8WA==}
     dev: false
@@ -5124,8 +5314,8 @@ packages:
       '@sinonjs/commons': 1.8.3
     dev: false
 
-  /@snyk/protect/1.1081.0:
-    resolution: {integrity: sha512-V+4DJPLorQph9j78PB3qpxOEREzXHJN/txg2Cxn2EGw+7IWOPPeLgUb4jO+tjVVmqMYmrvohMDQKErcjIxVqVg==}
+  /@snyk/protect/1.1096.0:
+    resolution: {integrity: sha512-E0hkw5TY8rIygL2uohywBrW72f1x/g36mHdMxS9UzLB9DHLDudJJYHMwJfdjl6dW7cuuTVauv8TDQireMkjOVw==}
     engines: {node: '>=10'}
     hasBin: true
     dev: false
@@ -6608,6 +6798,23 @@ packages:
     resolution: {integrity: sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ==}
     dev: false
 
+  /bull/4.10.1:
+    resolution: {integrity: sha512-Fp21tRPb2EaZPVfmM+ONZKVz2RA+to+zGgaTLyCKt3JMSU8OOBqK8143OQrnGuGpsyE5G+9FevFAGhdZZfQP2g==}
+    engines: {node: '>=10.1'}
+    dependencies:
+      cron-parser: 4.7.0
+      debuglog: 1.0.1
+      get-port: 5.1.1
+      ioredis: 4.28.5
+      lodash: 4.17.21
+      msgpackr: 1.8.0
+      p-timeout: 3.2.0
+      semver: 7.3.8
+      uuid: 8.3.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /bunyan-format/0.2.1:
     resolution: {integrity: sha512-xQs2LwWskjQdv7bVkMNwvMi7HnvDQoX4587H90nDGQGPPwHrmxsihBOIYHMVwjLMMOokITKPyFcbFneblvMEjQ==}
     dependencies:
@@ -7164,6 +7371,13 @@ packages:
       sha.js: 2.4.11
     dev: false
 
+  /cron-parser/4.7.0:
+    resolution: {integrity: sha512-BdAELR+MCT2ZWsIBhZKDuUqIUCBjHHulPJnm53OfdRLA4EWBjva3R+KM5NeidJuGsNXdEcZkjC7SCnkW5rAFSA==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      luxon: 3.1.0
+    dev: false
+
   /cross-spawn/5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
     dependencies:
@@ -7337,6 +7551,10 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+
+  /debuglog/1.0.1:
+    resolution: {integrity: sha512-syBZ+rnAK3EgMsH2aYEOLUW7mZSY9Gb+0wUMCFsZvcmiz+HigA0LOcq/HoQqVuGG+EKykunc7QG2bzrponfaSw==}
+    dev: false
 
   /decamelize-keys/1.1.0:
     resolution: {integrity: sha512-ocLWuYzRPoS9bfiSdDd3cxvrzovVMZnRDVEzAs+hWIVXGDbHxWMECij2OBuyB/An0FFW/nLuq6Kv1i/YC5Qfzg==}
@@ -7536,6 +7754,11 @@ packages:
 
   /dotenv/16.0.2:
     resolution: {integrity: sha512-JvpYKUmzQhYoIFgK2MOnF3bciIZoItIIoryihy0rIA+H4Jy0FmgyKYAHCTN98P5ybGSJcIFbh6QKeJdtZd1qhA==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
     engines: {node: '>=12'}
     dev: false
 
@@ -8311,6 +8534,10 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
+  /eventemitter2/6.4.9:
+    resolution: {integrity: sha512-JEPTiaOt9f04oa6NOkc4aH+nVp5I3wEjpHbIPqfgCdD5v5bUzy7xQqwcVO2aDQgOWhI28da57HksMrzK9HlRxg==}
+    dev: false
+
   /events/1.1.1:
     resolution: {integrity: sha512-kEcvvCBByWXGnZy6JUlgAp2gBIUjfCAV6P6TgT1/aaQKcmuAEC4OZTV1I4EWQLz2gxZw76atuVyvHhTxvi0Flw==}
     engines: {node: '>=0.4.x'}
@@ -8898,6 +9125,11 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: true
 
+  /get-port/5.1.1:
+    resolution: {integrity: sha512-g/Q1aTSDOxFpchXC4i8ZWvxA1lnPqx/JHqcpIw0/LX9T8x/GBbi6YnlN5nhaKIFkT8oFsscUKgDJYxfwfS6QsQ==}
+    engines: {node: '>=8'}
+    dev: false
+
   /get-stream/3.0.0:
     resolution: {integrity: sha512-GlhdIUuVakc8SJ6kK0zAFbiGzRFzNnY4jUuEbV9UROo4Y+0Ny4fjvcZFVTeDA4odpFyOQzaw6hXukJSq/f28sQ==}
     engines: {node: '>=4'}
@@ -9357,6 +9589,10 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
+  /hash-it/5.0.2:
+    resolution: {integrity: sha512-csU3E/a9QEmEgPPxoShVuMcFWM329IGioEPRvYVBv3r5BFrU8pCfnk3jGEVvriAcwqd+nl6KsNhPPjg8MUzkhQ==}
+    dev: false
+
   /hash-stream-validation/0.2.4:
     resolution: {integrity: sha512-Gjzu0Xn7IagXVkSu9cSFuK1fqzwtLwFhNhVL8IFJijRNMgUttFbBSIAzKuSIrsFMO1+g1RlsoN49zPIbwPDMGQ==}
     dev: false
@@ -9555,6 +9791,25 @@ packages:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
     dependencies:
       loose-envify: 1.4.0
+
+  /ioredis/4.28.5:
+    resolution: {integrity: sha512-3GYo0GJtLqgNXj4YhrisLaNNvWSNwSS2wS4OELGfGxH8I69+XfNdnmV1AyN+ZqMh0i7eX+SWjrwFKDBDgfBC1A==}
+    engines: {node: '>=6'}
+    dependencies:
+      cluster-key-slot: 1.1.2
+      debug: 4.3.4
+      denque: 1.5.1
+      lodash.defaults: 4.2.0
+      lodash.flatten: 4.4.0
+      lodash.isarguments: 3.1.0
+      p-map: 2.1.0
+      redis-commands: 1.7.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /ioredis/5.3.2:
     resolution: {integrity: sha512-1DKMMzlIHM02eBBVOFQ1+AolGjs6+xEcM4PDL7NqOS6szq7H9jSaEkIUH6/a5Hl241LzW6JLSiAbNvTQjUupUA==}
@@ -10739,6 +10994,16 @@ packages:
   /json-parse-even-better-errors/2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
 
+  /json-rules-engine/6.1.2:
+    resolution: {integrity: sha512-+rtKuJ33HAvFywL9broh42FA9hkZNmS0l1DmgjP7nfGJ9E2i2IsfNH0BcXjyXianp/bXAyYlsSv308AfTuvBwQ==}
+    dependencies:
+      clone: 2.1.2
+      eventemitter2: 6.4.9
+      hash-it: 5.0.2
+      jsonpath-plus: 5.1.0
+      lodash.isobjectlike: 4.0.0
+    dev: false
+
   /json-schema-traverse/0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
 
@@ -10772,6 +11037,11 @@ packages:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
       graceful-fs: 4.2.10
+    dev: false
+
+  /jsonpath-plus/5.1.0:
+    resolution: {integrity: sha512-890w2Pjtj0iswAxalRlt2kHthi6HKrXEfZcn+ZNZptv7F3rUGIeDuZo+C+h4vXBHLEsVjJrHeCm35nYeZLzSBQ==}
+    engines: {node: '>=10.0.0'}
     dev: false
 
   /jsonwebtoken/8.5.1:
@@ -11007,6 +11277,10 @@ packages:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
     dev: false
 
+  /lodash.flatten/4.4.0:
+    resolution: {integrity: sha512-C5N2Z3DgnnKr0LOpv/hKCgKdb7ZZwafIrsesve6lmzvZIRZRGaZ/l6Q8+2W7NaT+ZwO3fFlSCzCzrDCFdJfZ4g==}
+    dev: false
+
   /lodash.get/4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
 
@@ -11028,6 +11302,10 @@ packages:
 
   /lodash.isnumber/3.0.3:
     resolution: {integrity: sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==}
+    dev: false
+
+  /lodash.isobjectlike/4.0.0:
+    resolution: {integrity: sha512-bbRt0Dief0yqjkTgpvzisSxnsmY3ZgVJvokHL30UE+ytsvnpNfiNaCJL4XBEWek8koQmrwZidBHb7coXC5vXlA==}
     dev: false
 
   /lodash.isplainobject/4.0.6:
@@ -11155,6 +11433,11 @@ packages:
 
   /lru-cache/7.14.1:
     resolution: {integrity: sha512-ysxwsnTKdAx96aTRdhDOCQfDgbHnt8SK0KY8SEjO0wHinhWOFTESbjVCMPbU1uGXg/ch4lifqx0wfjOawU2+WA==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /luxon/3.1.0:
+    resolution: {integrity: sha512-7w6hmKC0/aoWnEsmPCu5Br54BmbmUp5GfcqBxQngRcXJ+q5fdfjEzn7dxmJh2YdDhgW8PccYtlWKSv4tQkrTQg==}
     engines: {node: '>=12'}
     dev: false
 
@@ -11593,6 +11876,28 @@ packages:
   /ms/2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
+  /msgpackr-extract/2.2.0:
+    resolution: {integrity: sha512-0YcvWSv7ZOGl9Od6Y5iJ3XnPww8O7WLcpYMDwX+PAA/uXLDtyw94PJv9GLQV/nnp3cWlDhMoyKZIQLrx33sWog==}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      node-gyp-build-optional-packages: 5.0.3
+    optionalDependencies:
+      '@msgpackr-extract/msgpackr-extract-darwin-arm64': 2.2.0
+      '@msgpackr-extract/msgpackr-extract-darwin-x64': 2.2.0
+      '@msgpackr-extract/msgpackr-extract-linux-arm': 2.2.0
+      '@msgpackr-extract/msgpackr-extract-linux-arm64': 2.2.0
+      '@msgpackr-extract/msgpackr-extract-linux-x64': 2.2.0
+      '@msgpackr-extract/msgpackr-extract-win32-x64': 2.2.0
+    dev: false
+    optional: true
+
+  /msgpackr/1.8.0:
+    resolution: {integrity: sha512-1Cos3r86XACdjLVY4CN8r72Cgs5lUzxSON6yb81sNZP9vC9nnBrEbu1/ldBhuR9BKejtoYV5C9UhmYUvZFJSNQ==}
+    optionalDependencies:
+      msgpackr-extract: 2.2.0
+    dev: false
+
   /mv/2.1.1:
     resolution: {integrity: sha512-at/ZndSy3xEGJ8i0ygALh8ru9qy7gWW1cmkaqBN29JmMlIvM//MEO9y1sk/avxuwnPcfhkejkLsuPxH81BrkSg==}
     engines: {node: '>=0.8.0'}
@@ -11721,6 +12026,13 @@ packages:
     resolution: {integrity: sha512-CvkDw2OEnme7ybCykJpVcKH+uAOLV2qLqiyla128dN9TkEWfrYmxG6C2boDe5KcNQqZF3orkqzGgOMvZ/JNekA==}
     dev: false
 
+  /node-cache/5.1.2:
+    resolution: {integrity: sha512-t1QzWwnk4sjLWaQAS8CHgOJ+RAfmHpxFWmc36IWTiWHQfs0w5JDMBS1b1ZxQteo0vVVuWJvIUKHDkkeK7vIGCg==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      clone: 2.1.2
+    dev: false
+
   /node-fetch/2.6.7:
     resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
     engines: {node: 4.x || >=6.0.0}
@@ -11742,6 +12054,12 @@ packages:
     engines: {node: '>= 6.13.0'}
     dev: false
 
+  /node-gyp-build-optional-packages/5.0.3:
+    resolution: {integrity: sha512-k75jcVzk5wnnc/FMxsf4udAoTEUv2jY3ycfdSd3yWu6Cnd1oee6/CfZJApyscA4FJOmdoixWwiwOyf16RzD5JA==}
+    hasBin: true
+    dev: false
+    optional: true
+
   /node-int64/0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
     dev: true
@@ -11757,6 +12075,11 @@ packages:
 
   /node-releases/2.0.6:
     resolution: {integrity: sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==}
+
+  /nodemailer/6.8.0:
+    resolution: {integrity: sha512-EjYvSmHzekz6VNkNd12aUqAco+bOkRe3Of5jVhltqKhEsjw/y0PYPJfp83+s9Wzh1dspYAkUW/YNQ350NATbSQ==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /nodemon/1.19.4:
     resolution: {integrity: sha512-VGPaqQBNk193lrJFotBU8nvWZPqEZY2eIzymy2jjY0fJ9qIsxA0sxQ8ATPl0gZC645gijYEc1jtZvpS8QWzJGQ==}
@@ -11977,7 +12300,6 @@ packages:
   /p-finally/1.0.0:
     resolution: {integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==}
     engines: {node: '>=4'}
-    dev: true
 
   /p-limit/2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -12013,6 +12335,13 @@ packages:
   /p-map/2.1.0:
     resolution: {integrity: sha512-y3b8Kpd8OAN444hxfBbFfj1FY/RjtTd8tzYwhUqNYXx0fXx2iX4maP4Qr6qhIKbQXI02wTLAda4fYUbDagTUFw==}
     engines: {node: '>=6'}
+    dev: false
+
+  /p-timeout/3.2.0:
+    resolution: {integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==}
+    engines: {node: '>=8'}
+    dependencies:
+      p-finally: 1.0.0
     dev: false
 
   /p-try/2.2.0:
@@ -12606,6 +12935,10 @@ packages:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
+    dev: false
+
+  /redis-commands/1.7.0:
+    resolution: {integrity: sha512-nJWqw3bTFy21hX/CPKHth6sfhZbdiHP6bTawSgQBlKOVRG7EZkfHbbHwQJnrE4vsQf0CMNE+3gJ4Fmm16vdVlQ==}
     dev: false
 
   /redis-errors/1.2.0:
@@ -13826,6 +14159,10 @@ packages:
 
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
+
+  /tslib/2.4.1:
+    resolution: {integrity: sha512-tGyy4dAjRIEwI7BzsB0lynWgOpfqjUdq91XXAlIWD2OwKBH7oCl/GZG/HT4BOHrTlPMOASlMQ7veyTqpmRcrNA==}
+    dev: false
 
   /tsutils/3.21.0:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
