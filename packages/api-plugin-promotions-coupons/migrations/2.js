@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import Random from "@reactioncommerce/random";
-import getCurrentShopTime from "./getCurrentShopTime.js";
 import config from "../src/config.js";
+import getCurrentShopTime from "./getCurrentShopTime.js";
 
 const { SEQUENCE_INITIAL_VALUES } = config;
 /**
