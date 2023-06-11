@@ -14,7 +14,7 @@ jobs:
     permissions:
       contents: write # to create release (changesets/action)
       pull-requests: write # to create pull request (changesets/action)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-focal
     steps:
       - uses: actions/checkout@v2
         with:
@@ -84,7 +84,7 @@ jobs:
     permissions:
       contents: write # to create release (changesets/action)
       pull-requests: write # to create pull request (changesets/action)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-focal
     steps:
       - uses: actions/checkout@v2
         with:
