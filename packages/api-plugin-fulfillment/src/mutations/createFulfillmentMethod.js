@@ -1,8 +1,10 @@
+import Logger from "@reactioncommerce/logger";
 import SimpleSchema from "simpl-schema";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { FulfillmentMethodSchema } from "../simpleSchemas.js";
 
+const logCtx = { name: "fulfillment", file: "createFulfillmentMethod" };
 const inputSchema = new SimpleSchema({
   method: FulfillmentMethodSchema,
   fulfillmentTypeId: String,
@@ -39,7 +41,10 @@ export default async function createFulfillmentMethodMutation(context, input) {
   if (!fulfillmentType) throw new ReactionError("server-error", "Unable to create fulfillment method without defined type");
 
   const fulfillmentMethod = fulfillmentType.methods?.find((currMethod) => currMethod.fulfillmentMethod === method.fulfillmentMethod);
-  if (fulfillmentMethod) throw new ReactionError("server-error", "Fulfillment Method already exists");
+  if (fulfillmentMethod) {
+    Logger.warn(logCtx, "Fulfillment Method already exists");
+    return { fulfillmentMethod };
+  }
 
   method._id = Random.id();
   method.fulfillmentTypes = [fulfillmentType.fulfillmentType];

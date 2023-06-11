@@ -1,7 +1,9 @@
+import Logger from "@reactioncommerce/logger";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import { FulfillmentTypeSchema } from "../simpleSchemas.js";
 
+const logCtx = { name: "fulfillment", file: "createFulfillmentType" };
 /**
  * @method createFulfillmentType
  * @summary Creates a new fulfillment type
@@ -33,7 +35,10 @@ export default async function createFulfillmentType(context, input) {
   const { shopId, fulfillmentType } = cleanedInput;
 
   const existingFulfillmentType = await Fulfillment.findOne({ shopId, fulfillmentType });
-  if (existingFulfillmentType) throw new ReactionError("invalid-parameter", "Fulfillment Type already exists");
+  if (existingFulfillmentType) {
+    Logger.warn(logCtx, "Fulfillment Type already exists");
+    return { fulfillmentType: { name: cleanedInput.name, fulfillmentType: cleanedInput.fulfillmentType } };
+  }
 
   await context.validatePermissions("reaction:legacy:fulfillmentTypes", "create", { shopId });
 
