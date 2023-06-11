@@ -41,8 +41,10 @@ export default async function register(app) {
     },
     functionsByType: {
       preStartup: [fulfillmentMethodShippingFlatRatePreStartup],
-      validateOrderMethods: [{ key: "flatRate", handler: validateOrderMethodsFlatRate }],
-      fulfillmentMethodsWithQuotes: [{ key: "shipping", handler: fulfillmentMethodsWithQuotesShippingFlatRate }]
+      validateOrderMethods: [{ key: "flatRate", handler: validateOrderMethodsFlatRate, name: "validateOrderMethodsFlatRate" }],
+      fulfillmentMethodsWithQuotes: [
+        { key: "shipping", handler: fulfillmentMethodsWithQuotesShippingFlatRate, name: "fulfillmentMethodsWithQuotesShippingFlatRate" }
+      ]
     },
     shopSettingsConfig: {
       isShippingRatesFulfillmentEnabled: {

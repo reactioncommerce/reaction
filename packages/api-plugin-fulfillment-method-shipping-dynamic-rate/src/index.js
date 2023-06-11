@@ -28,8 +28,10 @@ export default async function register(app) {
     functionsByType: {
       preStartup: [preStartup],
       startup: [startup],
-      validateOrderMethods: [{ key: "dynamicRate", handler: validateOrderMethodsDynamicRate }],
-      fulfillmentMethodsWithQuotes: [{ key: "shipping", handler: fulfillmentMethodsWithQuotesShippingDynamicRate }]
+      validateOrderMethods: [{ key: "dynamicRate", handler: validateOrderMethodsDynamicRate, name: "validateOrderMethodsDynamicRate" }],
+      fulfillmentMethodsWithQuotes: [
+        { key: "shipping", handler: fulfillmentMethodsWithQuotesShippingDynamicRate, name: "fulfillmentMethodsWithQuotesShippingDynamicRate" }
+      ]
     }
   });
 }
