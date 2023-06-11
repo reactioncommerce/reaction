@@ -10,12 +10,12 @@ jest.setTimeout(300000);
 
 // Mock data for logged-in user test
 const mockShopId = "integ-test-shop-id";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDppbnRlZy10ZXN0LXNob3AtaWQ=";
+const opaqueShopId = "integ-test-shop-id";
 const shopName = "Test Shop";
 const orderId = "integ-test-order-id";
 const orderReferenceId = "123456789";
 const accountId = "integ-test-account-id";
-const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ=";
+const opaqueAccountId = "integ-test-account-id";
 
 const mockOrdersAccount = Factory.Account.makeOne({
   _id: accountId

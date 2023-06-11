@@ -9,8 +9,8 @@ jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";
-const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const opaqueShopId = "123";
+const opaqueProductId = "999";
 
 const shopName = "Test Shop";
 
@@ -144,7 +144,7 @@ test("expect a variant to be created with all product variant input", async () =
 
 test("non-opaque _id can be provided optionally", async () => {
   const id = "CUSTOM_VARIANT_ID";
-  const encodedId = "cmVhY3Rpb24vcHJvZHVjdDpDVVNUT01fVkFSSUFOVF9JRA=="; // reaction/product:CUSTOM_VARIANT_ID
+  const encodedId = "CUSTOM_VARIANT_ID";
 
   let result;
   try {

@@ -44,7 +44,7 @@ test("authenticated", async () => {
   const result = await viewerQuery();
   expect(result).toEqual({
     viewer: {
-      _id: "cmVhY3Rpb24vYWNjb3VudDoxMjM=",
+      _id: "123",
       addressBook: {
         nodes: [
           { address1: "mockAddress1" }

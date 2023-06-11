@@ -9,9 +9,9 @@ jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const opaqueShopId = "123";
 const internalVariantIds = ["875", "874", "925"];
-const opaqueVariantIdOne = "cmVhY3Rpb24vcHJvZHVjdDo4NzU="; // reaction/product:875
+const opaqueVariantIdOne = "875";
 
 const shopName = "Test Shop";
 

@@ -8,7 +8,7 @@ const CreateProductMutation = importAsString("./createProduct.graphql");
 jest.setTimeout(300000);
 
 const internalShopId = "123";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
+const opaqueShopId = "123";
 
 const shopName = "Test Shop";
 
@@ -159,7 +159,7 @@ test("expect a product to be created with all product input", async () => {
 
 test("non-opaque _id can be provided optionally", async () => {
   const id = "CUSTOM_ID";
-  const encodedId = "cmVhY3Rpb24vcHJvZHVjdDpDVVNUT01fSUQ="; // reaction/product:CUSTOM_ID
+  const encodedId = "CUSTOM_ID";
 
   let result;
   try {

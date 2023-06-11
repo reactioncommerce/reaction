@@ -7,26 +7,18 @@ import { internalTagIds, opaqueTagIds } from "./mockTags";
  */
 
 export const internalProductIds = ["999", "222"];
-export const opaqueProductIds = ["cmVhY3Rpb24vcHJvZHVjdDo5OTk=", "cmVhY3Rpb24vcHJvZHVjdDoyMjI="]; // reaction/product
+export const opaqueProductIds = ["999", "222"];
 
 export const internalVariantIds = ["875", "874", "873"];
-export const opaqueVariantIds = [
-  "cmVhY3Rpb24vcHJvZHVjdDo4NzU=",
-  "cmVhY3Rpb24vcHJvZHVjdDo4NzQ=",
-  "cmVhY3Rpb24vcHJvZHVjdDo4NzM="
-]; // reaction/product
+export const opaqueVariantIds = ["875", "874", "873"];
 
 export const internalCatalogProductIds = ["999", "222"];
-export const opaqueCatalogProductIds = ["cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6OTk5", "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3Q6MjIy"]; // reaction/catalogProduct
+export const opaqueCatalogProductIds = ["999", "222"];
 
-export const opaqueCatalogVariantIds = [
-  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
-  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
-  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3Mw=="
-]; // reaction/catalogProductVariant
+export const opaqueCatalogVariantIds = ["875", "874", "873"];
 
 export const internalCatalogItemIds = ["999", "222"];
-export const opaqueCatalogItemIds = ["cmVhY3Rpb24vY2F0YWxvZ0l0ZW06OTk5", "cmVhY3Rpb24vY2F0YWxvZ0l0ZW06MjIy"]; // reaction/catalogItem
+export const opaqueCatalogItemIds = ["999", "222"];
 
 export const createdAt = new Date("2018-04-16T15:34:28.043Z");
 export const updatedAt = new Date("2018-04-17T15:34:28.043Z");
@@ -147,7 +139,7 @@ export const mockExternalCatalogOptions = [
     pricing: [
       {
         currency: {
-          _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+          _id: "USD",
           code: "USD"
         },
         compareAtPrice: null,
@@ -195,7 +187,7 @@ export const mockExternalCatalogOptions = [
     pricing: [
       {
         currency: {
-          _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+          _id: "USD",
           code: "USD"
         },
         compareAtPrice: null,
@@ -296,7 +288,7 @@ export const mockExternalCatalogVariants = [
     pricing: [
       {
         currency: {
-          _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+          _id: "USD",
           code: "USD"
         },
         compareAtPrice: { amount: 10 },
@@ -547,7 +539,7 @@ export const mockExternalCatalogProducts = [
       pricing: [
         {
           currency: {
-            _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+            _id: "USD",
             code: "USD"
           },
           compareAtPrice: { amount: 10 },
@@ -650,7 +642,7 @@ export const mockExternalCatalogProducts = [
       pricing: [
         {
           currency: {
-            _id: "cmVhY3Rpb24vY3VycmVuY3k6VVNE",
+            _id: "USD",
             code: "USD"
           },
           compareAtPrice: { amount: 35 },

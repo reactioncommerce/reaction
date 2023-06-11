@@ -6,15 +6,15 @@ import insertPrimaryShop from "@reactioncommerce/api-utils/tests/insertPrimarySh
 jest.setTimeout(300000);
 
 const mockShopId = "integ-test-shop-id";
-const opaqueShopId = "cmVhY3Rpb24vc2hvcDppbnRlZy10ZXN0LXNob3AtaWQ="; // reaction/order:integ-test-shop-id
+const opaqueShopId = "integ-test-shop-id";
 const shopName = "Test Shop";
 
 // --- Mock data for auth-ed order test
 const orderId = "integ-test-order-id";
-const opaqueOrderId = "cmVhY3Rpb24vb3JkZXI6aW50ZWctdGVzdC1vcmRlci1pZA=="; // reaction/order:integ-test-order-id
+const opaqueOrderId = "integ-test-order-id";
 
 const accountId = "integ-test-account-id";
-const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ="; // reaction/account:integ-test-account-id
+const opaqueAccountId = "integ-test-account-id";
 
 const mockOrdersAccount = Factory.Account.makeOne({
   _id: accountId
