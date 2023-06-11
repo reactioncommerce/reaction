@@ -3,7 +3,7 @@
   "description": "The root plugin for Promotions",
   "label": "Promotions",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "main": "index.js",
   "type": "module",
   "engines": {
