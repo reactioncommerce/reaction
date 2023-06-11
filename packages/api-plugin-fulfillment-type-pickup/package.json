@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment-type-pickup",
   "description": "Plugin which implements Pickup as one of the Fulfillment type",
   "label": "Fulfillment type Pickup Plugin",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
