@@ -10,8 +10,8 @@ jest.setTimeout(300000);
 const shopId = "integ-test-shop-id";
 const accountId = "integ-test-account-id";
 const differentId = "integ-test-different-id";
-const opaqueAccountId = "integ-test-account-id";
-const opaqueShopId = "integ-test-shop-id";
+const opaqueAccountId = "cmVhY3Rpb24vYWNjb3VudDppbnRlZy10ZXN0LWFjY291bnQtaWQ=";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDppbnRlZy10ZXN0LXNob3AtaWQ=";
 const orderId = "integ-test-order-id";
 const mockAccount = Factory.Account.makeOne({
   _id: accountId

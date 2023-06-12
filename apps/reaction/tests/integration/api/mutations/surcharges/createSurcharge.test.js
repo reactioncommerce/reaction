@@ -8,7 +8,7 @@ const CreateSurchargeMutation = importAsString("./CreateSurchargeMutation.graphq
 jest.setTimeout(300000);
 
 const internalShopId = "123";
-const opaqueShopId = "123";
+const opaqueShopId = "cmVhY3Rpb24vc2hvcDoxMjM="; // reaction/shop:123
 const shopName = "Test Shop";
 const surchargeAttributes = [
   { property: "vendor", value: "reaction", propertyType: "string", operator: "eq" },

@@ -7,12 +7,12 @@ const AccountFullQuery = importAsString("./AccountFullQuery.graphql");
 jest.setTimeout(300000);
 
 const internalNonAdminAccountId = "123";
-const opaqueNonAdminAccountId = "123";
+const opaqueNonAdminAccountId = "cmVhY3Rpb24vYWNjb3VudDoxMjM=";
 const internalAdminAccountId = "456";
 const internalOtherAccountId = "789";
-const opaqueOtherAccountId = "789";
+const opaqueOtherAccountId = "cmVhY3Rpb24vYWNjb3VudDo3ODk=";
 const internalGroupId = "mockCustomerGroup";
-const opaqueGroupId = "mockCustomerGroup";
+const opaqueGroupId = "cmVhY3Rpb24vZ3JvdXA6bW9ja0N1c3RvbWVyR3JvdXA=";
 
 const mockCustomerGroup = {
   _id: internalGroupId,

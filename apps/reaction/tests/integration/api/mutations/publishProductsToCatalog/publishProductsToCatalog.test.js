@@ -9,11 +9,15 @@ jest.setTimeout(300000);
 
 const internalShopId = "123";
 const internalProductId = "999";
-const opaqueProductId = "999";
+const opaqueProductId = "cmVhY3Rpb24vcHJvZHVjdDo5OTk="; // reaction/product:999
 const internalTagIds = ["923", "924"];
 const internalVariantIds = ["875", "874", "925"];
 
-const opaqueCatalogVariantIds = ["875", "874", "925"];
+const opaqueCatalogVariantIds = [
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NQ==",
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50Ojg3NA==",
+  "cmVhY3Rpb24vY2F0YWxvZ1Byb2R1Y3RWYXJpYW50OjkyNQ=="
+]; // reaction/catalogProductVariant
 
 const shopName = "Test Shop";
 
