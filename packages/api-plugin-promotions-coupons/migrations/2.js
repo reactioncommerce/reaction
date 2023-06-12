@@ -1,7 +1,9 @@
 /* eslint-disable no-await-in-loop */
 import Random from "@reactioncommerce/random";
+import config from "../src/config.js";
 import getCurrentShopTime from "./getCurrentShopTime.js";
 
+const { SEQUENCE_INITIAL_VALUES } = config;
 /**
  * @summary returns an auto-incrementing integer id for a specific entity
  * @param {Object} db - The db instance
@@ -10,10 +12,21 @@ import getCurrentShopTime from "./getCurrentShopTime.js";
  * @return {Promise<Number>} - The auto-incrementing ID to use
  */
 async function incrementSequence(db, shopId, entity) {
+  const existingSequence = await db.collection("Sequences").findOne({ shopId, entity });
+  if (!existingSequence) {
+    const startingValue = SEQUENCE_INITIAL_VALUES[entity] || 1000000;
+    await db.collection("Sequences").insertOne({
+      _id: Random.id(),
+      shopId,
+      entity,
+      value: startingValue
+    });
+    return startingValue;
+  }
   const { value: { value } } = await db.collection("Sequences").findOneAndUpdate(
     { shopId, entity },
     { $inc: { value: 1 } },
-    { returnDocument: "after" }
+    { returnDocument: "after", returnOriginal: false }
   );
   return value;
 }

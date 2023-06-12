@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate",
   "description": "Plugin for Fulfillment method flat-rate under the type shipping",
   "label": "Fulfillment Method Shipping Flat Rate Plugin",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {

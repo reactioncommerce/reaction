@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment-method-pickup-store",
   "description": "Implements Store-pickup as a fulfillment method under the type pickup",
   "label": "Fulfillment Method Store Pickup",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {

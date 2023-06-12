@@ -28,8 +28,8 @@ export default async function register(app) {
     functionsByType: {
       preStartup: [fulfillmentMethodPickupStorePreStartup],
       startup: [fulfillmentMethodPickupStoreStartup],
-      validateOrderMethods: [{ key: "store", handler: validateOrderMethodsStore }],
-      fulfillmentMethodsWithQuotes: [{ key: "pickup", handler: fulfillmentMethodsWithQuotesPickupStore }]
+      validateOrderMethods: [{ key: "store", handler: validateOrderMethodsStore, name: "validateOrderMethodsStore" }],
+      fulfillmentMethodsWithQuotes: [{ key: "pickup", handler: fulfillmentMethodsWithQuotesPickupStore, name: "fulfillmentMethodsWithQuotesPickupStore" }]
     }
   });
 }

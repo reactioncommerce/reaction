@@ -1,4 +1,3 @@
-import ReactionError from "@reactioncommerce/reaction-error";
 import mockCollection from "@reactioncommerce/api-utils/tests/mockCollection.js";
 import mockContext from "@reactioncommerce/api-utils/tests/mockContext.js";
 import createFulfillmentTypeMutation from "./createFulfillmentType.js";
@@ -17,7 +16,7 @@ test("throws if required fields are not supplied", async () => {
   await expect(createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrow(expectedError);
 });
 
-test("throws if the fulfillmentType added already exists", async () => {
+test("returns if the fulfillmentType added already exists", async () => {
   mockContext.collections.Fulfillment.findOne.mockReturnValueOnce(Promise.resolve({
     _id: "fulfillment123",
     name: "Default Shipping Provider",
@@ -40,8 +39,16 @@ test("throws if the fulfillmentType added already exists", async () => {
       name: "shipping"
     }
   };
-  const expectedError = new ReactionError("invalid-parameter", "Fulfillment Type already exists");
-  await expect(createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput)).rejects.toThrow(expectedError);
+
+  const result = await createFulfillmentTypeMutation(mockContext, fulfillmentTypeInput);
+  expect(result).toEqual({
+    fulfillmentType: {
+      name: "fulfillmentType123",
+      fulfillmentType: "shipping"
+    }
+  });
+
+  expect(mockContext.validatePermissions).toHaveBeenCalledTimes(0);
 });
 
 test("add a new fulfillment type", async () => {

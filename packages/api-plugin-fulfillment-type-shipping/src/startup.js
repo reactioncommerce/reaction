@@ -8,6 +8,29 @@ import checkAndCreateFulfillmentType from "./checkAndCreateFulfillmentType.js";
  * @returns {undefined}
  */
 export default async function fulfillmentTypeShippingStartup(context) {
+  const { collections: { Shops } } = context;
+  const session = context.app.mongoClient.startSession();
+
+  const allShops = await Shops.find().toArray();
+  for (const shop of allShops) {
+    const { _id: shopId } = shop;
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      await session.withTransaction(async () => {
+        const insertedFulfillmentType = await checkAndCreateFulfillmentType(context, shopId);
+        if (!insertedFulfillmentType) {
+          throw new ReactionError("server-error", "Error in creating fulfillment method");
+        }
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-await-in-loop
+      await session.endSession();
+      throw error;
+    }
+    // eslint-disable-next-line no-await-in-loop
+    await session.endSession();
+  }
+
   context.appEvents.on("afterShopCreate", async (payload) => {
     const { shop } = payload;
     const shopId = shop._id;

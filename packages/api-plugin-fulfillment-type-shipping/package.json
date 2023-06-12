@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment-type-shipping",
   "description": "Plugin which implements shipping as one of the Fulfillment type",
   "label": "Fulfillment type Shipping Plugin",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {

@@ -3,7 +3,7 @@
   "description": "A way to apply promotions to the cart based on flexible rules",
   "label": "Promotions - Offers",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "main": "index.js",
   "type": "module",
   "engines": {

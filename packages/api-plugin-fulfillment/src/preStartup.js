@@ -2,7 +2,7 @@ import doesDatabaseVersionMatch from "@reactioncommerce/db-version-check";
 import { migrationsNamespace } from "../migrations/migrationsNamespace.js";
 import { extendFulfillmentSchemas } from "./simpleSchemas.js";
 
-const expectedVersion = 4;
+const expectedVersion = 2;
 
 /**
  * @summary Checks if the version of the database matches requirement

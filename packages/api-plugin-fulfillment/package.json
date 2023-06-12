@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment",
   "description": "Base Fulfillment plugin for implementing other fulfillment type plugins and their corresponding fulfillment method plugins",
   "label": "Fulfillment Plugin",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
