@@ -13,7 +13,7 @@ networks:
 
 services:
   api:
-    image: reactioncommerce/reaction:4.2.7
+    image: reactioncommerce/reaction:5.0.0
     depends_on:
       - mongo
     env_file:
@@ -38,6 +38,14 @@ services:
       test: test $$(echo "rs.status().ok || rs.initiate().ok" | mongo --quiet) -eq 1
       interval: 10s
       start_period: 30s
+
+  redis:
+    image: redis:7
+    networks:
+      - default
+      - reaction
+    ports:
+      - "6379:6379"
 
 volumes:
   mongo-db4:
