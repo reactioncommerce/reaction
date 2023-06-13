@@ -33,7 +33,7 @@ jobs:
           node-version: "18.10.0"
 
       - name: Install pnpm
-        run: npm i -g pnpm@latest
+        run: npm i -g pnpm@7.11.0
 
       - name: Install Dependencies
         run: pnpm install --ignore-scripts
