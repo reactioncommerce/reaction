@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,7 +17,7 @@ export default async function accountCartByAccountId(parentResult, args, context
   const { accountId, shopId } = args;
 
   return context.queries.accountCartByAccountId(context, {
-    accountId: decodeAccountOpaqueId(accountId),
-    shopId: decodeShopOpaqueId(shopId)
+    accountId: isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 }

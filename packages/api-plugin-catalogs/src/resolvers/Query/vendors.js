@@ -1,5 +1,6 @@
 import getPaginatedResponseFromAggregate from "@reactioncommerce/api-utils/graphql/getPaginatedResponseFromAggregate.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,8 +19,8 @@ import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 export default async function vendors(_, args, context, info) {
   const { shopIds: opaqueShopIds, tagIds: opaqueTagIds, ...connectionArgs } = args;
 
-  const shopIds = opaqueShopIds && opaqueShopIds.map(decodeShopOpaqueId);
-  const tagIds = opaqueTagIds && opaqueTagIds.map(decodeTagOpaqueId);
+  const shopIds = opaqueShopIds && opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
+  const tagIds = opaqueTagIds && opaqueTagIds.map((opaqueTagId) => (isOpaqueId(opaqueTagId) ? decodeTagOpaqueId(opaqueTagId) : opaqueTagId));
 
   const { collection, pipeline } = await context.queries.vendors(context, {
     shopIds,

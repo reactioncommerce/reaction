@@ -1,0 +1,108 @@
+type CartDiscountedItem {
+  "The ID of the item that was discounted"
+  _id: String
+  "The amount of the discount that was applied to this item"
+  amount: Int
+}
+
+type CartDiscount {
+  " The ID of the promotion that created this discount"
+  promotionId: ID!
+
+  "The type of discount. Such as `shipping`, `item`, `order`"
+  discountType: String!
+
+  "The type of calculation used to determine the discount amount. Such as `percentage` or `fixed` or `flat`"
+  discountCalculationType: String!
+
+  "The value of the discount. For percentage discounts, this is the percentage. For fixed discounts, this is the fixed amount. For flat discounts, this is the flat amount."
+  discountValue: Float!
+
+  "The maximum value of the discount. For percentage discounts, this is the maximum percentage. For fixed discounts, this is the maximum fixed amount. For flat discounts, this is the maximum flat amount."
+  discountMaxValue: Float
+
+  "The maximum number of units that can be discounted. For percentage discounts, this is the maximum number of percentage units. For fixed discounts, this is the maximum number of fixed units. For flat discounts, this is the maximum number of flat units."
+  discountMaxUnits: Int
+
+  "The date and time when the discount was applied."
+  dateApplied: DateTime!
+
+  "The date and time when the discount expires."
+  dateExpires: DateTime
+
+  "The discount item type. Such as `order` or `item` or `shipping`"
+  discountedItemType: String
+
+  "The amount of the discount that was applied to the order."
+  discountedAmount: Float
+
+  " The items that were discounted. Only available if `discountedItemType` is `item`."
+  discountedItems: [CartDiscountedItem]
+
+  "Should this discount be applied before other item discounts?"
+  neverStackWithOtherItemLevelDiscounts: Boolean
+
+  "Should this discount be applied before other shipping discounts?"
+  neverStackWithOtherShippingDiscounts: Boolean
+}
+
+extend type Cart {
+  "The array of discounts applied to the cart."
+  discounts: [CartDiscount]
+}
+
+extend type CartItem {
+  "The array of discounts applied to the cart item."
+  discounts: [CartDiscount]
+}
+
+extend type Money {
+  "The total amount before discounts are applied."
+  undiscountedAmount: Float
+
+  "The discount amount will be applied to the amount."
+  discount: Float
+}
+
+extend type Order {
+  "The total discount amount of the order. "
+  discount: Float
+
+  "The total undiscounted amount of the order. "
+  undiscountedAmount: Float
+
+  "The array of discounts applied to the order."
+  discounts: [CartDiscount]
+
+  "The array of promotions applied to the order."
+  appliedPromotions: [CartPromotionItem]
+}
+
+extend type OrderItem {
+  "The total discount amount of the order item. "
+  discount: Float
+
+  "The total undiscounted amount of the order item. "
+  undiscountedAmount: Float
+
+  "The array of discounts applied to the order item."
+  discounts: [CartDiscount]
+}
+
+extend type OrderFulfillmentGroup {
+  "The array of discounts applied to the fulfillment group."
+  discounts: [CartDiscount]
+}
+
+extend type FulfillmentMethod {
+  "The total discount amount of the fulfillment method. "
+  discount: Float
+
+  "The total undiscounted rate of the fulfillment method. "
+  undiscountedRate: Float
+}
+
+extend type FulfillmentGroup {
+  "The array of discounts applied to the fulfillment group."
+  discounts: [CartDiscount]
+}

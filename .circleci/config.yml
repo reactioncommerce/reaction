@@ -10,7 +10,7 @@ defaults: &defaults
     DOCKER_NAMESPACE: "reactioncommerce"
     DOCKER_NAME: "reaction"
   docker:
-    - image: cimg/node:14.20.0
+    - image: cimg/node:18.10.0
 
 install_pnpm: &install_pnpm
   - run:
@@ -91,17 +91,22 @@ jobs:
       - <<: *pnpm_install
       - run:
           name: Test Unit
+          no_output_timeout: 30m
           command: pnpm test
+    resource_class: large
 
   test-integration-query:
     <<: *defaults
     docker:
-      - image: cimg/node:14.20.0
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -119,16 +124,20 @@ jobs:
             sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:query
+    resource_class: large
 
   test-integration-mutation:
     <<: *defaults
     docker:
-      - image: cimg/node:14.20.0
+      - image: cimg/node:18.10.0
       # Integration tests need MongoDB server running and accessible on port 27017
       - image: mongo:4.0
         command: mongod --oplogSize 128 --replSet rs0 --storageEngine=wiredTiger
         ports:
           - "27017:27017"
+      - image: redis
+        ports:
+          - "6379:6379"
     steps:
       - checkout
       - restore_cache:
@@ -146,6 +155,7 @@ jobs:
             sudo apt update && sudo apt-get install -y mongodb
             mongo --eval "rs.initiate()"
             pnpm run test:integration:mutation
+    resource_class: large
 
   release:
     <<: *defaults
@@ -189,6 +199,7 @@ jobs:
             echo "ROOT_URL=http://localhost:3000" >> .env
             echo "STORE_URL=http://localhost:4000" >> .env
             echo "STRIPE_API_KEY=YOUR_PRIVATE_STRIPE_API_KEY" >> .env
+            echo "REDIS_SERVER=redis://127.0.0.1:6379" >> .env
       - run:
           name: Create reaction.localhost network
           command: docker network create "reaction.localhost" || true

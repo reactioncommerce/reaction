@@ -1,0 +1,23 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "flat rate",
+          "confirmRateDelete": "Brisanje stopa?",
+          "rateSaved": "Stan stopa spasio.",
+          "rateFailed": "Flat rate ažuriranje nije uspjelo.",
+          "noRatesFound": "Nisu pronađene stope."
+        },
+        "shippingGrid": {
+          "name": "Ime",
+          "group": "Skupina",
+          "rate": "Stopa",
+          "label": "Označiti"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,81 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Szállítás",
+          "shippingTitle": "Szállítás",
+          "shippingDescription": "Adjon szállítási díjak"
+        },
+        "settings": {
+          "shippingLabel": "Szállítás"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Válassza ki a szállítási opciót",
+        "noShippingMethods": "Nincs szállítási módszerek vannak beállítva.",
+        "contactAdmin": "Kérjük, forduljon a bolt rendszergazda.",
+        "configureNow": "Konfigurálása most.",
+        "shipping": "Szállítás"
+      },
+      "shipping": {
+        "addShippingProvider": "Add szállítási szolgáltató",
+        "editShippingProvider": "Szállítás szerkesztése szolgáltató",
+        "addShippingMethod": "Add szállítási mód",
+        "editShippingMethod": "Szállítási mód szerkesztése",
+        "deleteShippingMethod": "Törlés szállítási mód",
+        "noSettingsForThisView": "Nincs beállítás ehhez a nézethez",
+        "noShippingMethods": "Nincs szállítási módszerek vannak beállítva.",
+        "removeShippingMethodConfirm": "Biztosan törölni szeretné {{method}}?",
+        "removeShippingMethodTitle": "Távolítsuk Szállítás módja",
+        "shippingMethodDeleted": "Ez a szállítási mód törölték.",
+        "removeShippingProvider": "Távolítsuk el a Szállítási Szolgáltató",
+        "removeShippingProviderConfirm": "Biztosan törölni szeretné {{provider}}?",
+        "shippingProviderSaved": "Szállítási szolgáltató mentve.",
+        "shippingProviderUpdated": "Szállítási szolgáltató adatai módosítva.",
+        "shippingMethodRateAdded": "Szállítási mód arány hozzá.",
+        "shippingMethodRateUpdated": "Szállítási mód sebesség frissíteni.",
+        "name": "Név",
+        "label": "Címke",
+        "group": "Csoport",
+        "cost": "Költség",
+        "handling": "Kezelése",
+        "rate": "Arány",
+        "enabled": "Engedélyezett",
+        "disabled": "Tiltva",
+        "addRate": "Add ráta",
+        "updateRate": "Frissítés {{name}} ráta",
+        "addNewCondition": "Új állapot",
+        "deleteCondition": "Törlés állapotban",
+        "provider": {
+          "name": "Service Code",
+          "label": "Public Label",
+          "enabled": "Engedélyezett"
+        }
+      },
+      "shippingMethod": {
+        "name": "módszer neve",
+        "label": "Public Label",
+        "group": "Csoport",
+        "cost": "Költség",
+        "handling": "Kezelése",
+        "rate": "Arány",
+        "enabled": "Engedélyezett",
+        "matchingCartRanges": "Matching Cart tartományok",
+        "validRanges": {
+          "begin": "Kezdődik",
+          "end": "vég"
+        },
+        "matchingLocales": "Matching Nyelv",
+        "validLocales": {
+          "origination": "Ból ből",
+          "destination": "Nak nek",
+          "deliveryBegin": "Szállítási Est.",
+          "deliveryEnd": "Szállítási Est."
+        }
+      }
+    }
+  }
+}]

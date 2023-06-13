@@ -29,6 +29,10 @@
       "require": "./",
       "default": "./lib/"
     },
+    "./*": {
+      "require": "./*",
+      "default": "./lib/*"
+    },
     "./graphql/": {
       "require": "./",
       "default": "./lib/graphql/"

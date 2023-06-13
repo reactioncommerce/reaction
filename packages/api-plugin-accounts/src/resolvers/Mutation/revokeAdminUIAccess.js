@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,8 +19,8 @@ export default async function revokeAdminUIAccess(parentResult, { input = {} }, 
     shopId: opaqueShopId
   } = input;
 
-  const accountId = decodeAccountOpaqueId(opaqueAccountId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const accountId = isOpaqueId(opaqueAccountId) ? decodeAccountOpaqueId(opaqueAccountId) : opaqueAccountId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const account = await context.mutations.revokeAdminUIAccess(context, { accountId, shopId });
 

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -14,7 +15,7 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  */
 export default async function createAccount(_, { input }, context) {
   const { shopId, clientMutationId } = input;
-  const decodedShopId = decodeShopOpaqueId(shopId);
+  const decodedShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
 
   const transformedInput = { ...input, shopId: decodedShopId };
 

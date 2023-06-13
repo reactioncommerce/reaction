@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeDiscountOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function deleteDiscountCode(parentResult, { input }, contex
     shopId: opaqueShopId
   } = input;
 
-  const _id = decodeDiscountOpaqueId(opaqueDiscountCodeId);
+  const _id = isOpaqueId(opaqueDiscountCodeId) ? decodeDiscountOpaqueId(opaqueDiscountCodeId) : opaqueDiscountCodeId;
   const shopId = decodeShopOpaqueId(opaqueShopId);
 
   const discountCode = await context.mutations.deleteDiscountCode(context, {

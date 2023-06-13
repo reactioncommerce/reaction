@@ -14,6 +14,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
       displayName: option.method.label || option.method.name,
       group: option.method.group || null,
       name: option.method.name,
+      methodAdditionalData: option.method.methodAdditionalData || { gqlType: "emptyData", emptyData: false },
       fulfillmentTypes: option.method.fulfillmentTypes
     },
     handlingPrice: {
@@ -39,7 +40,10 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
         displayName: fulfillmentGroup.shipmentMethod.label || fulfillmentGroup.shipmentMethod.name,
         group: fulfillmentGroup.shipmentMethod.group || null,
         name: fulfillmentGroup.shipmentMethod.name,
-        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes
+        methodAdditionalData: fulfillmentGroup.shipmentMethod.methodAdditionalData || { gqlType: "emptyData", emptyData: false },
+        fulfillmentTypes: fulfillmentGroup.shipmentMethod.fulfillmentTypes,
+        discount: fulfillmentGroup.shipmentMethod.discount || 0,
+        undiscountedRate: fulfillmentGroup.shipmentMethod.rate || 0
       },
       handlingPrice: {
         amount: fulfillmentGroup.shipmentMethod.handling || 0,
@@ -65,7 +69,8 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
     shippingAddress: fulfillmentGroup.address,
     shopId: fulfillmentGroup.shopId,
     // For now, this is always shipping. Revisit when adding download, pickup, etc. types
-    type: "shipping"
+    type: fulfillmentGroup.type,
+    discounts: fulfillmentGroup.discounts || []
   };
 }
 
@@ -76,7 +81,7 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  */
 export default async function xformCartCheckout(collections, cart) {
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + item.subtotal.amount), 0);
+  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.price.amount * item.quantity)), 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed

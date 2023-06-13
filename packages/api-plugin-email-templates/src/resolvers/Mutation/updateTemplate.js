@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTemplateOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -22,8 +23,8 @@ export default async function updateTemplate(parentResult, { input }, context) {
     ...templateInput
   } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
-  const templateId = decodeTemplateOpaqueId(opaqueTemplateId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
+  const templateId = isOpaqueId(opaqueTemplateId) ? decodeTemplateOpaqueId(opaqueTemplateId) : opaqueTemplateId;
 
   const template = await context.mutations.updateTemplate(context, {
     shopId,

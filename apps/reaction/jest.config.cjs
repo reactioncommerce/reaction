@@ -30,8 +30,12 @@ const externalNodeModules = [
   "@reactioncommerce/api-plugin-pricing-simple",
   "@reactioncommerce/api-plugin-products",
   "@reactioncommerce/api-plugin-settings",
-  "@reactioncommerce/api-plugin-shipments-flat-rate",
-  "@reactioncommerce/api-plugin-shipments",
+  "@reactioncommerce/api-plugin-fulfillment",
+  "@reactioncommerce/api-plugin-fulfillment-type-shipping",
+  "@reactioncommerce/api-plugin-fulfillment-type-pickup",
+  "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate",
+  "@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate",
+  "@reactioncommerce/api-plugin-fulfillment-method-pickup-store",
   "@reactioncommerce/api-plugin-shops",
   "@reactioncommerce/api-plugin-simple-schema",
   "@reactioncommerce/api-plugin-sitemap-generator",
@@ -205,7 +209,12 @@ const jestConfig = {
   // testResultsProcessor: null,
 
   // This option allows use of a custom test runner
-  // testRunner: "jasmine2",
+  testRunner: "jasmine2",
+
+  snapshotFormat: {
+    escapeString: true,
+    printBasicPrototype: true
+  },
 
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
   // testURL: "http://localhost",

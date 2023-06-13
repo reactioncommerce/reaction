@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderOpaqueId, decodeOrderFulfillmentGroupOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -27,8 +28,9 @@ export default async function updateOrderFulfillmentGroup(parentResult, { input 
   } = input;
 
   const { order } = await context.mutations.updateOrderFulfillmentGroup(context, {
-    orderId: decodeOrderOpaqueId(orderId),
-    orderFulfillmentGroupId: decodeOrderFulfillmentGroupOpaqueId(orderFulfillmentGroupId),
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
+    orderFulfillmentGroupId: isOpaqueId(orderFulfillmentGroupId) ?
+      decodeOrderFulfillmentGroupOpaqueId(orderFulfillmentGroupId) : orderFulfillmentGroupId,
     status,
     tracking,
     trackingUrl

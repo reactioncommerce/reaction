@@ -1,0 +1,8 @@
+mutation CreatePromotion($input: PromotionCreateInput!) {
+    createPromotion(input: $input) {
+        success
+        promotion {
+            _id
+        }
+    }
+}

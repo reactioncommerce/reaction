@@ -7,5 +7,6 @@
   "cost": 5,
   "handling": 2,
   "rate": 9,
-  "isEnabled": true
+  "isEnabled": true,
+  "enabled": true
 }

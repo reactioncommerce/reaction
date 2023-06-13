@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function createTaxRate(parentResult, { input }, context) {
     ...taxRateInput
   } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const taxRate = await context.mutations.createTaxRate(context, {
     shopId,

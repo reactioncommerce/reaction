@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function emailJobs(parentResult, args, context, info) {
     ...connectionArgs
   } = args;
 
-  const shopIds = opaqueShopIds.map((opaqueShopId) => decodeShopOpaqueId(opaqueShopId));
+  const shopIds = opaqueShopIds.map((opaqueShopId) => (isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId));
 
   const cursor = await context.queries.emailJobs(context, shopIds);
 

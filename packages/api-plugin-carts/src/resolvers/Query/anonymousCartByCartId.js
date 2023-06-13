@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,7 +17,7 @@ export default async function anonymousCartByCartId(parentResult, args, context)
   const { cartId, cartToken } = args;
 
   return context.queries.anonymousCartByCartId(context, {
-    cartId: decodeCartOpaqueId(cartId),
+    cartId: isOpaqueId(cartId) ? decodeCartOpaqueId(cartId) : cartId,
     cartToken
   });
 }

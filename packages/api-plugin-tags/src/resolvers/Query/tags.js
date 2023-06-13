@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 
 
@@ -29,11 +30,11 @@ import { decodeShopOpaqueId, decodeTagOpaqueId } from "../../xforms/id.js";
 export default async function tags(_, connectionArgs, context, info) {
   const { shopId, excludedTagIds } = connectionArgs;
 
-  const dbShopId = decodeShopOpaqueId(shopId);
+  const dbShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
   let dbExcludedTagIds;
 
   if (Array.isArray(excludedTagIds)) {
-    dbExcludedTagIds = excludedTagIds.map(decodeTagOpaqueId);
+    dbExcludedTagIds = excludedTagIds.map((tagId) => (isOpaqueId(tagId) ? decodeTagOpaqueId(tagId) : tagId));
   }
 
   const query = await context.queries.tags(context, dbShopId, {

@@ -1,0 +1,37 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-fulfillment",
+  "translation": {
+    "reaction-fulfillment": {
+      "admin": {
+        "dashboard": {
+          "fulfillmentLabel": "Fulfillment",
+          "fulfillmentTitle": "Fulfillment",
+          "fulfillmentDescription": "Manage Fulfillment"
+        },
+        "settings": {
+          "fulfillmentLabel": "Fulfillment",
+          "editFulfillmentType": "Edit Fulfillment Type",
+          "editFulfillmentMethod": "Edit Fulfillment Method"
+        }
+      },
+      "checkoutShipping": {
+        "selectFulfillmentType": "Select fulfillment type for the item",
+        "noFulfillmentTypes": "No fulfillment types are configured.",
+        "noFulfillmentMethods": "No fulfillment methods are configured.",
+        "addiionalDetails": "Additional details required for the selected fulfillment method",
+        "contactAdmin": "Please contact the store administrator.",
+        "configureNow": "Configure now.",
+        "fulfillment": "Fulfillment"
+      },
+      "fulfillment": {
+        "editFulfillmentProvider": "Edit fulfillment provider",
+        "editFulfillmentMethod": "Edit fulfillment method",
+        "noSettingsForThisView": "No settings for this view",
+        "noFulfillmentMethods": "No fulfillment methods are configured.",
+        "fulfillmentProviderUpdated": "Fulfillment provider data updated.",
+        "fulfillmentMethodUpdated": "Fulfillment method updated."
+      }
+    }
+  }
+}]

@@ -42,16 +42,24 @@ export default async function addShipmentMethodToGroup(context, {
   const rates = await queries.getFulfillmentMethodsWithQuotes(commonOrder, context);
   const errorResult = rates.find((option) => option.requestStatus === "error");
   if (errorResult) {
-    throw new ReactionError("invalid", errorResult.message);
+    const eventData = { field: "FulfillmentMethod", value: "Returned error" };
+    throw new ReactionError("invalid", errorResult.message, eventData);
   }
 
+  const { shipmentMethod: { rate: shipmentRate, undiscountedRate, discount, _id: shipmentMethodId } = {} } = group;
   const selectedFulfillmentMethod = rates.find((rate) => selectedFulfillmentMethodId === rate.method._id);
-  if (!selectedFulfillmentMethod) {
+  const hasShipmentMethodObject = shipmentMethodId && shipmentMethodId !== selectedFulfillmentMethodId;
+  if (!selectedFulfillmentMethod || hasShipmentMethodObject) {
+    const eventData = { field: "selectedFulfillmentMethodId", value: selectedFulfillmentMethodId };
     throw new ReactionError("invalid", "The selected fulfillment method is no longer available." +
-      " Fetch updated fulfillment options and try creating the order again with a valid method.");
+      " Fetch updated fulfillment options and try creating the order again with a valid method.", eventData);
   }
 
-  group.shipmentMethod = {
+  if (undiscountedRate && undiscountedRate !== selectedFulfillmentMethod.rate) {
+    throw new ReactionError("invalid", "The selected fulfillment method has mismatch shipment rate.");
+  }
+
+  const output = {
     _id: selectedFulfillmentMethod.method._id,
     carrier: selectedFulfillmentMethod.method.carrier,
     currencyCode,
@@ -59,6 +67,12 @@ export default async function addShipmentMethodToGroup(context, {
     group: selectedFulfillmentMethod.method.group,
     name: selectedFulfillmentMethod.method.name,
     handling: selectedFulfillmentMethod.handlingPrice,
-    rate: selectedFulfillmentMethod.rate
+    rate: shipmentRate || selectedFulfillmentMethod.rate,
+    discount: discount || 0
   };
+  // Include methodAdditionalData only if available
+  if (selectedFulfillmentMethod?.method?.methodAdditionalData) {
+    output.methodAdditionalData = selectedFulfillmentMethod.method.methodAdditionalData;
+  }
+  return output;
 }
