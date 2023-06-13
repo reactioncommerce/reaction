@@ -29,7 +29,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          npm i -g pnpm@latest
+          npm i -g pnpm@7.11.0
           pnpm install -r --ignore-scripts
       - name: Get tag version
         id: get-tag-version
