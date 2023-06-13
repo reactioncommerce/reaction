@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.merged == true && github.base_ref == 'trunk' && github.head_ref == 'changeset-release/trunk'
     permissions:
       contents: write # to create release (changesets/action)
-    runs-on: ubuntu-focal
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
