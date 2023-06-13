@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-inventory",
   "description": "Inventory plugin for the Reaction API",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -26,14 +26,14 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.5",
+    "@reactioncommerce/api-utils": "^2.0.0",
     "@reactioncommerce/reaction-error": "~1.0.1",
     "lodash": "~4.17.21"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
-    "@reactioncommerce/api-plugin-catalogs": "^1.0.0",
+    "@reactioncommerce/api-plugin-catalogs": "^2.0.0",
     "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
     "@reactioncommerce/data-factory": "^1.0.1",
     "babel-plugin-rewire-exports": "^2.0.0",

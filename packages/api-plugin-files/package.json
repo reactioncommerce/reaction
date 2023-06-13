@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-files",
   "description": "Files plugin for the Reaction API",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -26,9 +26,9 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.7",
-    "@reactioncommerce/file-collections": "^0.9.3",
-    "@reactioncommerce/file-collections-sa-gridfs": "~0.1.5",
+    "@reactioncommerce/api-utils": "^2.0.0",
+    "@reactioncommerce/file-collections": "^0.10.0",
+    "@reactioncommerce/file-collections-sa-gridfs": "~0.2.0",
     "@reactioncommerce/logger": "~1.1.4",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",

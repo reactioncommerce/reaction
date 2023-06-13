@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-promotions-offers",
   "description": "A way to apply promotions to the cart based on flexible rules",
   "label": "Promotions - Offers",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": false,
   "main": "index.js",
   "type": "module",
@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.9",
+    "@reactioncommerce/api-utils": "^2.0.0",
     "@reactioncommerce/logger": "^1.1.3",
     "@reactioncommerce/random": "^1.0.2",
     "@reactioncommerce/reaction-error": "^1.0.1",

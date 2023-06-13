@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-authorization-simple",
   "description": "Simple Authorization plugin for the Reaction API",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "homepage": "https://github.com/reactioncommerce/reaction",
@@ -23,7 +23,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.5",
+    "@reactioncommerce/api-utils": "^2.0.0",
     "@reactioncommerce/db-version-check": "^1.0.0",
     "@reactioncommerce/logger": "^1.1.3",
     "@reactioncommerce/random": "^1.0.2",
