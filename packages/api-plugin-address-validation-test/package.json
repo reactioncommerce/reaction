@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-address-validation-test",
   "description": "Address Validation Test plugin for the Reaction API",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -26,7 +26,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.16.5",
+    "@reactioncommerce/api-utils": "^2.0.0",
     "faker": "^4.1.0"
   },
   "devDependencies": {

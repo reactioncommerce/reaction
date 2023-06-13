@@ -1,5 +1,68 @@
 # reaction
 
+## 5.0.0
+
+### Major Changes
+
+- [#6847](https://github.com/reactioncommerce/reaction/pull/6847) [`6483b18fc`](https://github.com/reactioncommerce/reaction/commit/6483b18fccf2a434052d512d3dbc9c98bfb2da87) Thanks [@sujithvn](https://github.com/sujithvn)! - Reaction version 5
+
+### Minor Changes
+
+- [#6744](https://github.com/reactioncommerce/reaction/pull/6744) [`a50a7b359`](https://github.com/reactioncommerce/reaction/commit/a50a7b359bbb546b7abab0e0bfed4c5d8b5ad759) Thanks [@sujithvn](https://github.com/sujithvn)! - checks for encodedId before calling decode. Normal-id pass through
+
+### Patch Changes
+
+- Updated dependencies [[`a90dc012d`](https://github.com/reactioncommerce/reaction/commit/a90dc012dd10bccf9a0b275fbd140e0abd82d7c1), [`caffd4226`](https://github.com/reactioncommerce/reaction/commit/caffd4226b8db946ce05490f8fce6b796b971a6c), [`a6172e9a9`](https://github.com/reactioncommerce/reaction/commit/a6172e9a9b0012c2224796fc079ff135920ef33b), [`3e387cbd3`](https://github.com/reactioncommerce/reaction/commit/3e387cbd33d12f80a248fba1bed8880daf3bc203), [`a50a7b359`](https://github.com/reactioncommerce/reaction/commit/a50a7b359bbb546b7abab0e0bfed4c5d8b5ad759), [`315bb97ab`](https://github.com/reactioncommerce/reaction/commit/315bb97abc3e70dcb1a89da8adca5468302b24be), [`0b4b3385f`](https://github.com/reactioncommerce/reaction/commit/0b4b3385f218c4085d8d9f641a28a6e567f4c918), [`fee4dbe95`](https://github.com/reactioncommerce/reaction/commit/fee4dbe952e557db8ca658dc08283ba6c7343af9), [`9d26f0528`](https://github.com/reactioncommerce/reaction/commit/9d26f05286a43d99f4b8a2924b5a0644a5a03ccc)]:
+  - @reactioncommerce/api-plugin-authorization-simple@2.0.0
+  - @reactioncommerce/api-plugin-carts@2.0.0
+  - @reactioncommerce/api-plugin-catalogs@2.0.0
+  - @reactioncommerce/api-plugin-orders@2.0.0
+  - @reactioncommerce/api-plugin-products@2.0.0
+  - @reactioncommerce/api-plugin-simple-schema@2.0.0
+  - @reactioncommerce/file-collections@0.10.0
+  - @reactioncommerce/file-collections-sa-gridfs@0.2.0
+  - @reactioncommerce/api-plugin-promotions@0.1.0
+  - @reactioncommerce/api-plugin-accounts@3.0.0
+  - @reactioncommerce/api-plugin-address-validation@2.0.0
+  - @reactioncommerce/api-plugin-email@2.0.0
+  - @reactioncommerce/api-plugin-email-templates@2.0.0
+  - @reactioncommerce/api-plugin-files@2.0.0
+  - @reactioncommerce/api-plugin-inventory-simple@2.0.0
+  - @reactioncommerce/api-plugin-navigation@2.0.0
+  - @reactioncommerce/api-plugin-payments@2.0.0
+  - @reactioncommerce/api-plugin-payments-stripe-sca@2.0.0
+  - @reactioncommerce/api-plugin-pricing-simple@2.0.0
+  - @reactioncommerce/api-plugin-settings@2.0.0
+  - @reactioncommerce/api-plugin-shops@2.0.0
+  - @reactioncommerce/api-plugin-sitemap-generator@2.0.0
+  - @reactioncommerce/api-plugin-surcharges@2.0.0
+  - @reactioncommerce/api-plugin-system-information@2.0.0
+  - @reactioncommerce/api-plugin-tags@2.0.0
+  - @reactioncommerce/api-plugin-taxes@2.0.0
+  - @reactioncommerce/api-plugin-taxes-flat-rate@2.0.0
+  - @reactioncommerce/api-utils@2.0.0
+  - @reactioncommerce/api-core@3.0.0
+  - @reactioncommerce/api-plugin-address-validation-test@2.0.0
+  - @reactioncommerce/api-plugin-authentication@3.0.0
+  - @reactioncommerce/api-plugin-email-smtp@2.0.0
+  - @reactioncommerce/api-plugin-i18n@2.0.0
+  - @reactioncommerce/api-plugin-inventory@2.0.0
+  - @reactioncommerce/api-plugin-job-queue@2.0.0
+  - @reactioncommerce/api-plugin-notifications@2.0.0
+  - @reactioncommerce/api-plugin-payments-example@2.0.0
+  - @reactioncommerce/api-plugin-translations@2.0.0
+  - @reactioncommerce/api-plugin-fulfillment@0.0.1
+  - @reactioncommerce/api-plugin-bull-queue@0.0.1
+  - @reactioncommerce/api-plugin-fulfillment-method-pickup-store@0.0.1
+  - @reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate@0.0.1
+  - @reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate@0.0.1
+  - @reactioncommerce/api-plugin-fulfillment-type-pickup@0.0.1
+  - @reactioncommerce/api-plugin-fulfillment-type-shipping@0.0.1
+  - @reactioncommerce/api-plugin-promotions-coupons@0.0.1
+  - @reactioncommerce/api-plugin-promotions-discounts@0.0.1
+  - @reactioncommerce/api-plugin-promotions-offers@0.0.1
+  - @reactioncommerce/api-plugin-sequences@0.0.1
+
 ## 4.2.7
 
 ### Patch Changes

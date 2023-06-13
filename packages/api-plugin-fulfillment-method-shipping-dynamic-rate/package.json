@@ -2,7 +2,7 @@
   "name": "@reactioncommerce/api-plugin-fulfillment-method-shipping-dynamic-rate",
   "description": "Implements Shipping-Dynamic Rate as a fulfillment method under the type shipping",
   "label": "Fulfillment Method Shipping Dynamic Rate",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -30,7 +30,7 @@
   "dependencies": {
     "simpl-schema": "^1.12.2",
     "@reactioncommerce/reaction-error": "^1.0.1",
-    "@reactioncommerce/api-utils": "^1.16.9"
+    "@reactioncommerce/api-utils": "^2.0.0"
   },
   "devDependencies": {},
   "scripts": {
