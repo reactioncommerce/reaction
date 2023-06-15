@@ -52,7 +52,7 @@
     "callsite": "^1.0.0",
     "envalid": "^6.0.2",
     "graphql-fields": "^2.0.3",
-    "graphql-relay": "^0.9.0",
+    "graphql-relay": "^0.10.0",
     "lodash": "^4.17.15",
     "ramda": "^0.28.0",
     "transliteration": "^2.1.9",
