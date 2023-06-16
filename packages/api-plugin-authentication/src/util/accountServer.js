@@ -14,7 +14,7 @@ export default async (app) => {
   if (accountsServer && accountsGraphQL) {
     return { accountsServer, accountsGraphQL };
   }
-  const { MONGO_URL, STORE_URL, TOKEN_SECRET } = config;
+  const { MONGO_URL, PASSWORD_RESET_PATH_FRAGMENT, STORE_URL, TOKEN_SECRET } = config;
   const { context } = app;
 
   const client = await mongoConnectWithRetry(MONGO_URL);
@@ -38,7 +38,7 @@ export default async (app) => {
       sendMail: async ({ to, text }) => {
         const query = text.split("/");
         const token = query[query.length - 1];
-        const url = `${STORE_URL}/?resetToken=${token}`;
+        const url = `${STORE_URL}/${PASSWORD_RESET_PATH_FRAGMENT}${token}`;
         await context.mutations.sendResetAccountPasswordEmail(context, {
           email: to,
           url
