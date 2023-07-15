@@ -14,6 +14,8 @@ export default async function surchargeById(context, { surchargeId, shopId } = {
   const { collections } = context;
   const { Surcharges } = collections;
 
+  await context.validatePermissions("reaction:legacy:surcharges", "read", { shopId });
+
   const surcharge = await Surcharges.findOne({
     _id: surchargeId,
     shopId
