@@ -159,7 +159,7 @@ describe("cart message", () => {
 
     await applyPromotions(mockContext, cart);
 
-    expect(cart.messages[0].title).toEqual("The promotion no longer available");
+    expect(cart.messages[0].title).toEqual("Promotion is no longer available");
   });
 
   test("should have promotion is not eligible message when explicit promotion is not eligible", async () => {

@@ -135,9 +135,10 @@ export default async function applyPromotions(context, cart, options = { skipTem
     if (!promotion.enabled) {
       if (canAddToCartMessages(cart, promotion)) {
         enhancedCart.messages.push(createCartMessage({
-          title: "The promotion no longer available",
+          title: "Promotion is no longer available",
           subject: "promotion",
           severity: "warning",
+          requiresReadAcknowledgement: true,
           metaFields: {
             promotionId: promotion._id
           }
