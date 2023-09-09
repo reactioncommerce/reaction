@@ -49,7 +49,7 @@ the quickest and easiest way to develop on Open Commerce. It allows you to creat
   In addition, you need to have your system setup for [SSH authentication with GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 ## Install the CLI
-First install the cli by running:
+First install the CLI by running:
 ```
 npm install -g reaction-cli
 ```
