@@ -149,7 +149,7 @@ export default async function applyPromotions(context, cart, options = { skipTem
             severity: "warning",
             metaFields: {
               promotionId: promotion._id,
-            },
+            }
           })
         );
       }
