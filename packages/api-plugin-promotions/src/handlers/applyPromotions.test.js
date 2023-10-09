@@ -17,7 +17,7 @@ const testEnhancer = jest.fn().mockImplementation((context, cart) => cart);
 const pluginPromotion = {
   actions: [{ key: "test", handler: testAction }],
   enhancers: [testEnhancer],
-  qualifiers: []
+  qualifiers: [],
 };
 
 const testPromotion = {
@@ -27,9 +27,9 @@ const testPromotion = {
   triggerType: "implicit",
   stackability: {
     key: "none",
-    parameters: {}
+    parameters: {},
   },
-  enabled: true
+  enabled: true,
 };
 
 beforeEach(() => {
@@ -42,21 +42,21 @@ test("should save cart with implicit promotions are applied", async () => {
   const cart = {
     _id: "cartId",
     appliedPromotions: [],
-    messages: []
+    messages: [],
   };
   mockContext.collections.Promotions = {
     find: (qs) => ({
       toArray: jest.fn().mockImplementation(() => {
         if (qs.triggerType === "implicit") return [testPromotion];
         return [];
-      })
-    })
+      }),
+    }),
   };
   mockContext.promotions = pluginPromotion;
   mockContext.promotions.combinationFilters = [];
   mockContext.simpleSchemas = {
     Cart: { clean: jest.fn() },
-    CartPromotionItem: { clean: jest.fn() }
+    CartPromotionItem: { clean: jest.fn() },
   };
   applyCombinationPromotions.mockImplementation((context, _cart, params) => {
     _cart.appliedPromotions = params.promotions;
@@ -75,17 +75,22 @@ test("should update cart with implicit promotions are not applied when promotion
   const cart = {
     _id: "cartId",
     appliedPromotions: [],
-    messages: []
+    messages: [],
   };
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([testPromotion, { ...testPromotion, _id: "test id 2", stackability: { key: "all", parameters: {} } }])
-    })
+      toArray: jest
+        .fn()
+        .mockResolvedValueOnce([
+          testPromotion,
+          { ...testPromotion, _id: "test id 2", stackability: { key: "all", parameters: {} } },
+        ]),
+    }),
   };
 
   mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
   mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
+    Cart: { clean: jest.fn() },
   };
   canBeApplied.mockReturnValue({ qualifies: true });
 
@@ -105,23 +110,23 @@ describe("cart message", () => {
     const promotion = {
       ...testPromotion,
       _id: "promotionId",
-      triggerType: "implicit"
+      triggerType: "implicit",
     };
     const cart = {
       _id: "cartId",
       appliedPromotions: [promotion],
-      messages: []
+      messages: [],
     };
 
     mockContext.collections.Promotions = {
       find: () => ({
-        toArray: jest.fn().mockResolvedValueOnce([promotion])
-      })
+        toArray: jest.fn().mockResolvedValueOnce([promotion]),
+      }),
     };
 
     mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
     mockContext.simpleSchemas = {
-      Cart: { clean: jest.fn() }
+      Cart: { clean: jest.fn() },
     };
 
     await applyPromotions(mockContext, cart);
@@ -136,30 +141,30 @@ describe("cart message", () => {
       ...testPromotion,
       _id: "promotionId",
       triggerType: "implicit",
-      enabled: false
+      enabled: false,
     };
     mockContext.collections.Promotions = {
       find: (qs) => ({
         toArray: jest.fn().mockImplementation(() => {
           if (qs.triggerType === "implicit") return [promotion];
           return [];
-        })
-      })
+        }),
+      }),
     };
     const cart = {
       _id: "cartId",
       appliedPromotions: [promotion],
-      messages: []
+      messages: [],
     };
 
     mockContext.promotions = { ...pluginPromotion, triggers: [], qualifiers: [] };
     mockContext.simpleSchemas = {
-      Cart: { clean: jest.fn() }
+      Cart: { clean: jest.fn() },
     };
 
     await applyPromotions(mockContext, cart);
 
-    expect(cart.messages[0].title).toEqual("The promotion no longer available");
+    expect(cart.messages[0].title).toEqual("Promotion is no longer available");
   });
 
   test("should have promotion is not eligible message when explicit promotion is not eligible", async () => {
@@ -169,25 +174,25 @@ describe("cart message", () => {
     const promotion = {
       ...testPromotion,
       _id: "promotionId",
-      triggerType: "explicit"
+      triggerType: "explicit",
     };
     const cart = {
       _id: "cartId",
       appliedPromotions: [promotion],
-      messages: []
+      messages: [],
     };
 
     mockContext.collections.Promotions = {
       find: () => ({
-        toArray: jest.fn().mockResolvedValueOnce([promotion])
-      })
+        toArray: jest.fn().mockResolvedValueOnce([promotion]),
+      }),
     };
 
     testTrigger.mockReturnValue(Promise.resolve(false));
 
     mockContext.promotions = { ...pluginPromotion };
     mockContext.simpleSchemas = {
-      Cart: { clean: jest.fn() }
+      Cart: { clean: jest.fn() },
     };
 
     await applyPromotions(mockContext, cart);
@@ -201,7 +206,7 @@ describe("cart message", () => {
     const promotion = {
       ...testPromotion,
       _id: "promotionId",
-      triggerType: "explicit"
+      triggerType: "explicit",
     };
     const cart = {
       _id: "cartId",
@@ -211,10 +216,10 @@ describe("cart message", () => {
           title: "The promotion has expired",
           subject: "promotion",
           metaFields: {
-            promotionId: "promotionId"
-          }
-        }
-      ]
+            promotionId: "promotionId",
+          },
+        },
+      ],
     };
 
     mockContext.collections.Promotions = {
@@ -222,15 +227,15 @@ describe("cart message", () => {
         toArray: jest.fn().mockImplementation(() => {
           if (qs.triggerType === "explicit") return [promotion];
           return [];
-        })
-      })
+        }),
+      }),
     };
 
     triggerHandler.mockResolvedValue(true);
 
     mockContext.promotions = { ...pluginPromotion };
     mockContext.simpleSchemas = {
-      Cart: { clean: jest.fn() }
+      Cart: { clean: jest.fn() },
     };
 
     await applyPromotions(mockContext, cart);
@@ -256,15 +261,15 @@ test("getCurrentTime should return custom time when user has preview permission"
 
   mockContext.session = {
     req: {
-      headers: { "x-custom-current-promotion-time": customTime }
-    }
+      headers: { "x-custom-current-promotion-time": customTime },
+    },
   };
   mockContext.collections = {
     Promotions: {
       find: jest.fn().mockReturnValue({
-        toArray: jest.fn().mockReturnValue([])
-      })
-    }
+        toArray: jest.fn().mockReturnValue([]),
+      }),
+    },
   };
 
   mockContext.userHasPermission.mockReturnValue(true);
@@ -278,23 +283,23 @@ test("shouldn't apply promotion when promotion is not enabled", async () => {
   const promotion = {
     ...testPromotion,
     _id: "promotionId",
-    enabled: false
+    enabled: false,
   };
   const cart = {
     _id: "cartId",
     appliedPromotions: [],
-    messages: []
+    messages: [],
   };
 
   mockContext.collections.Promotions = {
     find: () => ({
-      toArray: jest.fn().mockResolvedValueOnce([promotion])
-    })
+      toArray: jest.fn().mockResolvedValueOnce([promotion]),
+    }),
   };
 
   mockContext.promotions = { ...pluginPromotion };
   mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
+    Cart: { clean: jest.fn() },
   };
 
   await applyPromotions(mockContext, cart);
@@ -309,7 +314,7 @@ test("throw error when explicit promotion is newly applied and conflict with oth
   const promotion = {
     ...testPromotion,
     _id: "promotionId",
-    triggerType: "implicit"
+    triggerType: "implicit",
   };
   const secondPromotion = {
     ...testPromotion,
@@ -318,17 +323,17 @@ test("throw error when explicit promotion is newly applied and conflict with oth
     newlyAdded: true,
     relatedCoupon: {
       couponCode: "couponCode",
-      couponId: "couponId"
+      couponId: "couponId",
     },
     stackability: {
       key: "none",
-      parameters: {}
-    }
+      parameters: {},
+    },
   };
   const cart = {
     _id: "cartId",
     appliedPromotions: [promotion, secondPromotion],
-    messages: []
+    messages: [],
   };
 
   mockContext.collections.Promotions = {
@@ -336,8 +341,8 @@ test("throw error when explicit promotion is newly applied and conflict with oth
       toArray: jest.fn().mockImplementation(() => {
         if (qs.triggerType === "explicit") return [secondPromotion];
         return [promotion];
-      })
-    })
+      }),
+    }),
   };
 
   applyCombinationPromotions.mockImplementation((context, _cart, params) => {
@@ -345,15 +350,15 @@ test("throw error when explicit promotion is newly applied and conflict with oth
       {
         message: "Stackability conflict",
         metaFields: {
-          promotionId: params.promotions[1]._id
-        }
-      }
+          promotionId: params.promotions[1]._id,
+        },
+      },
     ];
   });
 
   mockContext.promotions = { ...pluginPromotion };
   mockContext.simpleSchemas = {
-    Cart: { clean: jest.fn() }
+    Cart: { clean: jest.fn() },
   };
 
   try {

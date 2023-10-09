@@ -10,12 +10,11 @@ import canAddToCartMessages from "../utils/canAddCartMessage.js";
 import triggerHandler from "../utils/triggerHandler.js";
 import applyCombinationPromotions from "./applyCombinationPromotions.js";
 
-
 const { name, version } = pkg;
 const logCtx = {
   name,
   version,
-  file: "applyImplicitPromotions.js"
+  file: "applyImplicitPromotions.js",
 };
 
 /**
@@ -26,15 +25,17 @@ const logCtx = {
  * @returns {Promise<Array<Object>>} - An array of promotions
  */
 async function getImplicitPromotions(context, shopId, currentTime) {
-  const { collections: { Promotions } } = context;
+  const {
+    collections: { Promotions },
+  } = context;
 
   const selector = {
     shopId,
     triggerType: "implicit",
     startDate: { $lte: currentTime },
     state: {
-      $in: ["created", "active"]
-    }
+      $in: ["created", "active"],
+    },
   };
 
   const promotions = await Promotions.find(selector).toArray();
@@ -52,13 +53,15 @@ async function getImplicitPromotions(context, shopId, currentTime) {
  */
 async function getExplicitPromotionsByIds(context, shopId, promotionIds) {
   const now = new Date();
-  const { collections: { Promotions } } = context;
+  const {
+    collections: { Promotions },
+  } = context;
   const promotions = await Promotions.find({
     _id: { $in: promotionIds },
     shopId,
     enabled: true,
     triggerType: "explicit",
-    startDate: { $lt: now }
+    startDate: { $lt: now },
   }).toArray();
   return promotions;
 }
@@ -103,7 +106,10 @@ export async function getCurrentTime(context, shopId) {
 export default async function applyPromotions(context, cart, options = { skipTemporaryPromotions: false }) {
   const currentTime = await getCurrentTime(context, cart.shopId);
   const promotions = await getImplicitPromotions(context, cart.shopId, currentTime);
-  const { promotions: pluginPromotions, simpleSchemas: { Cart } } = context;
+  const {
+    promotions: pluginPromotions,
+    simpleSchemas: { Cart },
+  } = context;
 
   const appliedExplicitPromotionsIds = _.chain()
     .filter((promotion) => (!options.skipTemporaryPromotions ? true : !promotion.isTemporary))
@@ -112,12 +118,14 @@ export default async function applyPromotions(context, cart, options = { skipTem
     .value();
   const explicitPromotions = await getExplicitPromotionsByIds(context, cart.shopId, appliedExplicitPromotionsIds);
 
-  const unqualifiedPromotions = promotions.concat(_.map(explicitPromotions, (promotion) => {
-    const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
-    if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon || undefined;
-    if (typeof existsPromotion?.newlyAdded !== "undefined") promotion.newlyAdded = existsPromotion.newlyAdded;
-    return promotion;
-  }));
+  const unqualifiedPromotions = promotions.concat(
+    _.map(explicitPromotions, (promotion) => {
+      const existsPromotion = _.find(cart.appliedPromotions || [], { _id: promotion._id });
+      if (existsPromotion) promotion.relatedCoupon = existsPromotion.relatedCoupon || undefined;
+      if (typeof existsPromotion?.newlyAdded !== "undefined") promotion.newlyAdded = existsPromotion.newlyAdded;
+      return promotion;
+    })
+  );
 
   const newlyAddedPromotionId = _.find(unqualifiedPromotions, "newlyAdded")?._id;
 
@@ -134,14 +142,16 @@ export default async function applyPromotions(context, cart, options = { skipTem
   for (const promotion of unqualifiedPromotions) {
     if (!promotion.enabled) {
       if (canAddToCartMessages(cart, promotion)) {
-        enhancedCart.messages.push(createCartMessage({
-          title: "The promotion no longer available",
-          subject: "promotion",
-          severity: "warning",
-          metaFields: {
-            promotionId: promotion._id
-          }
-        }));
+        enhancedCart.messages.push(
+          createCartMessage({
+            title: "Promotion is no longer available",
+            subject: "promotion",
+            severity: "warning",
+            metaFields: {
+              promotionId: promotion._id,
+            },
+          })
+        );
       }
       continue;
     }
@@ -149,14 +159,16 @@ export default async function applyPromotions(context, cart, options = { skipTem
     if (isPromotionExpired(promotion)) {
       Logger.info({ ...logCtx, promotionId: promotion._id }, "Promotion is expired, skipping");
       if (canAddToCartMessages(cart, promotion)) {
-        enhancedCart.messages.push(createCartMessage({
-          title: "The promotion has expired",
-          subject: "promotion",
-          severity: "warning",
-          metaFields: {
-            promotionId: promotion._id
-          }
-        }));
+        enhancedCart.messages.push(
+          createCartMessage({
+            title: "The promotion has expired",
+            subject: "promotion",
+            severity: "warning",
+            metaFields: {
+              promotionId: promotion._id,
+            },
+          })
+        );
       }
       continue;
     }
@@ -165,14 +177,16 @@ export default async function applyPromotions(context, cart, options = { skipTem
     if (!isTriggerPassed) {
       Logger.info({ ...logCtx, promotionId: promotion._id }, "The promotion is not eligible, skipping");
       if (canAddToCartMessages(cart, promotion)) {
-        enhancedCart.messages.push(createCartMessage({
-          title: "The promotion is not eligible",
-          subject: "promotion",
-          severity: "warning",
-          metaFields: {
-            promotionId: promotion._id
-          }
-        }));
+        enhancedCart.messages.push(
+          createCartMessage({
+            title: "The promotion is not eligible",
+            subject: "promotion",
+            severity: "warning",
+            metaFields: {
+              promotionId: promotion._id,
+            },
+          })
+        );
       }
       continue;
     }
@@ -189,22 +203,26 @@ export default async function applyPromotions(context, cart, options = { skipTem
       if (_.findIndex(cart.appliedPromotions, { _id: diffPromotion._id }) !== -1) {
         const message = "The promotion has been replaced by another promotion group that offers the highest discount";
         Logger.info({ ...logCtx, promotionId: diffPromotion._id }, message);
-        enhancedCart.messages.push(createCartMessage({
-          title: message,
-          message,
-          subject: "promotion",
-          severity: "info",
-          metaFields: {
-            promotionId: diffPromotion._id
-          }
-        }));
+        enhancedCart.messages.push(
+          createCartMessage({
+            title: message,
+            message,
+            subject: "promotion",
+            severity: "info",
+            metaFields: {
+              promotionId: diffPromotion._id,
+            },
+          })
+        );
       }
     }
   }
 
   await applyCombinationPromotions(context, enhancedCart, { promotions: applicablePromotions });
 
-  enhancedCart.appliedPromotions = _.map(enhancedCart.appliedPromotions, (promotion) => _.omit(promotion, "newlyAdded"));
+  enhancedCart.appliedPromotions = _.map(enhancedCart.appliedPromotions, (promotion) =>
+    _.omit(promotion, "newlyAdded")
+  );
 
   // If a explicit promotion was just applied, throw an error so that the client can display the message
   if (newlyAddedPromotionId) {
@@ -215,13 +233,19 @@ export default async function applyPromotions(context, cart, options = { skipTem
   // Remove messages that are no longer relevant
   enhancedCart.messages = _.filter(enhancedCart.messages, (message) => {
     if (message.subject !== "promotion") return true;
-    return _.find(enhancedCart.appliedPromotions, { _id: message.metaFields.promotionId, triggerType: "implicit" }) === undefined;
+    return (
+      _.find(enhancedCart.appliedPromotions, { _id: message.metaFields.promotionId, triggerType: "implicit" }) ===
+      undefined
+    );
   });
 
   enhanceCart.promotionsVersion = 2;
   Cart.clean(enhancedCart, { mutate: true });
   Object.assign(cart, enhancedCart);
 
-  Logger.info({ ...logCtx, appliedPromotions: enhancedCart.appliedPromotions.length }, "Applied promotions successfully");
+  Logger.info(
+    { ...logCtx, appliedPromotions: enhancedCart.appliedPromotions.length },
+    "Applied promotions successfully"
+  );
   return cart;
 }
