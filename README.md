@@ -4,7 +4,7 @@
 
 <h4 align="center">
   <a href="https://mailchimp.com/developer/open-commerce/">Open Commerce Website</a> |
-  <a href="https://twitter.com/getreaction">Twitter</a> |
+  <a href="https://twitter.com/getreaction">𝕏 (Twitter)</a> |
   <a href="https://mailchimp.com/developer/open-commerce/">Documentation</a> |
   <a href="https://discord.gg/Bwm63tBcQY">Discord</a> |
   <a href="https://github.com/reactioncommerce/reaction/discussions">Discussions</a>
