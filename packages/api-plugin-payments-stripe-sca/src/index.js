@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import { STRIPE_PACKAGE_NAME } from "./util/constants.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";

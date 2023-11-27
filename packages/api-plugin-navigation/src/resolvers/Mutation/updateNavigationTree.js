@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 import decodeNavigationTreeItemIds from "../../util/decodeNavigationTreeItemIds.js";
 /**
@@ -22,8 +23,8 @@ export default async function updateNavigationTree(parentResult, { input }, cont
     navigationTree
   } = input;
 
-  const navigationTreeId = decodeNavigationTreeOpaqueId(opaqueNavigationTreeId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const navigationTreeId = isOpaqueId(opaqueNavigationTreeId) ? decodeNavigationTreeOpaqueId(opaqueNavigationTreeId) : opaqueNavigationTreeId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   if (navigationTree.draftItems) {
     const { draftItems } = navigationTree;

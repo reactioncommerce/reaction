@@ -46,7 +46,7 @@ export default class GridFSStore extends StorageAdapter {
     // Add range if this should be a partial read
     if (typeof startPos === "number" && typeof endPos === "number") {
       opts.start = startPos;
-      opts.end = endPos;
+      opts.end = endPos + 1;
     }
 
     debug("GridFSStore _getReadStream opts:", opts);

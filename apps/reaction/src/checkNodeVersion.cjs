@@ -3,7 +3,6 @@
 // This must not be an ES module because we want
 // this check to work on older Node versions that
 // do not support ES modules.
-
 const semver = require("semver");
 const packageJson = require("../package.json");
 

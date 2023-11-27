@@ -1,0 +1,60 @@
+name: Docker release
+on:
+  pull_request:
+    types:
+      - closed
+
+permissions: {}
+
+jobs:
+  create-docker-release-pr:
+    if: github.event.pull_request.merged == true && github.base_ref == 'trunk' && github.head_ref == 'changeset-release/trunk'
+    permissions:
+      contents: write
+      pull-requests: write
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get new docker version
+        id: get-docker-version
+        run: |
+          VERSION=$(cat ./apps/reaction/package.json | grep -m 1 version | sed 's/[^0-9.]//g')
+          echo "NEW_DOCKER_IMAGE_VERSION=$VERSION" >> $GITHUB_OUTPUT
+          echo "New release docker version is $VERSION"
+
+      - name: Check should build new image
+        id: should-build-new-image
+        run: |
+          if curl --silent -f --head -lL https://hub.docker.com/v2/repositories/reactioncommerce/reaction/tags/${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}/ > /dev/null; then
+            echo "RESULT=false" >> $GITHUB_OUTPUT
+          else
+            echo "RESULT=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set git user
+        if: steps.should-build-new-image.outputs.RESULT == 'true'
+        run: |
+          echo ${{ steps.should-build-new-image.outputs.RESULT }}
+          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+
+      - name: Update docker-compose file
+        if: steps.should-build-new-image.outputs.RESULT == 'true'
+        run: |
+          yes | cp -i docker-compose.circleci.yml docker-compose.yml
+          sed -i "s/REACTION_VERSION/${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}/g" ./docker-compose.yml
+
+      - name: Create Pull Request
+        if: steps.should-build-new-image.outputs.RESULT == 'true'
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Docker image release  ${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}
+          body: "Release docker image ${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}"
+          branch: "releases/docker-image-${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }}"
+          commit-message: "feat: update docker-compose file to ${{ steps.get-docker-version.outputs.NEW_DOCKER_IMAGE_VERSION }} [Docker Release]"
+          signoff: true

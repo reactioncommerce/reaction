@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -21,7 +22,7 @@ export default async function addTag(parentResult, { input }, context) {
     ...tagInput
   } = input;
 
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const tag = await context.mutations.addTag(context, {
     shopId,

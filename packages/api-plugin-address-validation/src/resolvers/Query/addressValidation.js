@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -13,6 +14,6 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} Promise that resolves with an object with results
  */
 export default async function addressValidation(_, { address, shopId: opaqueShopId }, context) {
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
   return context.queries.addressValidation({ address, shopId }, context);
 }

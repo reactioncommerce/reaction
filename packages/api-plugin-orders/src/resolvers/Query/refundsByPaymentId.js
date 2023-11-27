@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderOpaqueId, decodePaymentOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,9 +19,9 @@ export default async function refundsByPaymentId(_, args, context) {
   const { orderId, paymentId, shopId, token } = args;
 
   return context.queries.refundsByPaymentId(context, {
-    orderId: decodeOrderOpaqueId(orderId),
-    paymentId: decodePaymentOpaqueId(paymentId),
-    shopId: decodeShopOpaqueId(shopId),
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
+    paymentId: isOpaqueId(paymentId) ? decodePaymentOpaqueId(paymentId) : paymentId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId,
     token
   });
 }

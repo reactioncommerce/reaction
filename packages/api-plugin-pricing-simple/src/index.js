@@ -1,6 +1,6 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import i18n from "./i18n/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import preStartup from "./preStartup.js";
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
@@ -11,6 +11,7 @@ import getMinPriceSortByFieldPath from "./util/getMinPriceSortByFieldPath.js";
 import mutateNewProductBeforeCreate from "./util/mutateNewProductBeforeCreate.js";
 import mutateNewVariantBeforeCreate from "./util/mutateNewVariantBeforeCreate.js";
 import publishProductToCatalog from "./util/publishProductToCatalog.js";
+import addPriceTypeToCartItems from "./util/addPriceTypeToCartItems.js";
 import { PriceRange } from "./simpleSchemas.js";
 
 /**
@@ -45,6 +46,15 @@ export default async function register(app) {
     },
     simpleSchemas: {
       PriceRange
+    },
+    cart: {
+      transforms: [
+        {
+          name: "addPriceTypeToCartItems",
+          fn: addPriceTypeToCartItems,
+          priority: 10
+        }
+      ]
     }
   });
 }

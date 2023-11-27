@@ -1,4 +1,4 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import mutations from "./mutations/index.js";
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";

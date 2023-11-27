@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,6 +13,6 @@ import { decodeShopOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object[]>} Array of tax services
  */
 export default async function taxCodes(_, { shopId }, context) {
-  const dbShopId = decodeShopOpaqueId(shopId);
+  const dbShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
   return context.queries.taxCodes(context, dbShopId);
 }

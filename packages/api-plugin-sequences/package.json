@@ -1,0 +1,52 @@
+{
+  "name": "@reactioncommerce/api-plugin-sequences",
+  "description": "Reaction plugin for managing auto-increment ids",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "hello-open-commerce@mailchimp.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-sequences"
+  },
+  "author": {
+    "name": "Mailchimp Open Commerce",
+    "email": "hello-open-commerce@mailchimp.com",
+    "url": "https://mailchimp.com/developer/open-commerce/"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "@reactioncommerce/api-utils": "^2.0.0",
+    "@reactioncommerce/random": "^1.0.2",
+    "@reactioncommerce/reaction-error": "~1.0.1",
+    "dotenv": "^16.0.1",
+    "envalid": "^7.3.1",
+    "simpl-schema": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@reactioncommerce/babel-remove-es-create-require": "~1.0.0",
+    "@reactioncommerce/data-factory": "~1.0.1"
+  },
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

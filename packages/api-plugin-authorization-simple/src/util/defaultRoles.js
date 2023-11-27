@@ -60,6 +60,19 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:products/update:prices",
   "reaction:legacy:products/update",
   "reaction:legacy:shipping-rates/update:settings",
+  "reaction:legacy:fulfillmentTypes/update:settings",
+  "reaction:legacy:fulfillmentTypes/create",
+  "reaction:legacy:fulfillmentTypes/delete",
+  "reaction:legacy:fulfillmentTypes/read",
+  "reaction:legacy:fulfillmentTypes/update",
+  "reaction:legacy:fulfillmentMethods/create",
+  "reaction:legacy:fulfillmentMethods/delete",
+  "reaction:legacy:fulfillmentMethods/read",
+  "reaction:legacy:fulfillmentMethods/update",
+  "reaction:legacy:fulfillmentRestrictions/create",
+  "reaction:legacy:fulfillmentRestrictions/delete",
+  "reaction:legacy:fulfillmentRestrictions/read",
+  "reaction:legacy:fulfillmentRestrictions/update",
   "reaction:legacy:shippingMethods/create",
   "reaction:legacy:shippingMethods/delete",
   "reaction:legacy:shippingMethods/read",
@@ -70,6 +83,7 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:shippingRestrictions/update",
   "reaction:legacy:shops/read",
   "reaction:legacy:shops/update",
+  "reaction:legacy:simpleSchema/introspect",
   "reaction:legacy:sitemaps/update:settings",
   "reaction:legacy:surcharges/create",
   "reaction:legacy:surcharges/delete",
@@ -84,7 +98,11 @@ export const defaultShopManagerRoles = [
   "reaction:legacy:taxRates/create",
   "reaction:legacy:taxRates/delete",
   "reaction:legacy:taxRates/read",
-  "reaction:legacy:taxRates/update"
+  "reaction:legacy:taxRates/update",
+  "reaction:legacy:promotions/create",
+  "reaction:legacy:promotions/read",
+  "reaction:legacy:promotions/update",
+  "reaction:legacy:promotions/preview"
 ];
 
 export const defaultShopOwnerRoles = [
@@ -118,5 +136,6 @@ export const defaultSystemManagerRoles = [
   "reaction:legacy:groups/update",
   "reaction:legacy:shops/create",
   "reaction:legacy:shops/read",
+  "reaction:legacy:simpleSchema/introspect",
   "reaction:legacy:invitations/read"
 ];

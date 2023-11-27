@@ -1,11 +1,11 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import queries from "./queries/index.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
 import { registerPluginHandlerForCart } from "./registration.js";
-import { Cart, CartItem } from "./simpleSchemas.js";
+import { Cart, CartItem, Shipment, ShipmentQuote, ShippingMethod } from "./simpleSchemas.js";
 import startup from "./startup.js";
 
 /**
@@ -59,7 +59,10 @@ export default async function register(app) {
     policies,
     simpleSchemas: {
       Cart,
-      CartItem
+      CartItem,
+      Shipment,
+      ShippingMethod,
+      ShipmentQuote
     }
   });
 }

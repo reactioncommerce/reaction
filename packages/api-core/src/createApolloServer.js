@@ -1,4 +1,7 @@
 import { createRequire } from "module";
+import { createServer } from "http";
+import { WebSocketServer } from "ws";
+import { useServer } from "graphql-ws/lib/use/ws";
 import cors from "cors";
 import express from "express";
 import bodyParser from "body-parser";
@@ -9,8 +12,12 @@ import createDataLoaders from "./util/createDataLoaders.js";
 
 const require = createRequire(import.meta.url);
 const { mergeTypeDefs } = require("@graphql-tools/merge");
-const { gql, makeExecutableSchema, mergeSchemas } = require("apollo-server");
-const { ApolloServer } = require("apollo-server-express");
+const { makeExecutableSchema, mergeSchemas } = require("@graphql-tools/schema");
+const { ApolloServer } = require("@apollo/server");
+const gql = require("graphql-tag");
+const { expressMiddleware: apolloExpressMiddleware } = require("@apollo/server/express4");
+const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
+const { ApolloServerPluginLandingPageLocalDefault } = require("@apollo/server/plugin/landingPage/default");
 const { buildFederatedSchema } = require("@apollo/federation");
 
 const DEFAULT_GRAPHQL_PATH = "/graphql";
@@ -29,17 +36,19 @@ const resolverValidationOptions = {
  * @param {Object} options Options
  * @returns {ExpressApp} The express app
  */
-export default function createApolloServer(options = {}) {
+export default async function createApolloServer(options = {}) {
   const {
     context: contextFromOptions,
     expressMiddleware,
     resolvers,
     functionsByType,
-    typeDefsObj
+    typeDefsObj,
+    defaultHttpService
   } = options;
   const path = options.path || DEFAULT_GRAPHQL_PATH;
 
   const contextFuncs = functionsByType.graphQLContext ?? [];
+  const wsContextFuncs = functionsByType.wsContext ?? [];
 
   // We support passing in typeDef strings.
   // Already executable schema are not supported with federation.
@@ -57,8 +66,10 @@ export default function createApolloServer(options = {}) {
 
   // Create a custom Express server so that we can add our own middleware and HTTP routes
   const app = express();
+  const httpServer = defaultHttpService || createServer(app);
   let schema;
   let subscriptions = false;
+  let wsServerCleanup;
 
   if (config.REACTION_APOLLO_FEDERATION_ENABLED) {
     // Build federated schema from typeDefs and resolvers
@@ -84,18 +95,32 @@ export default function createApolloServer(options = {}) {
     subscriptions = {
       path
     };
+
+    const wsServer = new WebSocketServer({ server: httpServer, path: DEFAULT_GRAPHQL_PATH });
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    wsServerCleanup = useServer({
+      schema,
+      async context(ctx, msg, args) {
+        let context = { ...contextFromOptions };
+        for (const contextFuncObject of wsContextFuncs) {
+          const contextFunc = contextFuncObject.func;
+          context = {
+            ...context,
+            // eslint-disable-next-line no-await-in-loop
+            ...(await contextFunc(ctx, msg, args))
+          };
+        }
+        return context;
+      }
+    }, wsServer);
   }
 
   const apolloServer = new ApolloServer({
     async context(session) {
-      const { connection, req } = session;
       const context = { ...contextFromOptions };
 
-      // For a GraphQL subscription WebSocket request, there is no `req`
-      if (connection) return context;
-
       // Express middleware should have already set req.user if there is one
-      await buildContext(context, req);
+      await buildContext(context, session.req);
 
       await createDataLoaders(context);
 
@@ -114,17 +139,35 @@ export default function createApolloServer(options = {}) {
       };
     },
     debug: options.debug || false,
+    typeDefs,
+    resolvers,
+    includeStacktraceInErrorResponses: options.debug || false,
     formatError: getErrorFormatter(),
     schema,
     subscriptions,
     introspection: config.GRAPHQL_INTROSPECTION_ENABLED,
-    playground: config.GRAPHQL_PLAYGROUND_ENABLED
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      // Proper shutdown for the WebSocket server.
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              if (wsServerCleanup) await wsServerCleanup.dispose();
+            }
+          };
+        }
+      },
+      config.GRAPHQL_PLAYGROUND_ENABLED ? ApolloServerPluginLandingPageLocalDefault() : undefined
+    ]
   });
+
+  await apolloServer.start();
 
   const gqlMiddleware = expressMiddleware.filter((def) => def.route === "graphql" || def.route === "all");
 
   // GraphQL endpoint, enhanced with JSON body parser
-  app.use.apply(app, [
+  app.use(
     path,
     // set a higher limit for data transfer, which can help with GraphQL mutations
     // `express` default is 100kb
@@ -147,8 +190,33 @@ export default function createApolloServer(options = {}) {
       .map((def) => def.fn(contextFromOptions)),
     ...gqlMiddleware
       .filter((def) => def.stage === "before-response")
-      .map((def) => def.fn(contextFromOptions))
-  ]);
+      .map((def) => def.fn(contextFromOptions)),
+
+    // Apollo Server middleware
+    apolloExpressMiddleware(apolloServer, {
+      context: async ({ req, res }) => {
+        const context = { ...contextFromOptions };
+        // Express middleware should have already set req.user if there is one
+        await buildContext(context, req);
+
+        await createDataLoaders(context);
+
+        let customContext = {};
+        /* eslint-disable no-await-in-loop */
+        for (const contextFuncObject of contextFuncs) {
+          const contextFunc = contextFuncObject.func;
+          customContext = {
+            ...customContext,
+            ...(await contextFunc({ res, req }))
+          };
+        }
+        return {
+          ...context,
+          ...customContext
+        };
+      }
+    })
+  );
 
   // Rewrite url to support legacy graphql routes
   app.all(/\/graphql-\w+/, (req, res) => {
@@ -161,11 +229,10 @@ export default function createApolloServer(options = {}) {
     app.handle(req, res);
   });
 
-  apolloServer.applyMiddleware({ app, cors: true, path });
-
   return {
     apolloServer,
     expressApp: app,
+    httpServer,
     path
   };
 }

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderOpaqueId, decodePaymentOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -25,8 +26,8 @@ export default async function createRefund(_, { input }, context) {
 
   const { order } = await context.mutations.createRefund(context, {
     amount,
-    orderId: decodeOrderOpaqueId(orderId),
-    paymentId: decodePaymentOpaqueId(paymentId),
+    orderId: isOpaqueId(orderId) ? decodeOrderOpaqueId(orderId) : orderId,
+    paymentId: isOpaqueId(paymentId) ? decodePaymentOpaqueId(paymentId) : paymentId,
     reason
   });
 

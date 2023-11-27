@@ -133,7 +133,7 @@ instructions
 
 ## Install PNPM
 ```bash
-npm i -g pnpm@latest
+npm i -g pnpm@7.11.0
 ```
 
 ## Clone and Start the source

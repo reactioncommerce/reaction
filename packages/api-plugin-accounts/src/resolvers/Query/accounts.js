@@ -1,5 +1,6 @@
 import getPaginatedResponse from "@reactioncommerce/api-utils/graphql/getPaginatedResponse.js";
 import wasFieldRequested from "@reactioncommerce/api-utils/graphql/wasFieldRequested.js";
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -20,7 +21,7 @@ export default async function accounts(_, args, context, info) {
 
   let groupIds;
   if (opaqueGroupIds) {
-    groupIds = opaqueGroupIds.map((opaqueGroupId) => decodeGroupOpaqueId(opaqueGroupId));
+    groupIds = opaqueGroupIds.map((opaqueGroupId) => (isOpaqueId(opaqueGroupId) ? decodeGroupOpaqueId(opaqueGroupId) : opaqueGroupId));
   }
 
   const query = await context.queries.accounts(context, { groupIds, notInAnyGroups });

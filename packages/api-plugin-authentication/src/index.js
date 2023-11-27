@@ -1,6 +1,7 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import tokenMiddleware from "./util/tokenMiddleware.js";
 import getAccounts from "./util/accountServer.js";
+import wsAuthenticate from "./util/wsAuthenticate.js";
 
 /**
  * @summary Registers the authentication plugin
@@ -16,7 +17,14 @@ export default async function register(app) {
     autoEnable: true,
     version: pkg.version,
     functionsByType: {
-      graphQLContext: [({ req }) => accountsGraphQL.context({ req })]
+      graphQLContext: [({ req }) => accountsGraphQL.context({ req })],
+      wsContext: [async (ctx, msg, args) => {
+        const context = await accountsGraphQL.context({ ctx, msg, args });
+        return {
+          ...context,
+          ...(await wsAuthenticate(ctx, msg, args))
+        };
+      }]
     },
     collections: {
       users: {

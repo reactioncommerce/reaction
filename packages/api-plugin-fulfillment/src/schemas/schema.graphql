@@ -1,0 +1,404 @@
+extend type ShopSettings {
+  """
+  List of fulfillment types that will be added to each new product by default
+  """
+  baseFulfillmentTypesForShop: [FulfillmentType]
+}
+
+extend input ShopSettingsUpdates {
+  """
+  The input for default fulfillment type for shop should be one of the installed fulfillment type plugin
+  """
+  baseFulfillmentTypesForShop: [FulfillmentType]
+}
+
+"Allowed fulfillment types, extended by fulfillment-type plugins"
+enum FulfillmentType {
+  "Default fulfillment type when none is decided by user"
+  undecided
+}
+
+"Default empty object for additionalData"
+type EmptyData {
+  gqlType: String
+  emptyData: Boolean
+}
+
+"Union of Additional Data fields"
+union AdditionalData = EmptyData
+
+"""
+A single fulfillment method. Fulfillment methods are shown to shoppers along with a quote for them,
+and the shopper chooses one method per fulfillment group per cart during checkout.
+"""
+type FulfillmentMethod implements Node {
+  "The fulfillment method ID"
+  _id: ID!
+
+  "A carrier name"
+  carrier: String
+
+  "The name of this method, for display in the user interface"
+  displayName: String!
+
+  """
+  The fulfillment types for which this method may be used. For example, `shipping` or `digital`.
+  """
+  fulfillmentTypes: [FulfillmentType]!
+
+  "The group to which this method belongs"
+  group: String
+
+  "The name of this method, a unique identifier"
+  name: String!
+
+  "Additional data provided by this method"
+  methodAdditionalData: AdditionalData
+}
+
+
+"Defines a fulfillment method in general."
+type FulfillmentMethodObj {
+  "The fulfillment method ID"
+  _id: ID!
+
+  "The cost of this fulfillment method to the shop, if you track this"
+  cost: Float
+
+  """
+  The fulfillment types for which this method may be used. For example, `shipping` or `digital`.
+  """
+  fulfillmentTypes: [FulfillmentType]
+
+  "The group to which this method belongs"
+  group: String!
+
+  "A fixed price to charge for handling costs when this fulfillment method is selected for an order"
+  handling: Float!
+
+  "Include this as a fulfillment option shown to shoppers during checkout?"
+  enabled: Boolean!
+
+  "The name of this method, for display in the user interface"
+  label: String!
+
+  "The name of this method, a unique identifier"
+  name: String!
+
+  "The common-name for this method, to group all variants of the same method"
+  fulfillmentMethod: String
+
+  "A fixed price to charge for fulfillment costs when this fulfillment method is selected for an order"
+  rate: Float!
+}
+
+"Provider info"
+type ProviderInfo{
+  "Name of the provider"
+  name: String!
+  
+  "Label of the provider"
+  label: String!
+
+  "Flag defining enabled/disabled status"
+  enabled: Boolean!
+}
+"Fulfillment type root object"
+type FulfillmentTypeObj implements Node {
+  "The Fulfillment Type ID"
+  _id: ID!
+
+  "The user provided name of the fulfillment type"
+  name: String!
+
+  "Shop ID"
+  shopId: ID!
+
+  "ProviderInfo"
+  provider: ProviderInfo
+
+  "Fulfillment type"
+  fulfillmentType: String
+
+  "Fulfillment methods"
+  methods: [FulfillmentMethodObj]
+}
+
+"Custom Fulfillment method object "
+type CustomFulfillmentMethodObj implements Node {
+  "The Fulfillment Type ID"
+  fulfillmentTypeId: ID!
+
+  "Shop ID"
+  shopId: ID!
+
+  "The fulfillment method ID"
+  _id: ID!
+
+  "The cost of this fulfillment method to the shop, if you track this"
+  cost: Float
+
+  """
+  The fulfillment types for which this method may be used. For example, `shipping` or `digital`.
+  """
+  fulfillmentTypes: [FulfillmentType]
+
+  "The group to which this method belongs"
+  group: String!
+
+  "A fixed price to charge for handling costs when this fulfillment method is selected for an order"
+  handling: Float!
+
+  "Include this as a fulfillment option shown to shoppers during checkout?"
+  enabled: Boolean!
+
+  "The name of this method, for display in the user interface"
+  label: String!
+
+  "The name of this method, a unique identifier"
+  name: String!
+
+  "The common-name for this method, to group all variants of the same method"
+  fulfillmentMethod: String
+
+  "A fixed price to charge for fulfillment costs when this fulfillment method is selected for an order"
+  rate: Float!
+}
+
+"Input needed to update a fulfillment type"
+input UpdateFulfillmentTypeInputInfo {
+  "The shop to which this fulfillment type belongs"
+  shopId: ID!
+
+  "The fulfillment type to update"
+  fulfillmentTypeId: ID!
+
+  "The type name to be updated"
+  name: String
+
+  "The label to be updated"
+  label: String
+
+  "The displayMessage to be updated"
+  displayMessageType: String
+
+  "Flag to define if the type should be enabled/disabled"
+  enabled: Boolean
+}
+"Input needed to update a fulfillment type"
+input UpdateFulfillmentTypeInput {
+  "The input info to update fulfillment type"
+  fulfillmentTypeInfo: UpdateFulfillmentTypeInputInfo!
+}
+"The updated fulfillment type info from updateFulfillmentType"
+type UpdateFulfillmentTypePayloadObj {
+  "The shop to which this fulfillment type  belongs"
+  shopId: ID!
+
+  "The fulfillment type which was updated"
+  fulfillmentTypeId: ID!
+
+  "The updated fulfillment type name"
+  name: String!
+
+  "The updated fulfillment type label"
+  label: String!
+
+  "Flag defining enabled/disabled status"
+  enabled: Boolean!
+}
+"The response from the `updateFulfillmentType` mutation"
+type UpdateFulfillmentTypePayload {
+  "The updated fulfillment type"
+  fulfillmentType: UpdateFulfillmentTypePayloadObj!
+}
+
+
+
+"UserEditable Method input"
+input UserEditableMethodInput{
+  "Label of the provider"
+  label: String
+
+  "Display message Method"
+  displayMessageMethod: String
+
+  "Cost"
+  cost: Int
+
+  "Handling"
+  handling: Int
+
+  "Rate"
+  rate: Int
+
+  "Flag defining enabled/disabled status"
+  enabled: Boolean
+}
+
+
+"The updated fulfillment method info from updateFulfillmentMethod"
+input UpdateFulfillmentMethodInfo {
+  "Shop Id"
+  shopId: String!
+
+  "The fulfillment type which has the method to be updated"
+  fulfillmentTypeId: String!
+
+  "The method which has to be updated"
+  methodId: String!
+
+  "Method input"
+  method: UserEditableMethodInput
+}
+input UpdateFulfillmentMethodInput {
+  "Info Fulfillment Method"
+  fulfillmentMethodInfo: UpdateFulfillmentMethodInfo!
+}
+type UpdateFulfillmentMethodPayload {
+  "The inserted method"
+  method: FulfillmentMethodObj!
+}
+
+extend type Mutation {
+  "Updates the Name and Enabled fields for the provided Fulfillment Type"
+  updateFulfillmentType(
+    "Mutation input"
+    input: UpdateFulfillmentTypeInput!
+  ): UpdateFulfillmentTypePayload!
+
+  "Updates the provided Fulfillment Method"
+  updateFulfillmentMethod(
+    "Mutation input"
+    input: UpdateFulfillmentMethodInput!
+  ): UpdateFulfillmentMethodPayload!
+}
+
+extend type Query {
+  "Get a fulfillment type"
+  fulfillmentType(
+    "Fulfillment type id"
+    fulfillmentTypeId: ID!
+
+    "Shop ID"
+    shopId: ID!
+  ): FulfillmentTypeObj!
+
+  "Get all fulfillment types"
+  fulfillmentTypes(
+    "Shop ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+  ): FulfillmentTypeObjConnection!
+
+  "Get all fulfillment methods for the given type"
+  fulfillmentMethods(
+    "Shop ID"
+    shopId: ID!
+
+    "Fulfillment Type ID"
+    fulfillmentTypeId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor,
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor,
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt,
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt,
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int,
+  ): FulfillmentMethodObjConnection!
+}
+
+
+####
+# Connections
+####
+
+"A connection edge in which each node is a `FulfillmentTypeObj` object"
+type FulfillmentTypeObjEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The fulfillment method"
+  node: FulfillmentTypeObj
+}
+
+"A connection edge in which each node is a `CustomFulfillmentMethodObj` object"
+type CustomFulfillmentMethodObjEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The fulfillment method"
+  node: CustomFulfillmentMethodObj
+}
+
+"""
+Wraps a list of FulfillmentTypes, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type FulfillmentTypeObjConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [FulfillmentTypeObjEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [FulfillmentTypeObj]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"""
+Wraps a list of Cusom FulfillmentMethods, providing pagination cursors and information.
+
+For information about what Relay-compatible connections are and how to use them, see the following articles:
+- [Relay Connection Documentation](https://facebook.github.io/relay/docs/en/graphql-server-specification.html#connections)
+- [Relay Connection Specification](https://facebook.github.io/relay/graphql/connections.htm)
+- [Using Relay-style Connections With Apollo Client](https://www.apollographql.com/docs/react/recipes/pagination.html)
+"""
+type FulfillmentMethodObjConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [CustomFulfillmentMethodObjEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [CustomFulfillmentMethodObj]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}

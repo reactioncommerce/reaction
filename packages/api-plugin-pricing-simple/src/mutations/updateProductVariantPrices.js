@@ -9,6 +9,11 @@ const pricesInput = new SimpleSchema({
   price: {
     type: Number,
     optional: true
+  },
+  priceType: {
+    type: String,
+    optional: true,
+    allowedValues: ["full", "clearance", "sale"]
   }
 });
 

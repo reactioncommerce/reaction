@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -22,7 +23,7 @@ export default async function setEmailOnAnonymousCart(parentResult, { input }, c
     cartToken
   } = input;
 
-  const cartId = decodeCartOpaqueId(opaqueCartId);
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
 
   const { cart } = await context.mutations.setEmailOnAnonymousCart(context, {
     cartId,
