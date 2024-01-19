@@ -358,7 +358,7 @@ The above steps translate to the below code (for reference)
 ```
 Inside  `/src/loaders/loadNavigation.js` we can see how this sub-level (`m1sub`) is subsequently added to the _items_ array which in turn is added to the top-level of Navigation. 
 
-The navigation changes are publshed via the _publishNavigationChanges_ mutation and the Shops collection is updated with the _navigationTreeId_.
+The navigation changes are published via the _publishNavigationChanges_ mutation and the Shops collection is updated with the _navigationTreeId_.
 
 ##### 5. Adding Images to the product
 
@@ -366,7 +366,7 @@ We could add one (or more) images for each of the leaf-level entries mentioned i
 
 To explain with an example, we have 'Jackets' as top-level product, variants as 'Black'/'Blue' and leaf-level entries as Small/Medium/Large. So in effect, we will have the same set of images for all the sizes (small/medium/large) under each Color.
 
-Once we have identified the productID (_id) of the variant entries, we just need to update the file-name to include the productId at the begining of the file-name followed by a period '.'. So the specific format of the image would be `productID.<rest_of_file_name>.<extn>`. Allowed image file extensions are jpg/jpeg/png. Once the image with the updated file-name is ready, we just need to place the file in the `/src/images` folder.
+Once we have identified the productID (_id) of the variant entries, we just need to update the file-name to include the productId at the beginning of the file-name followed by a period '.'. So the specific format of the image would be `productID.<rest_of_file_name>.<extn>`. Allowed image file extensions are jpg/jpeg/png. Once the image with the updated file-name is ready, we just need to place the file in the `/src/images` folder.
 
 Note: We have hard-coded the path to the images folder inside `/src/loaders/loadImages.js` as follows `  let folderPath = "./custom-packages/api-plugin-sample-data/src/images/"`
 By default, when a new plugin is added, the above mentioned path would be correct, but in case we have the plugin folder under a different name, we need to make sure that the above folderPath is updated to match the actual location.

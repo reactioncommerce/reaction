@@ -47,7 +47,7 @@ The action the user would like to preform. This can be anything, but we recommen
 
 Context is used to pass any extra information to the permissions check. We use it primarily for two things at this time:
 
-1. We pass `shopId` in the context (somtimes referred to as `ketoContext`) everywhere it's avaialble
+1. We pass `shopId` in the context (somtimes referred to as `ketoContext`) everywhere it's available
 1. We pass `owner` into the context anywhere where a regular, non-admin user is allowed permissions to something they themselves own. For example, on an order they placed, they will have `owner` permissions on that particular order.
 
 ## Under the hood
