@@ -2,6 +2,7 @@ import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import Random from "@reactioncommerce/random";
 import ReactionError from "@reactioncommerce/reaction-error";
 import Logger from "@reactioncommerce/logger";
+import { fulfillmentCartVersion } from "../fulfillmentCartVersion.js";
 import addCartItems from "../util/addCartItems.js";
 
 /**
@@ -61,6 +62,7 @@ export default async function createCart(context, input) {
   const createdAt = new Date();
   const newCart = {
     _id: Random.id(),
+    fulfillmentCartVersion,
     accountId,
     anonymousAccessToken: anonymousAccessToken && hashToken(anonymousAccessToken),
     currencyCode: cartCurrencyCode,

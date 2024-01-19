@@ -1,12 +1,13 @@
-import pkg from "../package.json";
+import pkg from "../package.json" assert { type: "json" };
 import i18n from "./i18n/index.js";
 import mutations from "./mutations/index.js";
-import policies from "./policies.json";
+import policies from "./policies.json" assert { type: "json" };
 import preStartup from "./preStartup.js";
 import queries from "./queries/index.js";
+import { registerPluginHandlerForOrder } from "./registration.js";
 import resolvers from "./resolvers/index.js";
 import schemas from "./schemas/index.js";
-import { Order, OrderFulfillmentGroup, OrderItem } from "./simpleSchemas.js";
+import { Order, OrderFulfillmentGroup, OrderItem, CommonOrder, orderFulfillmentGroupInputSchema, SelectedFulfillmentOption } from "./simpleSchemas.js";
 import startup from "./startup.js";
 import getDataForOrderEmail from "./util/getDataForOrderEmail.js";
 
@@ -42,6 +43,7 @@ export default async function register(app) {
       }
     },
     functionsByType: {
+      registerPluginHandler: [registerPluginHandlerForOrder],
       getDataForOrderEmail: [getDataForOrderEmail],
       preStartup: [preStartup],
       startup: [startup]
@@ -56,7 +58,10 @@ export default async function register(app) {
     simpleSchemas: {
       Order,
       OrderFulfillmentGroup,
-      OrderItem
+      OrderItem,
+      CommonOrder,
+      orderFulfillmentGroupInputSchema,
+      SelectedFulfillmentOption
     }
   });
 }

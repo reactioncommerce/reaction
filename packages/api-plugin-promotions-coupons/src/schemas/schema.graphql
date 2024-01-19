@@ -1,0 +1,383 @@
+type Coupon {
+  "The coupon ID"
+  _id: ID!
+
+  "The shop ID"
+  shopId: ID!
+
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon owner ID"
+  userId: ID
+
+  "The coupon name"
+  name: String!
+
+  "The coupon code"
+  code: String!
+
+  "The promotion can be used in the store"
+  canUseInStore: Boolean
+
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+
+  "The number of times this coupon has been used"
+  usedCount: Int
+
+  "The coupon is archived"
+  isArchived: Boolean
+
+  "Coupon created time"
+  createdAt: Date!
+
+  "Coupon updated time"
+  updatedAt: Date!
+
+  "Related discount ID"
+  discountId: ID
+}
+
+type CouponLog {
+  _id: ID!
+
+  "The shop ID"
+  shopId: ID!
+
+  "The coupon ID"
+  couponId: ID!
+
+  "The order ID"
+  orderId: ID
+
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon owner ID"
+  accountId: ID
+
+  "The coupon code"
+  usedCount: Int
+
+  "The time the coupon was used"
+  createdAt: Date
+}
+
+extend type Promotion {
+  "The coupon code"
+  coupon: Coupon
+}
+
+extend type Order {
+  "The coupon log for this order that was applied"
+  couponLog: CouponLog
+}
+
+"Input for the applyCouponToCart mutation"
+input ApplyCouponToCartInput {
+
+  shopId: ID!
+
+  "The ID of the Cart"
+  cartId: ID!
+
+  "The coupon code to apply"
+  couponCode: String!
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+
+  "Cart token, if anonymous"
+  cartToken: String
+}
+
+"The input for the createStandardCoupon mutation"
+input CreateStandardCouponInput {
+  "The shop ID"
+  shopId: ID!
+  
+  "The promotion ID"
+  promotionId: ID!
+
+  "The coupon name"
+  name: String!
+
+  "The coupon code"
+  code: String!
+
+  "Can use this coupon in the store"
+  canUseInStore: Boolean!
+  
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+}
+
+"Input for the updateStandardCoupon mutation"
+input UpdateStandardCouponInput {
+  "The coupon ID"
+  _id: ID!
+  
+  "The shop ID"
+  shopId: ID!
+  
+  "The coupon name"
+  name: String
+
+  "The coupon code"
+  code: String
+
+  "Can use this coupon in the store"
+  canUseInStore: Boolean
+  
+  "The number of times this coupon can be used per user"
+  maxUsageTimesPerUser: Int
+
+  "The number of times this coupon can be used"
+  maxUsageTimes: Int
+}
+
+input CouponQueryInput {
+  "The unique ID of the coupon"
+  _id: String!
+
+  "The unique ID of the shop"
+  shopId: String!
+}
+
+input CouponFilter {
+  "The expiration date of the coupon"
+  expirationDate: Date
+
+  "The related promotion ID"
+  promotionId: ID
+
+  "The coupon code"
+  code: String
+
+  "The coupon name"
+  userId: ID
+
+  "The coupon is archived"
+  isArchived: Boolean
+}
+
+input CouponLogQueryInput {
+  "The unique ID of the coupon log"
+  _id: String!
+
+  "The unique ID of the shop"
+  shopId: String!
+}
+
+input CouponLogFilter {
+  "The coupon ID"
+  couponId: ID
+
+  "The related promotion ID"
+  promotionId: ID
+
+  "The orderId"
+  orderId: ID
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+}
+
+"Input for the removeCouponFromCart mutation"
+input RemoveCouponFromCartInput {
+
+  shopId: ID!
+
+  "The ID of the Cart"
+  cartId: ID!
+
+  "The promotion that contains the coupon to remove"
+  promotionId: ID!
+
+  "The account ID of the user who is applying the coupon"
+  accountId: ID
+
+  "Cart token, if anonymous"
+  token: String
+}
+
+"The input for the archiveCoupon mutation"
+input ArchiveCouponInput {
+  "The coupon ID"
+  couponId: ID!
+
+  "The shop ID"
+  shopId: ID!
+}
+
+"The response for the applyCouponToCart mutation"
+type ApplyCouponToCartPayload {
+  cart: Cart
+}
+
+type StandardCouponPayload {
+  success: Boolean!
+  coupon: Coupon!
+}
+
+"The response for the removeCouponFromCart mutation"
+type RemoveCouponFromCartPayload {
+  cart: Cart
+}
+
+"A connection edge in which each node is a `Coupon` object"
+type CouponEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The coupon node"
+  node: Coupon
+}
+
+type CouponConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [CouponEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [Coupon]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+"A connection edge in which each node is a `CouponLog` object"
+type CouponLogEdge {
+  "The cursor that represents this node in the paginated results"
+  cursor: ConnectionCursor!
+
+  "The coupon log node"
+  node: CouponLog
+}
+
+type CouponLogConnection {
+  "The list of nodes that match the query, wrapped in an edge to provide a cursor string for each"
+  edges: [CouponEdge]
+
+  """
+  You can request the `nodes` directly to avoid the extra wrapping that `NodeEdge` has,
+  if you know you will not need to paginate the results.
+  """
+  nodes: [CouponLog]
+
+  "Information to help a client request the next or previous page"
+  pageInfo: PageInfo!
+
+  "The total number of nodes that match your query"
+  totalCount: Int!
+}
+
+extend type Query {
+  "Get a coupon"
+  coupon(
+    input: CouponQueryInput
+  ): Coupon
+
+  "Get list of coupons"
+  coupons(
+    "The coupon ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    filter: CouponFilter
+
+    sortBy: String
+
+    sortOrder: String
+  ): CouponConnection
+
+  "Get a coupon log"
+  couponLog(
+    input: CouponLogQueryInput
+  ): CouponLog
+
+  "Get list of coupon logs"
+  couponLogs(
+    "The coupon ID"
+    shopId: ID!
+
+    "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
+    after: ConnectionCursor
+
+    "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
+    before: ConnectionCursor
+
+    "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
+    first: ConnectionLimitInt
+
+    "Return at most this many results. This parameter may be used with the `before` parameter."
+    last: ConnectionLimitInt
+
+    "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
+    offset: Int
+
+    filter: CouponLogFilter
+
+    sortBy: String
+
+    sortOrder: String
+  ): CouponLogConnection
+}
+
+extend type Mutation {
+  "Apply a coupon to a cart"
+  applyCouponToCart(
+    "The applyCouponToCart mutation input"
+    input: ApplyCouponToCartInput
+  ): ApplyCouponToCartPayload
+
+  "Create a standard coupon mutation"
+  createStandardCoupon(
+    "The createStandardCoupon mutation input"
+    input: CreateStandardCouponInput
+  ): StandardCouponPayload
+
+  "Update a standard coupon mutation"
+  updateStandardCoupon(
+    "The updateStandardCoupon mutation input"
+    input: UpdateStandardCouponInput
+  ): StandardCouponPayload
+
+  "Archive coupon mutation"
+  archiveCoupon(
+    "The archiveCoupon mutation input"
+    input: ArchiveCouponInput
+  ): StandardCouponPayload
+
+  "Remove a coupon from a cart"
+  removeCouponFromCart(
+    "The removeCouponFromCart mutation input"
+    input: RemoveCouponFromCartInput
+  ): RemoveCouponFromCartPayload
+}

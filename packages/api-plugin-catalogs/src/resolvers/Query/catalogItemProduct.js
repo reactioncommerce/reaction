@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCatalogItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -15,11 +16,11 @@ import { decodeCatalogItemOpaqueId, decodeShopOpaqueId } from "../../xforms/id.j
 export default async function catalogItemProduct(_, args, context) {
   const { shopId: opaqueShopId, slugOrId } = args;
 
-  const catalogIdOrProductSlug = decodeCatalogItemOpaqueId(slugOrId);
+  const catalogIdOrProductSlug = isOpaqueId(slugOrId) ? decodeCatalogItemOpaqueId(slugOrId) : slugOrId;
 
   let shopId;
   if (opaqueShopId) {
-    shopId = decodeShopOpaqueId(opaqueShopId);
+    shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
   }
 
   return context.queries.catalogItemProduct(context, {

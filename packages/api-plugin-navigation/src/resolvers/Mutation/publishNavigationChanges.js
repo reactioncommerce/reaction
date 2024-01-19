@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,8 +17,8 @@ import { decodeNavigationTreeOpaqueId, decodeShopOpaqueId } from "../../xforms/i
 export default async function publishNavigationChanges(parentResult, { input }, context) {
   const { clientMutationId = null, id: opaqueNavigationTreeId, shopId: opaqueShopId } = input;
 
-  const decodedId = decodeNavigationTreeOpaqueId(opaqueNavigationTreeId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const decodedId = isOpaqueId(opaqueNavigationTreeId) ? decodeNavigationTreeOpaqueId(opaqueNavigationTreeId) : opaqueNavigationTreeId;
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
   const publishedNavigationTree = context.mutations.publishNavigationChanges(context, {
     navigationTreeId: decodedId,
     shopId

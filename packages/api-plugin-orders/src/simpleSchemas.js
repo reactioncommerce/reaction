@@ -332,8 +332,7 @@ export const CommonOrder = new SimpleSchema({
   },
   fulfillmentPrices: CommonOrderFulfillmentPrices,
   fulfillmentType: {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
   },
   items: [CommonOrderItem],
   orderId: {
@@ -392,8 +391,7 @@ export const orderFulfillmentGroupInputSchema = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
   }
 });
 
@@ -773,7 +771,7 @@ export const OrderItem = new SimpleSchema({
  * @property {String} name Method name
  * @property {Number} rate Rate
  */
-const SelectedFulfillmentOption = new SimpleSchema({
+export const SelectedFulfillmentOption = new SimpleSchema({
   _id: String,
   carrier: {
     type: String,
@@ -793,6 +791,11 @@ const SelectedFulfillmentOption = new SimpleSchema({
   rate: {
     type: Number,
     min: 0
+  },
+  discount: {
+    type: Number,
+    min: 0,
+    optional: true
   }
 });
 
@@ -853,8 +856,7 @@ export const OrderFulfillmentGroup = new SimpleSchema({
     optional: true
   },
   "type": {
-    type: String,
-    allowedValues: ["shipping"]
+    type: String
   },
   "updatedAt": {
     type: Date,
@@ -1114,6 +1116,15 @@ export const Order = new SimpleSchema({
     type: Workflow,
     optional: true,
     defaultValue: {}
+  },
+  "appliedPromotions": {
+    type: Array,
+    optional: true,
+    defaultValue: []
+  },
+  "appliedPromotions.$": {
+    type: Object,
+    blackbox: true
   }
 });
 

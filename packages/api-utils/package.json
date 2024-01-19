@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-utils",
   "description": "Utility functions for the Reaction API",
-  "version": "1.17.1",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -28,6 +28,10 @@
     "./": {
       "require": "./",
       "default": "./lib/"
+    },
+    "./*": {
+      "require": "./*",
+      "default": "./lib/*"
     },
     "./graphql/": {
       "require": "./",

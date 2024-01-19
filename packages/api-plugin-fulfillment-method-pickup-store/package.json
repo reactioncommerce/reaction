@@ -1,0 +1,44 @@
+{
+  "name": "@reactioncommerce/api-plugin-fulfillment-method-pickup-store",
+  "description": "Implements Store-pickup as a fulfillment method under the type pickup",
+  "label": "Fulfillment Method Store Pickup",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1",
+    "npm": ">=7"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "hello-open-commerce@mailchimp.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-fulfillment-method-pickup-store"
+  },
+  "author": {
+    "name": "Mailchimp Open Commerce",
+    "email": "hello-open-commerce@mailchimp.com",
+    "url": "https://mailchimp.com/developer/open-commerce/"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "simpl-schema": "^1.12.2",
+    "@reactioncommerce/logger": "^1.1.4",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "@reactioncommerce/api-utils": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  }
+}

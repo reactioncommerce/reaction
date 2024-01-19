@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeGroupOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -12,6 +13,6 @@ import { decodeGroupOpaqueId } from "../../xforms/id.js";
  * @returns {Promise<Object>} group object
  */
 export default async function group(_, { id }, context) {
-  const dbGroupId = decodeGroupOpaqueId(id);
+  const dbGroupId = isOpaqueId(id) ? decodeGroupOpaqueId(id) : id;
   return context.queries.group(context, dbGroupId);
 }

@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeCartOpaqueId, decodeFulfillmentGroupOpaqueId } from "../../xforms/id.js";
 import updateFulfillmentOptionsForGroupMutation from "../../mutations/updateFulfillmentOptionsForGroup.js";
 
@@ -18,8 +19,8 @@ import updateFulfillmentOptionsForGroupMutation from "../../mutations/updateFulf
 export default async function updateFulfillmentOptionsForGroup(parentResult, { input }, context) {
   const { cartId: opaqueCartId, cartToken, clientMutationId = null, fulfillmentGroupId: opaqueFulfillmentGroupId } = input;
 
-  const fulfillmentGroupId = decodeFulfillmentGroupOpaqueId(opaqueFulfillmentGroupId);
-  const cartId = decodeCartOpaqueId(opaqueCartId);
+  const fulfillmentGroupId = isOpaqueId(opaqueFulfillmentGroupId) ? decodeFulfillmentGroupOpaqueId(opaqueFulfillmentGroupId) : opaqueFulfillmentGroupId;
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
 
   const { cart } = await updateFulfillmentOptionsForGroupMutation(context, {
     cartId,

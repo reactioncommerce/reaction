@@ -1,0 +1,46 @@
+{
+  "name": "@reactioncommerce/api-plugin-fulfillment-method-shipping-flat-rate",
+  "description": "Plugin for Fulfillment method flat-rate under the type shipping",
+  "label": "Fulfillment Method Shipping Flat Rate Plugin",
+  "version": "0.0.1",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": ">=14.18.1",
+    "npm": ">=7"
+  },
+  "homepage": "https://github.com/reactioncommerce/reaction",
+  "url": "https://github.com/reactioncommerce/reaction",
+  "email": "hello-open-commerce@mailchimp.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reactioncommerce/reaction.git",
+    "directory": "packages/api-plugin-fulfillment-method-shipping-flat-rate"
+  },
+  "author": {
+    "name": "Mailchimp Open Commerce",
+    "email": "hello-open-commerce@mailchimp.com",
+    "url": "https://mailchimp.com/developer/open-commerce/"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/reactioncommerce/reaction/issues"
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "simpl-schema": "^1.12.2",
+    "lodash": "^4.17.15",
+    "@reactioncommerce/logger": "^1.1.3",
+    "@reactioncommerce/reaction-error": "^1.0.1",
+    "@reactioncommerce/random": "~1.0.2",
+    "@reactioncommerce/api-utils": "^2.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "lint": "npm run lint:eslint",
+    "lint:eslint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:file": "jest --no-cache --watch --coverage=false"
+  }
+}

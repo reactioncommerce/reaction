@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,7 +19,7 @@ export default async function enablePaymentMethodForShop(parentResult, { input }
   const { clientMutationId } = input;
   const paymentMethods = await context.mutations.enablePaymentMethodForShop(context, {
     ...input,
-    shopId: decodeShopOpaqueId(input.shopId)
+    shopId: isOpaqueId(input.shopId) ? decodeShopOpaqueId(input.shopId) : input.shopId
   });
 
   return {

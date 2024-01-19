@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeOrderOpaqueId, decodePaymentOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -16,9 +17,9 @@ import { decodeOrderOpaqueId, decodePaymentOpaqueId, decodeShopOpaqueId } from "
 export default async function approveOrderPayments(parentResult, { input }, context) {
   const { clientMutationId, orderId: opaqueOrderId, paymentIds: opaquePaymentIds, shopId: opaqueShopId } = input;
 
-  const orderId = decodeOrderOpaqueId(opaqueOrderId);
-  const paymentIds = opaquePaymentIds.map(decodePaymentOpaqueId);
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const orderId = isOpaqueId(opaqueOrderId) ? decodeOrderOpaqueId(opaqueOrderId) : opaqueOrderId;
+  const paymentIds = opaquePaymentIds.map((opaquePaymentId) => (isOpaqueId(opaquePaymentId) ? decodePaymentOpaqueId(opaquePaymentId) : opaquePaymentId));
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   const { order } = await context.mutations.approveOrderPayments(context, {
     orderId,

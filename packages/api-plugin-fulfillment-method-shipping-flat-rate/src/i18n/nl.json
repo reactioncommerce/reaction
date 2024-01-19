@@ -1,0 +1,23 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Vast bedrag",
+          "confirmRateDelete": "rate verwijderen?",
+          "rateSaved": "Flat rate opgeslagen.",
+          "rateFailed": "Flat rate update is mislukt.",
+          "noRatesFound": "Geen prijzen gevonden."
+        },
+        "shippingGrid": {
+          "name": "Naam",
+          "group": "Groep",
+          "rate": "Snelheid",
+          "label": "Etiket"
+        }
+      }
+    }
+  }
+}]

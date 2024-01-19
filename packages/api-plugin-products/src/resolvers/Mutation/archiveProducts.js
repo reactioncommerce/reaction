@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeProductOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -19,11 +20,11 @@ export default async function archiveProducts(_, { input }, context) {
     shopId
   } = input;
 
-  const decodedProductIds = productIds.map((productId) => decodeProductOpaqueId(productId));
+  const decodedProductIds = productIds.map((productId) => (isOpaqueId(productId) ? decodeProductOpaqueId(productId) : productId));
 
   const archivedProducts = await context.mutations.archiveProducts(context, {
     productIds: decodedProductIds,
-    shopId: decodeShopOpaqueId(shopId)
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 
   return {

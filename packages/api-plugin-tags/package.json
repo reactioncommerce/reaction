@@ -1,7 +1,7 @@
 {
   "name": "@reactioncommerce/api-plugin-tags",
   "description": "Tags plugin for the Reaction API",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -26,10 +26,10 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@reactioncommerce/api-utils": "^1.17.1",
+    "@reactioncommerce/api-utils": "^2.0.0",
     "@reactioncommerce/data-factory": "~1.0.1",
     "@reactioncommerce/db-version-check": "^1.0.0",
-    "@reactioncommerce/file-collections": "^0.9.3",
+    "@reactioncommerce/file-collections": "^0.10.0",
     "@reactioncommerce/random": "~1.0.2",
     "@reactioncommerce/reaction-error": "~1.0.1",
     "lodash": "~4.17.21",

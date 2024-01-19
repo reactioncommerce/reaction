@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.merged == true && github.base_ref == 'trunk' && github.head_ref == 'changeset-release/trunk'
     permissions:
       contents: write # to create release (changesets/action)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
@@ -22,14 +22,14 @@ jobs:
         run: |
           git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
           git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-      - name: Use Node.js 14.x
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: "18.10.0"
 
       - name: Install dependencies
         run: |
-          npm i -g pnpm@latest
+          npm i -g pnpm@7.11.0
           pnpm install -r --ignore-scripts
       - name: Get tag version
         id: get-tag-version

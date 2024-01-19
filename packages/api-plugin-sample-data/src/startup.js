@@ -7,6 +7,8 @@ import loadTags from "./loaders/loadTags.js";
 import loadProducts from "./loaders/loadProducts.js";
 import loadNavigation from "./loaders/loadNavigation.js";
 import loadShipping from "./loaders/loadShipping.js";
+import loadPromotions from "./loaders/loadPromotions.js";
+import loadSequences from "./loaders/loadSequences.js";
 import config from "./config.js";
 
 /**
@@ -15,7 +17,6 @@ import config from "./config.js";
  * @returns {Promise<Boolean>} true if success
  */
 export default async function loadSampleData(context) {
-  Logger.info("Beginning load Sample Data");
   const { collections: { Shops } } = context;
   const { LOAD_SAMPLE_DATA } = config;
   if (!LOAD_SAMPLE_DATA || LOAD_SAMPLE_DATA === "false") {
@@ -28,6 +29,7 @@ export default async function loadSampleData(context) {
     return false;
   }
 
+  Logger.info("Beginning load Sample Data");
   Logger.info("Load Users");
   const user = await loadUsers(context);
   Logger.info("Load Accounts");
@@ -44,6 +46,10 @@ export default async function loadSampleData(context) {
   await loadImages(context, newShopId);
   Logger.info("Load Shipping");
   await loadShipping(context, newShopId);
+  Logger.info("Loading Promotions");
+  await loadPromotions(context, newShopId);
+  Logger.info("Loading Sequences");
+  await loadSequences(context, newShopId);
   Logger.info("Loading Sample Data complete");
   return true;
 }

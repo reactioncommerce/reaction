@@ -2,12 +2,13 @@
 /* eslint-disable no-await-in-loop */
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 import { Readable } from "stream";
 import pkg from "@reactioncommerce/file-collections";
 
 const { FileRecord } = pkg;
 import Logger from "@reactioncommerce/logger";
-import ProductsData from "../json-data/Products.json";
+import ProductsData from "../json-data/Products.json" assert { type: "json" };
 
 
 /**
@@ -106,8 +107,8 @@ export default async function loadImages(context, shopId) {
 
   const topProdIds = [];
   const fileType = "image/jpeg";
-  const folderPath = "./custom-packages/api-plugin-sample-data/src/images/";
-
+  const currentDir = path.dirname(fileURLToPath(import.meta.url));
+  const folderPath = path.join(currentDir, "../images/");
   let fileList = [];
   try {
     fileList = fs.readdirSync(folderPath);

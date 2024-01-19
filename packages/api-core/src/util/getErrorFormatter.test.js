@@ -16,16 +16,18 @@ beforeEach(() => {
 afterAll(restore);
 
 test("adds random ID and unknown type to all errors", () => {
+  const formattedError = { extensions: {}, path: [], message: "error" };
   const error = {};
-  getErrorFormatter()(error);
-  expect(typeof error.errorId).toBe("string");
-  expect(error.errorId[0]).toBe("c");
-  expect(error.type).toBe("unknown");
+  const result = getErrorFormatter()(formattedError, error);
+  expect(typeof result.errorId).toBe("string");
+  expect(result.errorId[0]).toBe("c");
+  expect(result.type).toBe("unknown");
 });
 
 test("Falls back to greppable message", () => {
+  const formattedError = { extensions: {}, message: "error" };
   const error = { originalError: {} };
-  getErrorFormatter()(error);
+  getErrorFormatter()(formattedError, error);
 
   expect(LoggerMock.error).toHaveBeenCalledWith(
     {
@@ -36,10 +38,12 @@ test("Falls back to greppable message", () => {
 });
 
 test("if originalError is present, logs the error with some additional details", () => {
+  const formattedError = { extensions: {}, message: "error", path: "PATH" };
   const context = { user: { _id: "123", name: "User" } };
   const message = "TEST_ERROR";
-  const error = { originalError: new Error(message), path: "PATH" };
-  getErrorFormatter(context)(error);
+  const error = new Error(message);
+
+  getErrorFormatter(context)(formattedError, error);
 
   expect(LoggerMock.error).toHaveBeenCalledWith(
     {
@@ -52,14 +56,14 @@ test("if originalError is present, logs the error with some additional details",
 });
 
 test("if originalError is validation-error, uses details[0].message", () => {
+  const formattedError = { extensions: {}, message: "error", path: "PATH" };
   const context = { user: { _id: "123", name: "User" } };
   const message = "TEST_ERROR";
-  const originalError = new Error("TEST_ORIGINAL_MESSAGE");
-  originalError.details = [{ message }];
-  originalError.error = "validation-error";
+  const error = new Error("TEST_ORIGINAL_MESSAGE");
+  error.details = [{ message }];
+  error.error = "validation-error";
 
-  const error = { originalError, path: "PATH" };
-  getErrorFormatter(context)(error);
+  getErrorFormatter(context)(formattedError, error);
 
   expect(LoggerMock.error).toHaveBeenCalledWith(
     {

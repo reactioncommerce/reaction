@@ -1,0 +1,23 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-pickup-store",
+  "translation": {
+    "reaction-pickup-store": {
+      "admin": {
+        "pickupSettings": {
+          "header": "Pickup",
+          "methodLabel": "Store",
+          "rateSaved": "Fulfillment method saved",
+          "rateFailed": "Fulfillment method update failed",
+          "noRatesFound": "No Store pickup fulfillment methods found"
+        },
+        "pickupGrid": {
+          "name": "Name",
+          "group": "Group",
+          "rate": "Rate",
+          "label": "Label"
+        }
+      }
+    }
+  }
+}]

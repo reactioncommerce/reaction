@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeAddressOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -18,8 +19,8 @@ import { decodeAddressOpaqueId, decodeCartOpaqueId } from "../../xforms/id.js";
 export default async function setShippingAddressOnCart(parentResult, { input }, context) {
   const { address, addressId: opaqueAddressId, cartId: opaqueCartId, cartToken, clientMutationId = null } = input;
 
-  const addressId = decodeAddressOpaqueId(opaqueAddressId);
-  const cartId = decodeCartOpaqueId(opaqueCartId);
+  const addressId = isOpaqueId(opaqueAddressId) ? decodeAddressOpaqueId(opaqueAddressId) : opaqueAddressId;
+  const cartId = isOpaqueId(opaqueCartId) ? decodeCartOpaqueId(opaqueCartId) : opaqueCartId;
 
   const { cart } = await context.mutations.setShippingAddressOnCart(context, {
     address,

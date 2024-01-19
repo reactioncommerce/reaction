@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeShopOpaqueId, decodeSurchargeOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -17,7 +18,7 @@ export default async function surchargeById(parentResult, args, context) {
   const { surchargeId, shopId } = args;
 
   return context.queries.surchargeById(context, {
-    surchargeId: decodeSurchargeOpaqueId(surchargeId),
-    shopId: decodeShopOpaqueId(shopId)
+    surchargeId: isOpaqueId(surchargeId) ? decodeSurchargeOpaqueId(surchargeId) : surchargeId,
+    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
   });
 }

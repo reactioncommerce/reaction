@@ -1,3 +1,4 @@
+import isOpaqueId from "@reactioncommerce/api-utils/isOpaqueId.js";
 import { decodeMediaRecordOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
 
 /**
@@ -26,11 +27,12 @@ export default async function updateShop(_, { input }, context) {
     shopId: opaqueShopId,
     ...passThroughInput
   } = input;
-  const shopId = decodeShopOpaqueId(opaqueShopId);
+  const shopId = isOpaqueId(opaqueShopId) ? decodeShopOpaqueId(opaqueShopId) : opaqueShopId;
 
   // Decode brand asset media record id
   if (passThroughInput.brandAssets) {
-    passThroughInput.brandAssets = decodeMediaRecordOpaqueId(passThroughInput.brandAssets);
+    passThroughInput.brandAssets = isOpaqueId(passThroughInput.brandAssets) ?
+      decodeMediaRecordOpaqueId(passThroughInput.brandAssets) : passThroughInput.brandAssets;
   }
 
   const updatedShop = await context.mutations.updateShop(context, {
