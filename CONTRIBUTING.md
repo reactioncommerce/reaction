@@ -113,7 +113,7 @@ The team reviews code quality rules including:
 
 - **i18n**: All static copy should use i18next. Include definitions in the appropriate en.json file.
 
-- **a11y**: Code should be accesibility compliant.
+- **a11y**: Code should be accessibility compliant.
 
 Reviewers will note any changes that they will want to QA in the app, even if they aren't listed in the testing steps (e.g if the code changes a cart button, ensure that the button still works).
 
