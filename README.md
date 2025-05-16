@@ -2,6 +2,10 @@
   Mailchimp Open Commerce (formerly Reaction Commerce)
 </h1>
 
+<p>
+  A modern, API-first, and headless commerce platform built with Node.js, MongoDB, and GraphQL. It integrates smoothly with tools like npm, Docker, and Kubernetes.
+</p>
+
 <h4 align="center">
   <a href="https://mailchimp.com/developer/open-commerce/">Open Commerce Website</a> |
   <a href="https://twitter.com/getreaction">Twitter</a> |
@@ -18,16 +22,16 @@
 # Features
 
 <table>
-<tr><td><strong>Fast</strong></td><td>Returns data in split seconds, and faster queries mean faster web pages</td></tr>
+<tr><td><strong>Fast</strong></td><td>Returns data in milliseconds, and faster queries mean faster web pages</td></tr>
 <tr><td><strong>Proven</strong></td><td>Open Commerce fuels sites doing 10's of thousands of orders per day with 100's of thousands of products</td></tr>
 <tr><td><strong>Composable</strong></td><td>A flexible plugin system allows you to pick and choose which integrations work best for you</td></tr>
 <tr><td><strong>Multi-tenant</strong></td><td>Host multiple shops in the same installation</td></tr>
 <tr><td><strong>Scalable</strong></td><td>Start out with a single server and scale up to hundreds</td></tr>
-<tr><td><strong>Flexible Products</strong></td><td>Allows Products, with options and variants to fit a wide variety of needs</td></tr>
+<tr><td><strong>Flexible Products</strong></td><td>Supports products with customizable options and variants to meet a wide range of business needs.</td></tr>
 <tr><td><strong>Inventory</strong></td><td>Track inventory, allow or disallow backorders and more</td></tr>
 <tr><td><strong>Shipping</strong></td><td>Integrate with a shipping rate provider or build your own custom table</td></tr>
 <tr><td><strong>Taxes</strong></td><td>Integrate with a tax rate provider or build your own custom tax table</td></tr>
-<tr><td><strong>Fulfillment</strong></td><td>Flexible fulfillment system allows you create your own fulfillment methods</td></tr>
+<tr><td><strong>Fulfillment</strong></td><td>Flexible fulfillment system allows you create self-customized fulfillment methods</td></tr>
 <tr><td><strong>Order Tracking</strong></td><td>View and manage your orders in the included admin system</td></tr>
 <tr><td><strong>Emails</strong></td><td>Customizable templates for Order confirmations and more</td></tr>
 <tr><td><strong>Open</strong></td><td>Fully open source. Never be locked in again</td></tr>
@@ -186,6 +190,9 @@ Find a bug, a typo, or something that’s not documented well? We’d love for y
 
 We love your pull requests! Check out our [`Good First Issue`](https://github.com/reactioncommerce/reaction/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22) and [`Help Wanted`](https://github.com/reactioncommerce/reaction/issues?q=label%3A%22help+wanted%22) tags for good issues to tackle.
 Check out our [contributors guide](CONTRIBUTING.md) for more information
+
+> ✅ This project welcomes contributions from developers of all skill levels!
+
 
 ### License
 
