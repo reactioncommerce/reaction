@@ -190,3 +190,6 @@ Check out our [contributors guide](CONTRIBUTING.md) for more information
 ### License
 
 Reaction is [GNU GPLv3 Licensed](./LICENSE.md)
+---
+### My First Contribution
+This is a test update I made while learning GitHub 🚀
