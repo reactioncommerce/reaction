@@ -1,4 +1,5 @@
 <h1 align="center">
+  Test update by Komali for new pull request.
   Mailchimp Open Commerce (formerly Reaction Commerce)
 </h1>
 
@@ -190,3 +191,5 @@ Check out our [contributors guide](CONTRIBUTING.md) for more information
 ### License
 
 Reaction is [GNU GPLv3 Licensed](./LICENSE.md)
+Test update by Komali for PR.
+Test update by Komali for PR.
