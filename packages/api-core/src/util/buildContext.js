@@ -1,6 +1,60 @@
 import Logger from "@reactioncommerce/logger";
 import ReactionError from "@reactioncommerce/reaction-error";
 
+// Simple in-memory lock map to prevent concurrent account creation for the same user
+// within a single Node.js process. This is intentionally minimal and can be replaced
+// by a more advanced, distributed solution by swapping out the logic that calls
+// `createAccount` (for example, via a custom context or plugin).
+const accountCreationPromisesByUserId = new Map();
+
+/**
+ * @name ensureAccountForUser
+ * @summary Ensure that an account exists for the given user ID, creating it if needed.
+ *          Concurrent calls for the same user ID are coalesced so that only a single
+ *          `createAccount` invocation happens per user at a time.
+ * @param {Object} context - GraphQL request context
+ * @param {String} userId - User ID for which to ensure an account exists
+ * @returns {Object|null} Account document or null if it could not be created/found
+ */
+async function ensureAccountForUser(context, userId) {
+  if (!userId || typeof context.auth?.accountByUserId !== "function") return null;
+
+  // Fast path: if an account already exists, return it immediately
+  const existingAccount = await context.auth.accountByUserId(context, userId);
+  if (existingAccount) return existingAccount;
+
+  // If we already have an in-flight creation for this user, await it instead of
+  // starting another one.
+  if (accountCreationPromisesByUserId.has(userId)) {
+    return accountCreationPromisesByUserId.get(userId);
+  }
+
+  const creationPromise = (async () => {
+    let account;
+    try {
+      Logger.debug(`Creating missing account for user ID ${userId}`);
+      account = await context.mutations.createAccount(context.getInternalContext(), {
+        emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
+        name: context.user.name,
+        profile: context.user.profile || {},
+        userId
+      });
+    } catch (error) {
+      // We might have had a unique index error if account already exists due to timing
+      account = await context.auth.accountByUserId(context, userId);
+      if (!account) Logger.error(error, "Creating missing account failed");
+    } finally {
+      // Ensure we do not hold onto stale promises indefinitely
+      accountCreationPromisesByUserId.delete(userId);
+    }
+
+    return account || null;
+  })();
+
+  accountCreationPromisesByUserId.set(userId, creationPromise);
+  return creationPromise;
+}
+
 /**
  * @name buildContext
  * @method
@@ -60,24 +114,10 @@ export default async function buildContext(context, request = {}) {
   let account;
   let permissions;
   if (userId && typeof context.auth.accountByUserId === "function") {
-    account = await context.auth.accountByUserId(context, userId);
-
-    // Create an account the first time a user makes a request
-    if (!account) {
-      try {
-        Logger.debug(`Creating missing account for user ID ${userId}`);
-        account = await context.mutations.createAccount(context.getInternalContext(), {
-          emails: context.user.emails && context.user.emails.map((rec) => ({ ...rec, provides: rec.provides || "default" })),
-          name: context.user.name,
-          profile: context.user.profile || {},
-          userId
-        });
-      } catch (error) {
-        // We might have had a unique index error if account already exists due to timing
-        account = await context.auth.accountByUserId(context, userId);
-        if (!account) Logger.error(error, "Creating missing account failed");
-      }
-    }
+    // Create an account the first time a user makes a request. Concurrent calls
+    // for the same user will wait for the same in-flight creation rather than
+    // attempting multiple inserts.
+    account = await ensureAccountForUser(context, userId);
     if (typeof context.auth.permissionsByUserId === "function") {
       permissions = await context.auth.permissionsByUserId(context, userId);
     }
