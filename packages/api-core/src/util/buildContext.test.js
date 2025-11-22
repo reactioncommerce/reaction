@@ -73,3 +73,61 @@ test("properly mutates the context object with user", async () => {
     userId: fakeUser._id
   });
 });
+
+test("coalesces concurrent account creation for the same user into a single createAccount call", async () => {
+  const userId = "CONCURRENT_USER_ID";
+  const concurrentUser = { _id: userId, emails: [{ address: "test@example.com" }], name: "Concurrent User", profile: {} };
+
+  let createdAccount = null;
+
+  const concurrentAccountByUserId = jest.fn().mockName("concurrentAccountByUserId").mockImplementation(async () => createdAccount);
+
+  const createAccount = jest.fn().mockName("createAccount").mockImplementation(async () => {
+    // Simulate async work and DB round trip
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    createdAccount = { _id: "CONCURRENT_ACCOUNT_ID", userId };
+    return createdAccount;
+  });
+
+  const concurrentAuth = {
+    accountByUserId: concurrentAccountByUserId,
+    permissionsByUserId: jest.fn().mockResolvedValue([])
+  };
+
+  const makeContext = () => {
+    const ctx = {
+      auth: concurrentAuth,
+      collections: mockContext.collections,
+      getFunctionsOfType: mockContext.getFunctionsOfType,
+      mutations: {
+        createAccount
+      },
+      queries: {
+        primaryShopId: () => "PRIMARY_SHOP_ID"
+      },
+      userPermissions: [],
+      validatePermissions: mockContext.validatePermissions
+    };
+
+    // Minimal stub to satisfy buildContext's use of context.getInternalContext()
+    ctx.getInternalContext = function getInternalContext() {
+      return {
+        ...this,
+        isInternalCall: true
+      };
+    };
+
+    return ctx;
+  };
+
+  const contexts = [makeContext(), makeContext(), makeContext(), makeContext(), makeContext()];
+
+  await Promise.all(contexts.map((ctx) => buildContext(ctx, { user: concurrentUser })));
+
+  expect(createAccount).toHaveBeenCalledTimes(1);
+  contexts.forEach((ctx) => {
+    expect(ctx.account).toEqual(createdAccount);
+    expect(ctx.accountId).toEqual(createdAccount._id);
+    expect(ctx.userId).toEqual(userId);
+  });
+});
