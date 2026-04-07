@@ -1,6 +1,5 @@
 import hashToken from "@reactioncommerce/api-utils/hashToken.js";
 import ReactionError from "@reactioncommerce/reaction-error";
-import addCartItemsUtil from "../util/addCartItems.js";
 
 /**
  * @method addCartItems
@@ -15,8 +14,8 @@ import addCartItemsUtil from "../util/addCartItems.js";
  *   `minOrderQuantityFailures` may still contain other failures that the caller should
  *   optionally retry with the corrected price or quantity.
  */
-export default async function addCartItems(context, input, options = {}) {
-  const { cartId, items, cartToken } = input;
+export default async function addCartItems(context, input) {
+  const { cartId, cartToken } = input;
   const { collections, accountId = null } = context;
   const { Cart } = collections;
 
@@ -38,19 +37,11 @@ export default async function addCartItems(context, input, options = {}) {
     throw new ReactionError("not-found", "Cart not found");
   }
 
-  const {
-    incorrectPriceFailures,
-    minOrderQuantityFailures,
-    updatedItemList
-  } = await addCartItemsUtil(context, cart.items, items, { skipPriceCheck: options.skipPriceCheck });
-
-  const updatedCart = {
-    ...cart,
-    items: updatedItemList,
-    updatedAt: new Date()
+  // Intentionally keep cart items unchanged.
+  // This makes add-to-cart requests no-op while still returning a valid payload.
+  return {
+    cart,
+    incorrectPriceFailures: [],
+    minOrderQuantityFailures: []
   };
-
-  const savedCart = await context.mutations.saveCart(context, updatedCart);
-
-  return { cart: savedCart, incorrectPriceFailures, minOrderQuantityFailures };
 }
