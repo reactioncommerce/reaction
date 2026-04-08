@@ -80,8 +80,18 @@ function xformCartFulfillmentGroup(fulfillmentGroup, cart) {
  * @returns {Object} Checkout object
  */
 export default async function xformCartCheckout(collections, cart) {
+  const items = cart.items || [];
+  const { taxSummary } = cart;
+
   // itemTotal is qty * amount for each item, summed
-  const itemTotal = (cart.items || []).reduce((sum, item) => (sum + (item.price.amount * item.quantity)), 0);
+  // When taxes have already been calculated, prefer the precomputed subtotal
+  // to keep checkout summary aligned with cart item adjustments.
+  const shouldUsePrecomputedSubtotals = Boolean(taxSummary) &&
+    items.every((item) => item.subtotal && typeof item.subtotal.amount === "number");
+  const itemTotal = items.reduce((sum, item) => {
+    if (shouldUsePrecomputedSubtotals) return sum + item.subtotal.amount;
+    return sum + (item.price.amount * item.quantity);
+  }, 0);
 
   // shippingTotal is shipmentMethod.rate for each item, summed
   // handlingTotal is shipmentMethod.handling for each item, summed
@@ -93,13 +103,14 @@ export default async function xformCartCheckout(collections, cart) {
     let handlingTotal = 0;
 
     let hasNoSelectedShipmentMethods = true;
-    fulfillmentGroups.forEach((fulfillmentGroup) => {
-      if (fulfillmentGroup.shipmentMethod) {
-        hasNoSelectedShipmentMethods = false;
-        shippingTotal += fulfillmentGroup.shipmentMethod.rate || 0;
-        handlingTotal += fulfillmentGroup.shipmentMethod.handling || 0;
-      }
-    });
+    for (const fulfillmentGroup of fulfillmentGroups) {
+      const { shipmentMethod } = fulfillmentGroup;
+      if (!shipmentMethod) continue;
+
+      hasNoSelectedShipmentMethods = false;
+      shippingTotal += shipmentMethod.rate || 0;
+      handlingTotal += shipmentMethod.handling || 0;
+    }
 
     if (!hasNoSelectedShipmentMethods) {
       fulfillmentTotal = shippingTotal + handlingTotal;
@@ -111,7 +122,6 @@ export default async function xformCartCheckout(collections, cart) {
   // so that we can set to null and break if we hit a not-yet-calculated item.
   let taxTotal = null;
   let taxableAmount = null;
-  const { taxSummary } = cart;
   if (taxSummary) {
     ({ tax: taxTotal, taxableAmount } = taxSummary);
   }
@@ -119,7 +129,8 @@ export default async function xformCartCheckout(collections, cart) {
   const discountTotal = cart.discount || 0;
 
   // surchargeTotal is sum of all surcharges is qty * amount for each item, summed
-  const surchargeTotal = (cart.surcharges || []).reduce((sum, surcharge) => (sum + surcharge.amount), 0);
+  const surcharges = cart.surcharges || [];
+  const surchargeTotal = surcharges.reduce((sum, surcharge) => (sum + surcharge.amount), 0);
 
   const total = Math.max(0, itemTotal + fulfillmentTotal + taxTotal + surchargeTotal - discountTotal);
 

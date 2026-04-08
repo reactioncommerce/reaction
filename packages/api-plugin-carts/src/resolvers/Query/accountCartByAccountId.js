@@ -11,13 +11,19 @@ import { decodeAccountOpaqueId, decodeShopOpaqueId } from "../../xforms/id.js";
  * @param {String} args.accountId - The account for which to generate an account cart
  * @param {String} args.shopId - The shop that will own this cart
  * @param {Object} context - an object containing the per-request state
+ * @param {Object} info - GraphQL resolver info
  * @returns {Promise<Object>|undefined} A Cart object
  */
-export default async function accountCartByAccountId(parentResult, args, context) {
+export default async function accountCartByAccountId(parentResult, args, context, info) {
   const { accountId, shopId } = args;
+  const decodedAccountId = isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId;
+  const decodedShopId = isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId;
+
+  // Allow short-lived caching for frequent cart summary polling.
+  info?.cacheControl?.setCacheHint({ maxAge: 60 });
 
   return context.queries.accountCartByAccountId(context, {
-    accountId: isOpaqueId(accountId) ? decodeAccountOpaqueId(accountId) : accountId,
-    shopId: isOpaqueId(shopId) ? decodeShopOpaqueId(shopId) : shopId
+    accountId: decodedAccountId,
+    shopId: decodedShopId
   });
 }
