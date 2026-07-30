@@ -55,6 +55,10 @@ export default async function cancelOrderItem(context, input) {
   const order = await Orders.findOne({ _id: orderId });
   if (!order) throw new ReactionError("not-found", "Order not found");
 
+  // Track updatedAt for optimistic concurrency to prevent parallel
+  // cancelOrderItem calls from overwriting each other's changes
+  const orderUpdatedAt = order.updatedAt;
+
   await context.validatePermissions(`reaction:legacy:orders:${order._id}`, "cancel:item", {
     shopId: order.shopId,
     owner: order.accountId
@@ -172,8 +176,16 @@ export default async function cancelOrderItem(context, input) {
 
   OrderSchema.validate(modifier, { modifier: true });
 
+  // Use optimistic concurrency with updatedAt to prevent parallel
+  // cancelOrderItem calls from overwriting each other's changes.
+  // If the order doesn't have an updatedAt (e.g. legacy documents),
+  // fall back to update without the concurrency check.
+  const query = { _id: orderId };
+  if (orderUpdatedAt) {
+    query.updatedAt = orderUpdatedAt;
+  }
   const { modifiedCount, value: updatedOrder } = await Orders.findOneAndUpdate(
-    { _id: orderId },
+    query,
     modifier,
     { returnOriginal: false }
   );
